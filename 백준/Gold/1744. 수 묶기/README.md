@@ -1,4 +1,4 @@
-# [Gold V] 수 묶기 - 1744 
+# [Gold IV] 수 묶기 - 1744 
 
 [문제 링크](https://www.acmicpc.net/problem/1744) 
 
