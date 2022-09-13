@@ -4,29 +4,25 @@
 #include <stdlib.h>
 
 int main(void) {
-	int E, S, M;
-	int i, j, k, count = 1; // E에 대응되는 i, S에 대응되는 j, M에 대응되는 k, 연도 count
+	int E, S, M, i = 1, j = 1, k = 1, year = 1; // E에 해당하는 i, S에 해당하는 j, M에 해당하는 k 
 	scanf("%d %d %d", &E, &S, &M);
-	i = 1;
-	j = 1;
-	k = 1;
-	while (1) { // 일치하는 연도까지 반복
-		if (i == E && j == S && k == M)
+	while (1) {
+		if ((i == E) && (j == S) && (k == M)) { // 조건을 만족시키는 경우
+			printf("%d", year);
 			break;
-		if (i == 15)
-			i = 1;
-		else
+		}
+		else {
 			i++;
-		if (j == 28)
-			j = 1;
-		else
 			j++;
-		if (k == 19)
-			k = 1;
-		else
 			k++;
-		count++;
+			year++;
+			if (i > 15)
+				i = 1;
+			if (j > 28)
+				j = 1;
+			if (k > 19)
+				k = 1;
+		}		
 	}
-	printf("%d", count);
 	return 0;
 }
