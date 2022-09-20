@@ -2,28 +2,25 @@
 #include <queue>
 using namespace std;
 
-struct pqdata {
+struct dqdata {
 	int val, index;
-};
-struct cmp {
-	bool operator()(pqdata a, pqdata b) {
-		return a.val > b.val;
-	}
 };
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	priority_queue<pqdata, deque<pqdata>, cmp> q;
-	int N, L, data;
-	cin >> N >> L;		
+	int N, L, input;
+	deque <dqdata> dq;
+	cin >> N >> L;
 	for (int i = 0; i < N; i++) {
-		cin >> data;
-		q.push({ data, i });
-		if(i >= L)
-			while (q.top().index <= i - L) q.pop();
-		cout << q.top().val << " ";
+		cin >> input;		
+		while (dq.size() && input < dq.back().val)	
+			dq.pop_back();
+		while (dq.size() && dq.front().index <= i - L)	
+			dq.pop_front();
+		dq.push_back({ input, i });
+		cout << dq.front().val << " ";
 	}
 	return 0;
 }
