@@ -27,7 +27,7 @@ int main(void) {
 				s.pop();
 		}
 		s.push({ x,min });
-		printf("%.6lf\n", min);
+		printf("%.4lf\n", min);
 	}
 	return 0;
 }
