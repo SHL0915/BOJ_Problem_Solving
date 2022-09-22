@@ -7,7 +7,7 @@ struct stackData {
 	double X, R;
 };
 
-int main(void) {	
+int main(void) {
 	stack <stackData> s, temp;
 	double x, r, min, rad, X, R;
 	int N, i;
@@ -27,7 +27,7 @@ int main(void) {
 				s.pop();
 		}
 		s.push({ x,min });
-		printf("%.6lf\n",min);
+		printf("%.6lf\n", min);
 	}
 	return 0;
 }
