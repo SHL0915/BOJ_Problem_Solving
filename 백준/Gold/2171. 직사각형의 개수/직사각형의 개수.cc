@@ -8,12 +8,14 @@ pair <int, int> point[5000];
 int x_pos[5000];
 int y_pos[5000];
 int temp[5000];
-int coor[5000][5000] = { 0 };
+int coor[5000][5000];
 
 int compress(int* Arr);
 int BinarySearch(int* Arr, int left, int right, int data);
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 		cin >> x_pos[i] >> y_pos[i];
@@ -24,13 +26,11 @@ int main(void) {
 	sort(y_pos, y_pos + N);
 	x_index = compress(x_pos);
 	y_index = compress(y_pos);
-	
 	for (int i = 0; i < N; i++) {
 		point[i].first = BinarySearch(x_pos, 0, x_index, point[i].first);
 		point[i].second = BinarySearch(y_pos, 0, y_index, point[i].second);
 		coor[point[i].second][point[i].first] = 1;
 	}
-
 	for (int i = 0; i < N; i++) {
 		for (int j = i + 1; j < N; j++) {
 			if (point[i].first == point[j].first || point[i].second == point[j].second)
@@ -57,7 +57,7 @@ int compress(int* Arr) {
 	return j;
 }
 
-int BinarySearch(int *Arr, int left, int right, int data) {
+int BinarySearch(int* Arr, int left, int right, int data) {
 	if (left < right) {
 		int mid = (left + right) / 2;
 		if (Arr[mid] == data) {
