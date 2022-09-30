@@ -5,31 +5,25 @@ using namespace std;
 
 int N, M, ans = -101;
 
-void BackTracking(int ** arr, int height, int width, int row, int column);
+void BackTracking(int arr[6][6], int height, int width, int row, int column);
 
 int main(void) {
 	cin >> N >> M;
-	int** org = new int*[N];
-	for (int i = 0; i < N; i++) {
-		org[i] = new int[M];
+	int org[6][6];
+	for (int i = 0; i < N; i++) {		
 		for (int j = 0; j < M; j++) {
 			cin >> org[i][j];
 		}
 	}
 	BackTracking(org, N, M, 0, 0);
-	cout << ans;
-	for (int i = 0; i < N; i++)
-		delete[] org[i];
-	delete[] org;
+	cout << ans;	
 	return 0;
 }
 
-void BackTracking(int** arr, int prev_height, int prev_width, int row, int column) {
-	int height = prev_height - row > row ? prev_height - row : row;
-	int width = prev_width - column > column ? prev_width - column : column;
-	int** temp = new int* [height];
-	for (int i = 0; i < height; i++)
-		temp[i] = new int[width];
+void BackTracking(int arr[6][6], int prev_height, int prev_width, int row, int column) {
+	int height = max(prev_height - row, row);
+	int width = max(prev_width - column, column);
+	int temp[6][6];
 	if (row == 0) { // 가로로 접은 경우
 		if (width > column) {
 			for (int i = 0; i < height; i++) {
@@ -70,10 +64,7 @@ void BackTracking(int** arr, int prev_height, int prev_width, int row, int colum
 		for (int j = 0; j < width; j++)
 			ans = max(ans, temp[i][j]);
 	}
-	if (height == 1 && width == 1) {
-		for (int i = 0; i < height; i++)
-			delete[] temp[i];
-		delete[] temp;
+	if (height == 1 && width == 1) {		
 		return;
 	}
 	else {
@@ -85,10 +76,7 @@ void BackTracking(int** arr, int prev_height, int prev_width, int row, int colum
 			else {
 				BackTracking(temp, height, width, i, 0);
 			}
-		}
-		for (int i = 0; i < height; i++)
-			delete[] temp[i];
-		delete[] temp;
+		}		
 		return;
 	}
 }
