@@ -4,11 +4,11 @@ using namespace std;
 const int mod = 10007;
 
 int N;
-long long combination[53][53];
-long long memo[53];
+int combination[53][53];
+int memo[53];
 
-long long comb(int N, int K);
-long long DP(int N);
+int comb(int N, int K);
+int DP(int N);
 
 int main(void) {
 	cin >> N;	
@@ -16,14 +16,14 @@ int main(void) {
 	return 0;
 }
 
-long long comb(int N, int K) {
+int comb(int N, int K) {
 	if (combination[N][K] != 0) return combination[N][K];
 	else if (K == 0 || K == N) combination[N][K] = 1;
 	else combination[N][K] = (comb(N - 1, K - 1) + comb(N - 1, K)) % mod;
 	return combination[N][K];
 }
 
-long long DP(int N) {
+int DP(int N) {
 	if (N < 4) return 0;
 	else if (memo[N] != 0) return memo[N];
 	else if (N == 4) memo[N] = 13;
