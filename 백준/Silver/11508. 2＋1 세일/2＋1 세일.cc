@@ -10,6 +10,8 @@ bool cmp(int A, int B) {
 }
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
 	for (int i = 0; i < N; i++) cin >> dairy[i];
 	sort(dairy, dairy + N, cmp);
