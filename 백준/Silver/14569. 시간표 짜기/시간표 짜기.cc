@@ -6,6 +6,8 @@ long long classes[1000];
 long long student;
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 		int k;
