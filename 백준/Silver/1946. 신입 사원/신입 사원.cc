@@ -11,6 +11,8 @@ bool cmp(pair <int, int > A, pair <int, int> B) {
 }
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> T;
 	for (int i = 0; i < T; i++) {
 		int cnt = 0;
