@@ -9,7 +9,6 @@ int cnt[26];
 int main(void) {
 	cin >> N;
 	for (int i = 0; i < N; i++) cin >> word[i];
-	for (int i = 0; i < 26; i++) Alphabet[i] = -1;
 	int temp = 10000000;
 	for (int i = 0; i < 8; i++) {		
 		for (int j = 0; j < N; j++) {
