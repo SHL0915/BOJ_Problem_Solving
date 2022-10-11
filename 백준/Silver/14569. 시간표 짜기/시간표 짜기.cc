@@ -2,31 +2,37 @@
 using namespace std;
 
 int N, M;
-int classes[1000][50];
+long long classes[1000];
+long long student;
 
 int main(void) {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
-		int k, t;
+		int k;
+		long long bit = 1, t;
 		cin >> k;
 		for (int j = 0; j < k; j++) {
 			cin >> t;
-			classes[i][t - 1] = 1;
+			classes[i] += (bit << (t - 1));
 		}
 	}
 	cin >> M;
 	for (int i = 0; i < M; i++) {
-		int student[50] = { 0 };
-		int p, q, cnt = 0;
+		student = 0;
+		int p, cnt = 0;
+		long long bit = 1, q;
 		cin >> p;
 		for (int j = 0; j < p; j++) {
 			cin >> q;
-			student[q - 1] = 1;
+			student += (bit << (q - 1));
 		}
 		for (int j = 0; j < N; j++) {
-			int k;
-			for (k = 0; k < 50; k++) if (classes[j][k] == 1 && student[k] == 0) break;
-			if (k == 50) cnt++;
+			bit = 1;
+			for (int k = 0; k < 50; k++) {
+				if ((bit & classes[j]) && (bit & student) == 0) break;
+				bit <<= 1;
+				if (k == 49) cnt++;
+			}
 		}
 		cout << cnt << "\n";
 	}
