@@ -1,4 +1,5 @@
 #include <iostream>
+#include <bit>
 using namespace std;
 
 int N, ans, maxNum;
@@ -20,15 +21,7 @@ int main(void) {
 		maxNum /= 2;
 		ans++;
 	}
-	for (int i = 0; i < N; i++) {
-		int cnt = 0;
-		int bit = 1;
-		for (int j = 0; j < 10; j++) {
-			if (bit & B[i]) cnt++;
-			bit <<= 1;
-		}
-		ans += cnt;
-	}
+	for (int i = 0; i < N; i++) ans += popcount((unsigned int)B[i]);
 	cout << ans;
 	return 0;
 }
