@@ -7,6 +7,8 @@ int children[1000000];
 int key[1000001];
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 		cin >> children[i];
