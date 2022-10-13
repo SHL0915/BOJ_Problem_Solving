@@ -11,6 +11,8 @@ struct lower {
 };
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
 	priority_queue <int, vector<int>, lower> pq;
 	for (int i = 0; i < N; i++) {
