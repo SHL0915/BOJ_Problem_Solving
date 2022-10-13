@@ -3,6 +3,8 @@
 #include <algorithm>
 using namespace std;
 
+// priority_queue를 사용하지 않은 풀이
+
 int N, ans;
 int greedy[10001];
 vector <pair <int, int>> lecture;
