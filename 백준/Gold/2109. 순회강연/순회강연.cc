@@ -1,42 +1,33 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <queue>
 using namespace std;
 
-// priority_queue를 사용하지 않은 풀이
+// priority_queue를 사용한 풀이
 
 int N, ans;
-int greedy[10001];
-vector <pair <int, int>> lecture;
+vector <int> lecture[10001];
 
-bool cmp(pair <int, int> A, pair <int, int> B) {
-	return A.first < B.first;
-}
-
-int main(void){
+int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> N;
+	priority_queue <int, vector <int>> pq;
 	for (int i = 0; i < N; i++) {
 		int p, d;
 		cin >> p >> d;
-		lecture.push_back({ p, d });
+		lecture[d].push_back(p);
 	}
-	sort(lecture.begin(), lecture.end(), cmp);
-	while (lecture.size()) {
-		for (int i = lecture.back().second; i >= 1; i--) {
-			if (greedy[i] != 0) {
-				if (i == 1) lecture.pop_back();
-				else continue;
-			}
-			else {
-				greedy[i] = lecture.back().first;
-				lecture.pop_back();
-				break;
-			}
+	for (int i = 10000; i >= 1; i--) {
+		while (lecture[i].size()) {
+			pq.push(lecture[i].back());
+			lecture[i].pop_back();
+		}
+		if (pq.size()) {
+			ans += pq.top();
+			pq.pop();
 		}
 	}
-	for (int i = 1; i <= 10000; i++) ans += greedy[i];
 	cout << ans;
 	return 0;
 }
