@@ -32,11 +32,8 @@ int main(void) {
 	for (int i = 0; i < N; i++) {
 		if (pq.size() == 0) pq.push(classes[i].second);
 		else {
-			if (classes[i].first >= pq.top()) {
-				pq.pop();
-				pq.push(classes[i].second);
-			}
-			else pq.push(classes[i].second);
+			if (classes[i].first >= pq.top()) pq.pop();
+			pq.push(classes[i].second);
 		}
 	}
 	cout << pq.size();
