@@ -5,6 +5,6 @@ int A, I;
 
 int main(void) {
 	cin >> A >> I;
-	cout << (A * (I - 1)) + 1;	
+	cout << A * (I - 1) + 1;	
 	return 0;
 }
