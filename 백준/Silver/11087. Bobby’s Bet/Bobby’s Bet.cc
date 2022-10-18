@@ -6,7 +6,7 @@ int N, R, S, X, Y, W;
 int comb[11][11];
 
 int combination(int n, int r);
-double power(double a, int b);
+long long power(int a, int b);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -14,15 +14,11 @@ int main(void) {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 		cin >> R >> S >> X >> Y >> W;
-		double temp = 0;
-		double a = (S - R + 1) / (double)S;
-		double b = (R - 1) / (double)S;
-		for (int i = X; i <= Y; i++) {
-			temp += power(a, i) * power(b, Y - i) * W * combination(Y, i);
-		}
-		if (temp > 1) cout << "yes\n";
+		long long temp = 0;
+		for (int i = X; i <= Y; i++) temp += power(S - R + 1, i) * power(R - 1, Y - i) * W * combination(Y, i);
+		if (temp > power(S, Y)) cout << "yes\n";
 		else cout << "no\n";
-	} 
+	}
 	return 0;
 }
 
@@ -32,8 +28,8 @@ int combination(int n, int r) {
 	return comb[n][r];
 }
 
-double power(double a, int b) {
-	double result = 1;
+long long power(int a, int b) {
+	long long result = 1;
 	for (int i = 0; i < b; i++) result *= a;
 	return result;
 }
