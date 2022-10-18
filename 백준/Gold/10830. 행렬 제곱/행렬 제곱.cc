@@ -3,10 +3,10 @@ using namespace std;
 
 int N;
 long long B;
-long long A[5][5];
-long long mul[5][5];
+int A[5][5];
+int mul[5][5];
 
-void multiply(long long A[5][5], long long B[5][5]);
+void multiply(int A[5][5], int B[5][5]);
 
 int main(void) {
 	cin >> N >> B;
@@ -15,7 +15,7 @@ int main(void) {
 			cin >> A[i][j];
 			mul[i][j] = A[i][j];
 		}
-	}	
+	}
 	long long bit = 1;
 	while (1) {
 		if (bit > (B - 1)) break;
@@ -30,8 +30,8 @@ int main(void) {
 	return 0;
 }
 
-void multiply(long long A[5][5], long long B[5][5]) {
-	long long temp[5][5] = { 0 };
+void multiply(int A[5][5], int B[5][5]) {
+	int temp[5][5] = { 0 };
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			for (int k = 0; k < N; k++) {
