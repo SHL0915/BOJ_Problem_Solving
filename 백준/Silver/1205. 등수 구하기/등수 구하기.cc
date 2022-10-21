@@ -32,8 +32,7 @@ int main(void) {
 	}
 	sort(score.begin(), score.end(), cmp);
 	for (int i = 0; i < P; i++) {
-		if (score[i] == newScore) {
-			
+		if (score[i] == newScore) {			
 			cout << i + 1;
 			exit(0);
 		}
