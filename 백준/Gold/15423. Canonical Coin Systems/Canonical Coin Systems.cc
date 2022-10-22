@@ -4,7 +4,6 @@ using namespace std;
 int N;
 int S[100];
 int DPTable[2000000];
-int GreedyTable[2000000];
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -31,14 +30,11 @@ int main(void) {
 				temp %= S[j];
 			}
 		}
-		GreedyTable[i] = cnt;
-	}
-	for (int i = 0; i <= S[N - 1] + S[N - 2]; i++) {
-		if (DPTable[i] != GreedyTable[i]) {
+		if (DPTable[i] != cnt) {
 			cout << "non-canonical";
 			exit(0);
 		}
-	}
+	}	
 	cout << "canonical";	
 	return 0;
 }
