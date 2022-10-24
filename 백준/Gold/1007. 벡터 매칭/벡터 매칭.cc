@@ -1,74 +1,59 @@
 #include <iostream>
-#include <vector>
 #include <cmath>
-#include <algorithm>
+#include <vector>
 using namespace std;
 
 int T, N;
-double x, y, xSum, ySum, xNegSum, yNegSum, minVecSum;
-pair<double, double> point[20];
-int Arr[20];
+long long ansSqr;
+pair <int, int> dot[20];
+int mark[20];
 
-void BackTracking(int n, int k);
-
-double VectorSum(double x, double y) {
-	return sqrt(x * x + y * y);
-}
+void BackTracking(int k, int n);
 
 int main(void) {
 	ios::sync_with_stdio(false);
-	cout.tie(0);
-	cout.precision(12);
+	cin.tie(0);
 	cout << fixed;
+	cout.precision(12);
 	cin >> T;
-	for (int i = 0; i < T; i++) {
-		cin >> N;		
-		minVecSum = -1;
-		for (int j = 0; j < N; j++)
-			Arr[j] = 0;
-		for (int j = 0; j < N; j++) {
+	while (T--) {
+		cin >> N;
+		ansSqr = -1;
+		for (int i = 0; i < N; i++) {
+			int x, y;
 			cin >> x >> y;
-			point[j] = { x,y };
-		}		
-		BackTracking(0,0);
-		cout << minVecSum << "\n";
-	}	
+			dot[i] = { x,y };
+			mark[i] = 0;
+		}
+		BackTracking(0, 0);
+		cout << sqrt((double)ansSqr) << '\n';
+	}
 	return 0;
 }
 
-void BackTracking( int n, int k) {
-	if (k == N / 2) {
-		xSum = 0;
-		ySum = 0;
-		xNegSum = 0;
-		yNegSum = 0;
-		for (int i = 0; i < N; i++) {		
-			if (Arr[i] == 0) {
-				xSum += point[i].first;
-				ySum += point[i].second;
+void BackTracking(int k, int n) {
+	if (n == N / 2) {
+		long long sX = 0, sY = 0, eX = 0, eY = 0;
+		for (int i = 0; i < N; i++) {
+			if (mark[i] == 0) {
+				sX += dot[i].first;
+				sY += dot[i].second;
 			}
 			else {
-				xNegSum += point[i].first;
-				yNegSum += point[i].second;
+				eX += dot[i].first;
+				eY += dot[i].second;
 			}
 		}
-		if (minVecSum == -1)
-			minVecSum = VectorSum(xSum - xNegSum, ySum - yNegSum);
-		else
-			minVecSum = min(minVecSum, VectorSum(xSum - xNegSum, ySum - yNegSum));
+		long long disSqr = (eX - sX) * (eX - sX) + (eY - sY) * (eY - sY);
+		if (ansSqr == -1) ansSqr = disSqr;
+		else ansSqr = min(ansSqr, disSqr);
 		return;
 	}
-	else if (n == N)
-		return;
+	if (k == N) return;
 	else {
-		for (int i = 0; i < 2; i ++) {
-			if (i == 0) 
-				BackTracking(n + 1, k);			
-			else {
-				Arr[n] = 1;
-				BackTracking(n + 1, k + 1);
-				Arr[n] = 0;
-			}
-		}
+		BackTracking(k + 1, n);
+		mark[k] = 1;
+		BackTracking(k + 1, n + 1);
+		mark[k] = 0;
 	}
 }
