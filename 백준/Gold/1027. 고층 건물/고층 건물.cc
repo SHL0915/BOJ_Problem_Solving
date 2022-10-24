@@ -1,44 +1,39 @@
 #include <iostream>
 using namespace std;
 
-int N, ans = -1;
-double Building[50];
-
-void findBuilding(int n);
+int N, ans;
+long long Building[50];
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
-	for (int i = 0; i < N; i++)
-		cin >> Building[i];
-	for (int i = 0; i < N; i++) 
-		findBuilding(i);
+	for (int i = 0; i < N; i++) cin >> Building[i];
+	for (int i = 0; i < N; i++) {
+		int cnt = 0;
+		int flag;
+		for (int j = 0; j < i; j++) {
+			flag = 0;
+			for (int k = j + 1; k < i; k++) {
+				if ((Building[k] - Building[j]) * (i - j) >= (Building[i] - Building[j]) * (k - j)) {
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0) cnt++;
+		}
+		for (int j = i + 1; j < N; j++) {
+			flag = 0;
+			for (int k = i + 1; k < j; k++) {
+				if ((Building[k] - Building[i]) * (j - i) >= (Building[j] - Building[i]) * (k - i)) {
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0) cnt++;
+		}
+		ans = max(ans, cnt);
+	}
 	cout << ans;
 	return 0;
-}
-
-void findBuilding(int n) {
-	int i, j;
-	int cnt = 0;
-	for (i = 0; i < N; i++) {
-		if (i < n) {
-			for (j = i + 1; j < n; j++) {
-				if (((Building[n] - Building[i]) / (n - i)) * (j - i) + Building[i] <= Building[j])
-					break;
-			}
-			if (j == n)
-				cnt++;
-		}
-		else if (i == n)
-			continue;
-		else {
-			for (j = n + 1; j < i; j++) {
-				if ((Building[i] - Building[n]) / (i - n) * (j - n) + Building[n] <= Building[j])
-					break;
-			}
-			if (j == i)
-				cnt++;
-		}
-	}	
-	ans = max(ans, cnt);
-	return;
 }
