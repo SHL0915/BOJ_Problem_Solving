@@ -1,45 +1,42 @@
 #include <iostream>
-#include <stack>
+#include <vector>
 using namespace std;
 
-struct stackData {
-	int height, index;
-};
+int N;
+long long input, ans;
+vector <pair<long long, long long>> s;
 
 int main(void) {
-	int N, data, i, max = -1, temp;
-	cin >> N;
-	stack <stackData> s;
-	for (i = 0; i < N; i++) {
-		cin >> data;
-		if (s.size() == 0) s.push({ data,i });
-		else if (data > s.top().height) s.push({ data,i });
-		else if (data < s.top().height) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> N;	
+	for (int i = 0; i < N; i++) {
+		cin >> input;
+		if (s.size() == 0) s.push_back({ input, i });
+		else if (input > s.back().first) s.push_back({ input, i });
+		else if (input == s.back().first) continue;
+		else {
 			while (1) {
-				if (max <= s.top().height * (i - s.top().index)) {
-					max = s.top().height * (i - s.top().index);
-				}
-				temp = s.top().index;
-				s.pop();
+				pair <long long, long long> temp = s.back();
+				ans = max(ans, temp.first * (i - temp.second));
+				s.pop_back();
 				if (s.size() == 0) {
-					s.push({ data,0 });
+					s.push_back({ input,0 });
 					break;
 				}
-				else if (s.top().height == data)
-					break;
-				else if (s.top().height < data) {
-					s.push({ data,temp });
+				if (input > s.back().first) {
+					s.push_back({ input, temp.second });
 					break;
 				}
+				else if (input == s.back().first) break;				
 			}
 		}
 	}
 	while (s.size()) {
-		if (max <= s.top().height * (N - s.top().index)) {
-			max = s.top().height * (N - s.top().index);
-		}
-		s.pop();
+		pair <long long, long long> temp = s.back();
+		s.pop_back();
+		ans = max(ans, temp.first * (N - temp.second));
 	}
-	cout << max;
+	cout << ans << '\n';
 	return 0;
 }
