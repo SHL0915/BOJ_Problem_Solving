@@ -13,7 +13,7 @@ int main(void) {
 		long long result = 1;
 		long long temp = A;
 		long long bit = 1;
-		for (int i = 0; i < B; i++) {
+		while (bit <= B) {
 			if (bit & B) result *= temp;
 			temp = (temp * temp) % 10;
 			bit <<= 1;
