@@ -1,22 +1,25 @@
 #include <iostream>
 using namespace std;
 
-int T, a, b;
+int T;
+int A, B;
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> T;
-	for (int i = 0; i < T; i++) {
-		cin >> a >> b;
-		int ans = 1;
-		for (int j = 1; j <= b; j++) {
-			ans *= a;
-			ans %= 10;
+	while (T--) {
+		cin >> A >> B;
+		long long result = 1;
+		long long temp = A;
+		long long bit = 1;
+		for (int i = 0; i < B; i++) {
+			if (bit & B) result *= temp;
+			temp = (temp * temp) % 10;
+			bit <<= 1;
 		}
-		ans %= 10;
-		if (ans == 0) ans = 10;
-		cout << ans << "\n";
+		if (result % 10 == 0) cout << 10 << '\n';
+		else cout << result % 10 << '\n';
 	}
 	return 0;
 }
