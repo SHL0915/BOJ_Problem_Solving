@@ -1,12 +1,14 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
+int A, B;
 
-int main(void)
-{
-	int A, B;
-
-	scanf("%d %d", &A, &B);
-	printf("%.11Lf", A / (long double)B);
-	return 0;
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout << fixed;
+	cout.precision(20);
+	cin >> A >> B;
+	cout << double(A) / B;
+	return 0;	
 }
