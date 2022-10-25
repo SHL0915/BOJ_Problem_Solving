@@ -3,8 +3,7 @@
 using namespace std;
 
 int T, N, K, ans;
-long long status;
-int coin[100000];
+long long coin, status;
 
 struct cmp {
 	bool operator() (int A, int B) {
@@ -17,23 +16,24 @@ int main(void) {
 	cin.tie(0);
 	cin >> T;
 	while (T--) {		
-		ans = -1;
+		int flag = 0;	
 		status = 1;
 		cin >> N >> K;
 		priority_queue <int, vector <int>, cmp> c;
-		for (int i = 0; i < N; i++) cin >> coin[i];
 		for (int i = 0; i < N; i++) {
-			c.push(coin[i]);
+			cin >> coin;
+			c.push(coin);
+			if (flag == 1) continue;
 			while (c.size() && c.top() <= status) {				
 				status += c.top();
 				c.pop();
 			}
 			if (status > K) {
-				ans = i + 1 ;
-				break;
+				cout << i + 1 << '\n';
+				flag = 1;				
 			}
 		}
-		cout << ans << '\n';
+		if (flag == 0) cout << -1 << '\n';
 	}
 	return 0;
 }
