@@ -1,61 +1,72 @@
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
-long long N, ans;
+long long N, oneMin, twoMin, threeMin;
+long long ans;
 long long dice[6];
 
-long long findMinArea();
-long long findMinTwoArea();
-long long findMinThreeArea();
+long long one();
+long long two();
+long long three();
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
-	for (int i = 0; i < 6; i++) cin >> dice[i];	
-	long long oneArea = findMinArea();
-	long long twoArea = findMinTwoArea();
-	long long threeArea = findMinThreeArea();
+	for (int i = 0; i < 6; i++) cin >> dice[i];
+	oneMin = one();
+	twoMin = two();
+	threeMin = three();
 	if (N == 1) {
-		long long temp = dice[0];
+		long long temp = oneMin;
 		for (int i = 0; i < 6; i++) {
 			ans += dice[i];
 			temp = max(temp, dice[i]);
 		}
-		ans -= temp;
+		cout << ans - temp;
+		return 0;
+	}
+	else if (N == 2) {
+		ans += 4 * (threeMin + twoMin);
 		cout << ans;
-	}	
+		return 0;
+	}
 	else {
-		ans += threeArea * 4;
-		ans += ((N - 2) * 8 + 4) * twoArea;
-		ans += ((N - 2) * ((N - 2) * 5 + 4)) * oneArea;
+		ans += (N - 2) * (N - 2) * oneMin;
+		ans += 4 * threeMin;
+		ans += 4 * (N - 2) * twoMin;
+		ans += 4 * ((N - 1) * twoMin + (N - 2) * (N - 1) * oneMin);
 		cout << ans;
+		return 0;
 	}
 	return 0;
 }
 
-long long findMinArea() {
-	long long result = dice[0];
+long long one() {
+	long long result = 50;
 	for (int i = 0; i < 6; i++) result = min(result, dice[i]);
 	return result;
 }
 
-long long findMinTwoArea() {
-	long long result = dice[0] + dice[1];
+long long two() {
+	long long result = 100;
 	for (int i = 0; i < 6; i++) {
 		for (int j = i + 1; j < 6; j++) {
-			if ((i == 0 && j == 5) || (i == 1 && j == 4) || (i == 2 && j == 3)) continue;
+			if (i == 0 && j == 5 || i == 1 && j == 4 || i == 2 && j == 3) continue;
 			result = min(result, dice[i] + dice[j]);
 		}
 	}
 	return result;
 }
 
-long long findMinThreeArea() {
-	long long result = dice[0] + dice[1] + dice[2];
+long long three() {
+	long long result = 150;
 	for (int i = 0; i < 6; i++) {
 		for (int j = i + 1; j < 6; j++) {
 			for (int k = j + 1; k < 6; k++) {
-				if ((i == 0 && j == 5) || (i == 1 && j == 4) || (i == 2 && j == 3) || (i == 0 && k == 5) || (i == 1 && k == 4) || (i == 2 && k == 3) || (j == 0 && k == 5) || (j == 1 && k == 4) || (j == 2 && k == 3)) continue;
+				if (i == 0 && j == 5 || i == 0 && k == 5 || j == 0 && k == 5) continue;
+				if (i == 1 && j == 4 || i == 1 && k == 4 || j == 1 && k == 4) continue;
+				if (i == 2 && j == 3 || i == 2 && k == 3 || j == 2 && k == 3) continue;
 				result = min(result, dice[i] + dice[j] + dice[k]);
 			}
 		}
