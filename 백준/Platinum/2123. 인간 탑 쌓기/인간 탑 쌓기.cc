@@ -4,11 +4,11 @@
 using namespace std;
 
 int N;
-long long ans = -500000000;
-vector <pair<long long, long long>> acrobat;
-long long psum[50000];
+int ans = -500000000;
+vector <pair<int, int>> acrobat;
+int psum[50000];
 
-bool cmp(pair<long long, long long> A, pair<long long, long long> B) {
+bool cmp(pair<int, int> A, pair<int, int> B) {
 	if (A.first + A.second == B.first + B.second) return A.first > B.first;
 	return A.first + A.second > B.first + B.second;
 }
