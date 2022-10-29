@@ -2,14 +2,10 @@
 #include <cmath>
 using namespace std;
 
-long long N, ans;
+long long N;
 
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+int main(void) {	
 	cin >> N;
-	double temp = sqrt(N);
-	ans = (long long)temp;
-	cout << ans;
+	cout << (long long)sqrt(N);
 	return 0;
 }
