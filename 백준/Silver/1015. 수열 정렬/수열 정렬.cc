@@ -3,11 +3,7 @@
 using namespace std;
 
 int N;
-pair <int, int> A[50];
-
-bool cmp(pair<int, int> A, pair<int, int> B) {
-	return A.second < B.second;
-}
+pair<int, int> Arr[50];
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -16,11 +12,13 @@ int main(void) {
 	for (int i = 0; i < N; i++) {
 		int input;
 		cin >> input;
-		A[i] = { input, i };
+		Arr[i] = { input, i };
 	}
-	stable_sort(A, A + N);
-	for (int i = 0; i < N; i++) A[i] = { A[i].second, i };
-	stable_sort(A, A + N);
-	for (int i = 0; i < N; i++) cout << A[i].second << " ";
+	stable_sort(Arr, Arr + N);
+	for (int i = 0; i < N; i++) {
+		Arr[i] = { Arr[i].second, i };
+	}
+	stable_sort(Arr, Arr + N);
+	for (int i = 0; i < N; i++) cout << Arr[i].second << " ";
 	return 0;
 }
