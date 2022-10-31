@@ -1,21 +1,24 @@
 #include <iostream>
 using namespace std;
 
-int N, K;
+long long N, K, ans;
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N >> K;
-	for (int i = N; ; i++) {
-		int bit = 1;
+	for (long long i = N; ; i++) {
+		long long bit = 1;
 		int cnt = 0;
-		while (1) {
-			if (bit > i) break;
-			if (bit & i) cnt ++;
+		for (int j = 0; j <= 32; j++) {
+			if (bit & i) cnt++;
 			bit <<= 1;
 		}
 		if (cnt <= K) {
-			cout << i - N;
-			return 0;
+			ans = i - N;
+			break;
 		}
 	}
+	cout << ans;
+	return 0;
 }
