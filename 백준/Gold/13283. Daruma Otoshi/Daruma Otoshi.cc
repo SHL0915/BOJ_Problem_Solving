@@ -15,11 +15,11 @@ int main(void) {
 	cin.tie(0);
 	while (1) {
 		cin >> N;
-		if (N == 0) break;		
+		if (N == 0) break;
 		for (int i = 0; i < N; i++) cin >> weight[i];
-		for (int i = 0; i <= N; i++) {
-			for (int j = 0; j <= N; j++) table[i][j] = 0;
-		}		
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) table[i][j] = 0;
+		}
 		for (int i = 1; i <= N; i++) {
 			if (i == 2) {
 				for (int j = 0; j < N - 1; j++) {
@@ -28,8 +28,8 @@ int main(void) {
 			}
 			else {
 				for (int j = 0; j < N - i + 1; j++) {
-					for (int k = 0; k < i - 1; k++) table[j][j + i - 1] = max(table[j][j + i - 1], table[j][j + k] + table[j + k + 1][j + i - 1]);
-					if (((i % 2) == 0) && (absol(weight[j] - weight[j + i - 1]) <= 1) && (table[j + 1][j + i - 2] == i - 2)) table[j][j + i - 1] = max(table[j][j + i - 1], i);
+					for (int k = j; k < j + i - 1; k++) table[j][j + i - 1] = max(table[j][j + i - 1], table[j][k] + table[k + 1][j + i - 1]);
+					if (i % 2 == 0 && absol(weight[j] - weight[j + i - 1]) <= 1 && table[j + 1][j + i - 2] == i - 2) table[j][j + i - 1] = i;
 				}
 			}
 		}
