@@ -34,7 +34,7 @@ int main(void) {
 	for (int i = 0; i < N; i++) {
 		cout << arr[ptr];
 		ptr--;
-		if (ptr < 0) ptr = N - 1;
+		if (ptr < 0) ptr += N;
 	}
 	return 0;
 }
