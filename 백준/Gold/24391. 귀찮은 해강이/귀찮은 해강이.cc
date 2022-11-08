@@ -6,7 +6,7 @@ int N, M, cnt, ans, input, curr, before;
 vector <int> graph[100001];
 int mark[100001];
 
-void BFS(int vertex);
+void DFS(int vertex);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -21,7 +21,7 @@ int main(void) {
 	for (int i = 1; i <= N; i++) {
 		if (mark[i] == 0) {
 			cnt++;
-			BFS(i);
+			DFS(i);
 		}
 	}
 	for (int i = 0; i < N; i++) {
@@ -34,9 +34,9 @@ int main(void) {
 	return 0;
 }
 
-void BFS(int vertex) {
+void DFS(int vertex) {
 	if (mark[vertex] != 0) return;
 	mark[vertex] = cnt;
-	for (int i = 0; i < graph[vertex].size(); i++) BFS(graph[vertex][i]);
+	for (int i = 0; i < graph[vertex].size(); i++) DFS(graph[vertex][i]);
 	return;
 }
