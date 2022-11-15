@@ -7,7 +7,7 @@ vector <int> tree[501];
 int mark[501];
 
 void clear();
-void DFS(int vertex, int depth, int parent);
+void DFS(int vertex, int parent);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -26,7 +26,7 @@ int main(void) {
 			if (mark[i] == 0) {
 				flag = 0;
 				cnt++;
-				DFS(i, 1, 0);
+				DFS(i, 0);
 				if (flag == 1) cnt--;
 			}
 		}
@@ -48,14 +48,14 @@ void clear() {
 	}
 }
 
-void DFS(int vertex, int depth, int parent) {
+void DFS(int vertex, int parent) {
 	if (mark[vertex] != 0) {
 		flag = 1;
 		return;
 	}
-	mark[vertex] = depth;
+	mark[vertex] = 1;
 	for (int i = 0; i < tree[vertex].size(); i++) {
-		if (tree[vertex][i] != parent) DFS(tree[vertex][i], depth + 1, vertex);
+		if (tree[vertex][i] != parent) DFS(tree[vertex][i], vertex);
 	}
 	return;
 }
