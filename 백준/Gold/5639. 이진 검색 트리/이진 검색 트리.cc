@@ -1,41 +1,27 @@
 #include <iostream>
 using namespace std;
 
-typedef struct Node {
-	struct Node* left, * right;
-	int val;
-}Node;
+int tree[10001], i;
 
-Node* Insert(Node* root, int data);
-void PostOrder(Node* node);
+void postorder(int left, int right);
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int input;
-	Node* root = NULL;
-	while (cin >> input) root = Insert(root, input);
-	PostOrder(root);
+	while (cin >> tree[i]) i++;
+	postorder(0, i);
 	return 0;
 }
 
-Node* Insert(Node* root, int data) {
-	if (root == NULL) {
-		root = (Node*)malloc(sizeof(Node));
-		root->left = NULL;
-		root->right = NULL;
-		root->val = data;
-		return root;
+void postorder(int left, int right) {
+	if (left < right) {
+		int start;
+		for (start = left + 1; start < right; start++) {
+			if (tree[start] > tree[left]) break;
+		}
+		postorder(left + 1, start);
+		postorder(start, right);
+		cout << tree[left] << '\n';
 	}
-	if (data > root->val) root->right = Insert(root->right, data);
-	else root->left = Insert(root->left, data);
-	return root;
-}
-
-void PostOrder(Node* node) {
-	if (node == NULL) return;
-	PostOrder(node->left);
-	PostOrder(node->right);
-	cout << node->val << '\n';
-	return;
+	else return;
 }
