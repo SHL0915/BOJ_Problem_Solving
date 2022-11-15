@@ -2,53 +2,60 @@
 #include <vector>
 using namespace std;
 
-int T, N, M, flag;
-vector <int> tree[500];
-int mark[500];
+int N, M, flag, cnt, case_num = 1;
+vector <int> tree[501];
+int mark[501];
 
-void DFS(int node, int parent);
+void clear();
+void DFS(int vertex, int depth, int parent);
 
 int main(void) {
 	ios::sync_with_stdio(false);
-	cin.tie(0);	
-	int caseNum = 1;
+	cin.tie(0);
 	while (1) {
 		cin >> N >> M;
 		if (N == 0 && M == 0) break;
-		int cnt = 0;
-		for (int i = 0; i < N; i++) {
-			tree[i].clear();
-			mark[i] = 0;
-		}
+		clear();
 		for (int i = 0; i < M; i++) {
-			int u, v;
-			cin >> u >> v;
-			tree[u - 1].push_back(v - 1);
-			tree[v - 1].push_back(u - 1);
+			int A, B;
+			cin >> A >> B;
+			tree[A].push_back(B);
+			tree[B].push_back(A);
 		}
-		for (int i = 0; i < N; i++) {
+		for (int i = 1; i <= N; i++) {
 			if (mark[i] == 0) {
 				flag = 0;
-				DFS(i, -1);
-				if (flag == 0) cnt++;
+				cnt++;
+				DFS(i, 1, 0);
+				if (flag == 1) cnt--;
 			}
 		}
-		if (cnt == 0) cout << "Case " << caseNum << ": No trees.\n";
-		else if (cnt == 1) cout << "Case " << caseNum << ": There is one tree.\n";
-		else cout << "Case " << caseNum << ": A forest of " << cnt << " trees.\n";
-		caseNum++;
+		cout << "Case " << case_num++ << ": ";
+		switch (cnt) {
+		case 0: cout << "No trees.\n"; break;
+		case 1: cout << "There is one tree.\n"; break;
+		default: cout << "A forest of " << cnt << " trees.\n";
+		}
 	}
 	return 0;
 }
 
-void DFS(int node, int parent) {
-	if (mark[node] != 0) {
+void clear() {
+	cnt = 0;
+	for (int i = 1; i <= N; i++) {
+		mark[i] = 0;
+		tree[i].clear();
+	}
+}
+
+void DFS(int vertex, int depth, int parent) {
+	if (mark[vertex] != 0) {
 		flag = 1;
 		return;
 	}
-	mark[node] = 1;
-	for (int i = 0; i < tree[node].size(); i++) {
-		if (tree[node][i] != parent) DFS(tree[node][i], node);
+	mark[vertex] = depth;
+	for (int i = 0; i < tree[vertex].size(); i++) {
+		if (tree[vertex][i] != parent) DFS(tree[vertex][i], depth + 1, vertex);
 	}
 	return;
 }
