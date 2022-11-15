@@ -7,7 +7,7 @@ vector <int> tree[10001];
 int people[10001];
 int table[10001][2];
 
-int DFS(int node, int parent, int type);
+void DFS(int node, int parent);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -19,29 +19,20 @@ int main(void) {
 		cin >> A >> B;
 		tree[A].push_back(B);
 		tree[B].push_back(A);
-	}
-	for (int i = 1; i <= N; i++) {
-		table[i][0] = -1;
-		table[i][1] = -1;
-	}
-	cout << max(DFS(1, 1, 0), DFS(1, 1, 1));
+	}	
+	DFS(1, 1);
+	cout << max(table[1][0], table[1][1]);
 	return 0;
 }
 
-int DFS(int node, int parent, int type) {
-	if (table[node][type] != -1) return table[node][type];
-	if (type == 1) {
-		table[node][type] = people[node];
-		for (int i = 0; i < tree[node].size(); i++) {
-			if (tree[node][i] != parent) table[node][type] += DFS(tree[node][i], node, 0);
+void DFS(int node, int parent) {
+	table[node][0] = 0;
+	table[node][1] = people[node];
+	for (int i = 0; i < tree[node].size(); i++) {
+		if (tree[node][i] != parent) {
+			DFS(tree[node][i], node);
+			table[node][1] += table[tree[node][i]][0];
+			table[node][0] += max(table[tree[node][i]][0], table[tree[node][i]][1]);
 		}
-		return table[node][type];
-	}
-	else {
-		table[node][type] = 0;
-		for (int i = 0; i < tree[node].size(); i++) {
-			if (tree[node][i] != parent) table[node][type] += max(DFS(tree[node][i], node, 0), DFS(tree[node][i], node, 1));
-		}
-		return table[node][type];
 	}
 }
