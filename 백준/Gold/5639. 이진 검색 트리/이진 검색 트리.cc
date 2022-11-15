@@ -8,8 +8,8 @@ void postorder(int left, int right);
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	while (cin >> tree[i]) i++;
-	postorder(0, i);
+	while (cin >> tree[i++]);
+	postorder(0, i - 1);
 	return 0;
 }
 
