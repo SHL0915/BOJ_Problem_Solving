@@ -23,7 +23,7 @@ int main(void) {
 			bit <<= 1;
 		}
 		for (int j = 0; j < N; j++) {
-			if ((i & (1 << j)) == 0) table[i | (1 << j)] = max(table[i | (1 << j)], table[i] * ((double)arr[j][cnt] / 100.0));			
+			if ((i & (1 << j)) == 0) table[i + (1 << j)] = max(table[i + (1 << j)], table[i] * ((double)arr[j][cnt] / 100.0));			
 		}
 	}
 	cout << table[(1 << N) - 1] * 100;
