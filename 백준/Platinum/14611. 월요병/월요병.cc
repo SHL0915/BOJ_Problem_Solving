@@ -1,22 +1,20 @@
-#include <iostream>
-#include <algorithm>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
-
-const long long INF = 1000000000000000;
+typedef pair<long long, pair<int, int>> plii;
+const long long INF = 0x3f3f3f3f3f3f3f3fLL;
 
 struct cmp {
-	bool operator() (pair<long long, pair<int, int>> A, pair<long long, pair<int, int>> B) {
+	bool operator() (plii A, plii B) {
 		return A.first > B.first;
 	}
 };
 
+int N, M;
 long long ans = INF;
-long long N, M;
-long long map[305][305];
+long long village[301][301];
+long long dist[301][301];
 int dx[8] = { -1, -1, -1, 1, 1, 1, 0, 0 };
 int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
-long long dist[305][305];
 
 void Dijkstra();
 
@@ -24,50 +22,48 @@ int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> N >> M;
-	for (int i = 1; i <= N; i++) {
-		for (int j = 1; j <= M; j++) {
-			cin >> map[i][j];
-			if (map[i][j] == -2) map[i][j] = 0;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> village[i][j];
+			if (village[i][j] == -2) village[i][j] = 0;
+			if (village[i][j] == -1) village[i][j] = INF;
 		}
 	}
 	Dijkstra();
-	for (int i = 1; i <= N; i++) ans = min(ans, dist[i][1]);
-	for (int i = 1; i <= M; i++) ans = min(ans, dist[N][i]);
+	for (int i = 0; i < N; i++) ans = min(ans, dist[i][0]); // 0열에 도착
+	for (int i = 0; i < M; i++) ans = min(ans, dist[N - 1][i]); // N-1행에 도착
 	if (ans == INF) cout << -1;
 	else cout << ans;
 	return 0;
 }
 
 void Dijkstra() {
-	for (int i = 1; i <= N; i++) {
-		for (int j = 1; j <= M; j++) dist[i][j] = INF;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) dist[i][j] = INF;
 	}
-	priority_queue < pair<long long, pair<int, int>>, vector<pair<long long, pair<int, int>>>, cmp> pq;
-	for (int i = 1; i <= M; i++) {
-		if (map[1][i] != -1) {
-			pq.push({ map[1][i], {i, 1} });
-			dist[1][i] = map[1][i];
-		}
+	priority_queue<plii, vector<plii>, cmp> pq;
+	for (int i = 0; i < M; i++) { // 0행에서 시작
+		if (village[0][i] == INF) continue;
+		pq.push({ village[0][i], {i, 0} });
+		dist[0][i] = village[0][i];
 	}
-	for (int i = 1; i <= N; i++) {
-		if (map[i][M] != -1) {
-			pq.push({ map[i][M], {M, i} });
-			dist[i][M] = map[i][M];
-		}
-	}	
+	for (int i = 0; i < N; i++) { // M-1열에서 시작
+		if (village[i][M - 1] == INF) continue;
+		pq.push({ village[i][M - 1], {M - 1, i} });
+		dist[i][M - 1] = village[i][M - 1];
+	}
 	while (pq.size()) {
-		pair<long long, pair<int, int>> t = pq.top();
+		int x = pq.top().second.first;
+		int y = pq.top().second.second;
+		long long val = pq.top().first;
 		pq.pop();
-		int x = t.second.first;
-		int y = t.second.second;
-		long long val = t.first;
 		if (dist[y][x] < val) continue;
 		for (int i = 0; i < 8; i++) {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
-			if (nx < 1 || nx > M || ny < 1 || ny > N) continue;
-			if (map[ny][nx] == -1) continue;
-			long long new_val = val + map[ny][nx];
+			if (nx < 0 || nx > M - 1 || ny < 0 || ny > N - 1) continue;
+			if (village[ny][nx] == INF) continue;
+			long long new_val = val + village[ny][nx];
 			if (dist[ny][nx] > new_val) {
 				dist[ny][nx] = new_val;
 				pq.push({ new_val, {nx,ny} });
