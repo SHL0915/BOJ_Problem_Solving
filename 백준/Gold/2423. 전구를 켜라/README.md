@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 25844 KB, 시간: 80 ms
+메모리: 25844 KB, 시간: 72 ms
 
 ### 분류
 
@@ -12,19 +12,21 @@
 
 ### 문제 설명
 
-<p>선영이는 N × M 직사각형 크기의 전자 회로를 디자인 하고 있다. 회로에는 N × M개의 정사각형 타일이 있고, 모두 직사각형의 변과 평행하다. 모든 타일은 두 개의 마주보는 꼭짓점이 전선으로 연결되어 있다. (그림 참조)</p>
+<p>Casper is designing an electronic circuit on a N × M rectangular grid plate. There are N × M square tiles that are aligned to the grid on the plate. Two (out of four) opposite corners of each tile are connected by a wire.</p>
 
-<p>전원은 왼쪽 위 모서리에 연결되어 있고, 전구는 오른쪽 아래 모서리에 연결되어 있다. 전구는  전원에서 전구로 가는 경로가 있을 때만 불이 켜진다. 전구에 불을 켜기 위해서, 선영이는 몇개의 타일을 90도 회전 시킬 수 있다.</p>
+<p>A power source is connected to the top left corner of the plate. A lamp is connected to the bottom right corner of the plate. The lamp is on only if there is a path of wires connecting power source to lamp. In order to switch the lamp on, any number of tiles can be turned by 90° (in both directions).</p>
 
 <p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/46c9ed9e-27e3-4e32-a144-0962b813347e/-/preview/" style="width: 289px; height: 195px;"></p>
 
-<p>위의 그림에서 전구는 꺼져있다. 만약 오른쪽에서 2번째 열 중 아무 칸이나 90도 회전시킨다면, 전원과 전구는 연결되어 전구가 켜지게 된다. 전구에 불을 켜기 위해 돌려야 하는 칸의 개수의 최솟값을 구하는 프로그램을 작성하시오.</p>
+<p>In the picture above the lamp is off. If any one of the tiles in the second column from the right is turned by 90°, power source and lamp get connected, and the lamp is on.</p>
+
+<p>Write a program to ﬁnd out the minimal number of tiles that have to be turned by 90° to switch the lamp on.</p>
 
 ### 입력 
 
- <p>첫째 줄에 N과 M이 주어진다. 둘째 줄부터 N개의 줄에는 전자 회로의 상태가 주어진다. 상태는 <code>/</code> 또는 <code>\</code>이다. (1 ≤ N, M ≤ 500)</p>
+ <p>The ﬁrst line of input contains two integer numbers N and M, the dimensions of the plate. In each of the following N lines there are M symbols – either <code>\</code> or <code>/</code> – which indicate the direction of the wire connecting the opposite vertices of the corresponding tile.</p>
 
 ### 출력 
 
- <p>첫째 줄에 문제의 정답을 출력한다. 전구에 불을 켜는 것이 가능하면, 몇 개의 칸을 돌려야 하는지를 출력하고, 불가능할때는 "NO SOLUTION"을 따옴표 없이 출력한다.</p>
+ <p>There must be exactly one line of output. If it is possible to switch the lamp on, this line must contain only one integer number: the minimal number of tiles that have to be turned to switch on the lamp. If it is not possible, output the string: NO SOLUTION</p>
 
