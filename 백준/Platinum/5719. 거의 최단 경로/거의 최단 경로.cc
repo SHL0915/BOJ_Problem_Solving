@@ -1,23 +1,22 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
-
-const int INF = 1234567890;
+typedef pair<int, int> pii;
+const int INF = 0x3f3f3f3f;
 
 struct cmp {
-	bool operator() (pair<int, int> A, pair<int, int> B) {
+	bool operator() (pii A, pii B) {
 		return A.first > B.first;
 	}
 };
 
 int N, M, S, D;
-vector <pair<int, int>> graph[501];
-int dist[501], mark[501];
+vector <pii> graph[501];
+int dist[501];
 vector <int> path[501];
+int mark[501];
 
 void Dijkstra(int start);
-void Deleting();
+void Delete_Path(int node);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -25,19 +24,19 @@ int main(void) {
 	while (1) {
 		cin >> N >> M;
 		if (N == 0 && M == 0) break;
+		cin >> S >> D;
 		for (int i = 0; i < N; i++) {
 			graph[i].clear();
-			mark[i] = 0;
 			path[i].clear();
-		}		
-		cin >> S >> D;
+			mark[i] = 0;
+		}
 		for (int i = 0; i < M; i++) {
 			int U, V, P;
 			cin >> U >> V >> P;
 			graph[U].push_back({ V,P });
 		}
 		Dijkstra(S);
-		Deleting();		
+		Delete_Path(D);
 		Dijkstra(S);
 		if (dist[D] == INF) cout << -1 << '\n';
 		else cout << dist[D] << '\n';
@@ -47,44 +46,37 @@ int main(void) {
 
 void Dijkstra(int start) {
 	for (int i = 0; i < N; i++) dist[i] = INF;
-	priority_queue <pair<int, int>, vector<pair<int, int>>, cmp> pq;
-	dist[start] = 0;
+	priority_queue<pii, vector<pii>, cmp> pq;
 	pq.push({ 0, start });
+	dist[start] = 0;
 	while (pq.size()) {
-		pair<int, int> t = pq.top();
+		int now = pq.top().second;
+		int val = pq.top().first;
 		pq.pop();
-		int now = t.second;
-		int val = t.first;
 		if (dist[now] < val) continue;
 		for (int i = 0; i < graph[now].size(); i++) {
 			int next = graph[now][i].first;
-			if (graph[now][i].second == -1) continue;
-			int next_val = val + graph[now][i].second;
-			if (dist[next] > next_val) {
+			int new_val = val + graph[now][i].second;
+			if (dist[next] > new_val) {
+				dist[next] = new_val;
 				path[next].clear();
 				path[next].push_back(now);
-				dist[next] = next_val;
-				pq.push({ next_val, next });
+				pq.push({ new_val, next });
 			}
-			else if (dist[next] == next_val) path[next].push_back(now);
+			else if (dist[next] == new_val) path[next].push_back(now);
 		}
 	}
 }
 
-void Deleting() {
-	queue <int> q;
-	q.push(D);
-	while (q.size()) {
-		int now = q.front();
-		q.pop();
-		if (mark[now] != 0) continue;
-		mark[now] = 1;
-		for (int i = 0; i < path[now].size(); i++) {
-			int prev = path[now][i];
-			for (int j = 0; j < graph[prev].size(); j++) {
-				if (graph[prev][j].first == now) graph[prev][j].second = -1;
-			}
-			q.push(prev);
+void Delete_Path(int node) {
+	if (mark[node] != 0) return;
+	mark[node] = 1;
+	for (int i = 0; i < path[node].size(); i++) {
+		int now = node;
+		int prev = path[node][i];
+		for (int j = 0; j < graph[prev].size(); j++) {
+			if (graph[prev][j].first == now) graph[prev][j].second = INF;			
 		}
+		Delete_Path(prev);
 	}
 }
