@@ -1,23 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-const ll INF = 1000000000000000;
-const ll mod = 1000000009;
+typedef pair<long long, int> pli;
+const long long INF = 0x3f3f3f3f3f3f3f3fLL;
+const long long mod = 1000000009;
 
 struct cmp {
-	bool operator() (pair<ll, int> A, pair<ll, int> B) {
+	bool operator() (pli A, pli B) {
 		return A.first > B.first;
 	}
 };
 
 int N, M, S, E;
-vector <pair<int, ll>> graph[100001];
-ll dist[100001];
+vector <pli> graph[100001];
+long long dist[100001];
 vector <int> path[100001];
-ll path_num[100001];
+long long table[100001];
 
 void Dijkstra(int start);
-ll count_path(int node);
+long long Find_PathNum(int vertex);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -25,44 +25,43 @@ int main(void) {
 	cin >> N >> M >> S >> E;
 	for (int i = 0; i < M; i++) {
 		int A, B;
-		ll C;
+		long long C;
 		cin >> A >> B >> C;
-		graph[A].push_back({ B,C });
-		graph[B].push_back({ A,C });
+		graph[A].push_back({ C,B });
+		graph[B].push_back({ C,A });
 	}
 	Dijkstra(S);
-	ll ans = count_path(E);
-	cout << ans;
+	table[S] = 1;
+	cout << Find_PathNum(E);
 	return 0;
 }
 
 void Dijkstra(int start) {
 	for (int i = 1; i <= N; i++) dist[i] = INF;
-	priority_queue <pair<ll, int>, vector<pair<ll, int>>, cmp> pq;
+	priority_queue <pli, vector<pli>, cmp> pq;
 	pq.push({ 0, start });
 	dist[start] = 0;
 	while (pq.size()) {
 		int now = pq.top().second;
-		ll val = pq.top().first;
+		long long val = pq.top().first;
 		pq.pop();
 		if (dist[now] < val) continue;
 		for (int i = 0; i < graph[now].size(); i++) {
-			int next = graph[now][i].first;
-			ll next_val = val + graph[now][i].second;
-			if (dist[next] > next_val) {
+			int next = graph[now][i].second;
+			long long new_val = val + graph[now][i].first;
+			if (dist[next] > new_val) {
+				dist[next] = new_val;
 				path[next].clear();
 				path[next].push_back(now);
-				dist[next] = next_val;
-				pq.push({ next_val, next });
+				pq.push({ new_val, next });
 			}
-			else if (dist[next] == next_val) path[next].push_back(now);
+			else if (dist[next] == new_val) path[next].push_back(now);
 		}
 	}
 }
 
-ll count_path(int node) {
-	if (node == S) return 1;
-	if (path_num[node] != 0) return path_num[node];
-	for (int i = 0; i < path[node].size(); i++) path_num[node] = (path_num[node] + count_path(path[node][i])) % mod;
-	return path_num[node];
+long long Find_PathNum(int vertex) {
+	if (table[vertex] != 0) return table[vertex];
+	for (int i = 0; i < path[vertex].size(); i++) table[vertex] = (table[vertex] + Find_PathNum(path[vertex][i])) % mod;
+	return table[vertex];
 }
