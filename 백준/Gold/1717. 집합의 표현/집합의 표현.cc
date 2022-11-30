@@ -36,8 +36,7 @@ void Union(int A, int B) {
 	A = Find(A);
 	B = Find(B);
 	if (A == B) return;
-	else {
-		parent[B] = A;
-		return;
-	}
+	if (A > B) parent[A] = B;
+	else parent[B] = A;
+	return;
 }
