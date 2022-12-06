@@ -6,7 +6,6 @@ int N, M, cnt, ans = 1234567890;
 int arr[100001];
 int parent[100001];
 int sz[100001];
-set <int> unsorted;
 vector <piii> graph;
 
 bool cmp(piii A, piii B){
@@ -24,7 +23,6 @@ int main(void) {
 		cin >> arr[i];
 		parent[i] = i;
 		if (arr[i] != i) {
-			unsorted.insert(i);
 			sz[i] = 1;
 			cnt++;
 		}
