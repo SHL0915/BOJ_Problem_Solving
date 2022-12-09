@@ -3,7 +3,7 @@ using namespace std;
 
 string S;
 int cnt[3];
-bool table[51][51][51][3][3] = {false, };
+bool table[51][51][51][3][3] = { false, };
 char ans[51];
 
 bool DP(int A, int B, int C, int p, int pp);
@@ -34,15 +34,11 @@ bool DP(int A, int B, int C, int p, int pp) {
 	}
 	if (B + 1 <= cnt[1]) {
 		ans[A + B + C] = 'B';
-		if (pp != 1) {
-			if (DP(A, B + 1, C, pp, 1)) return true;
-		}
+		if (pp != 1 && DP(A, B + 1, C, pp, 1)) return true;
 	}
 	if (C + 1 <= cnt[2]) {
 		ans[A + B + C] = 'C';
-		if (pp != 2 && p != 2) {
-			if (DP(A, B, C + 1, pp, 2)) return true;
-		}
+		if (p != 2 && pp != 2 && DP(A, B, C + 1, pp, 2)) return true;
 	}
 	return false;
 }
