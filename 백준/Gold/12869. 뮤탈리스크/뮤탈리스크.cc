@@ -21,12 +21,7 @@ int DP(int A, int B, int C) {
 	B = max(B, 0);
 	C = max(C, 0);
 	if (A == 0 && B == 0 && C == 0) return 0;
-	else if (table[A][B][C] != 0) return table[A][B][C];
-	int temp1 = min(DP(A - 9, B - 3, C - 1) + 1, DP(A - 9, B - 1, C - 3) + 1);
-	int temp2 = min(DP(A - 3, B - 9, C - 1) + 1, DP(A - 1, B - 9, C - 3) + 1);
-	int temp3 = min(DP(A - 1, B - 3, C - 9) + 1, DP(A - 3, B - 1, C - 9) + 1);
-	temp1 = min(temp1, temp2);
-	temp1 = min(temp1, temp3);
-	table[A][B][C] = temp1;
+	else if (table[A][B][C] != 0) return table[A][B][C];	
+	table[A][B][C] = min({ DP(A - 9, B - 3, C - 1), DP(A - 9, B - 1, C - 3), DP(A - 3, B - 9, C - 1), DP(A - 1, B - 9, C - 3), DP(A - 1, B - 3, C - 9) ,DP(A - 3, B - 1, C - 9) }) + 1;
 	return table[A][B][C];
 }
