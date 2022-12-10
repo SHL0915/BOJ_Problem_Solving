@@ -1,15 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int, int> pii;
-const long long INF = 1000000000;
+const int INF = 0x3f3f3f3f;
 int dx[4] = { 1,-1,0,0 };
 int dy[4] = { 0,0,1,-1 };
 
 int W, H;
 int arr[25][25];
-long long mark[25][25];
-long long dist[25][25];
-long long table[(1 << 15)][15];
+int mark[25][25];
+int dist[25][25];
+int table[(1 << 15)][15];
 
 pii s;
 vector <pii> pos;
@@ -17,7 +17,7 @@ queue <pair<pii, int>> q;
 
 void clearMark();
 void BFS();
-long long DP(int state, int now);
+int DP(int state, int now);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -27,10 +27,7 @@ int main(void) {
 		if (W == 0 && H == 0) break;
 		pos.clear();
 		for (int i = 0; i < 25; i++) {
-			for (int j = 0; j < 25; j++) {
-				dist[i][j] = 0;
-				arr[i][j] = 0;
-			}
+			for (int j = 0; j < 25; j++) arr[i][j] = 0;
 		}
 		for (int i = 0; i < H; i++) {
 			string S;
@@ -51,9 +48,9 @@ int main(void) {
 				dist[i + 1][j + 1] = (mark[pos[j].second][pos[j].first] == 0 ? INF : mark[pos[j].second][pos[j].first] - 1);
 				dist[j + 1][i + 1] = (mark[pos[j].second][pos[j].first] == 0 ? INF : mark[pos[j].second][pos[j].first] - 1);
 			}
-		}		
+		}
 		memset(table, -1, sizeof(table));
-		long long ans = DP(1, 0);
+		int ans = DP(1, 0);
 		if (ans == INF) cout << -1 << '\n';
 		else cout << ans << '\n';
 	}
@@ -83,7 +80,7 @@ void BFS() {
 	}
 }
 
-long long DP(int state, int now) {
+int DP(int state, int now) {
 	if (state == (1 << (pos.size() + 1)) - 1) return 0;
 	if (table[state][now] != -1) return table[state][now];
 	table[state][now] = INF;
