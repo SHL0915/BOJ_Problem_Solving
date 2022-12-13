@@ -3,7 +3,6 @@ using namespace std;
 
 int R, C, ans;
 int arr[10000][500];
-int mark[10000][500];
 
 bool DFS(int x, int y);
 
@@ -26,8 +25,7 @@ int main(void) {
 bool DFS(int x, int y) {
 	if (x < 0 || x > C - 1 || y < 0 || y > R - 1) return false;
 	if (arr[y][x] == 1) return false;
-	if (mark[y][x] != 0) return false;
-	mark[y][x] = 1;
+	arr[y][x] = 1;
 	if (x == C - 1) {
 		ans++;
 		return true;
