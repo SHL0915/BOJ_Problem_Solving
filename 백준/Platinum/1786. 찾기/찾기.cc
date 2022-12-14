@@ -1,46 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string T, P;
-int tlen, plen;
-int pi[1000000];
 vector <int> ans;
+string T, P;
+int pi[1000000];
 
-void makePi();
-void kmp();
+void makepi(string str);
+void kmp(string org, string cmp);
 
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(0);
-  getline(cin,T);
-  getline(cin,P);
-  tlen = T.length();
-  plen = P.length();
-  makePi();
-  kmp();
-  cout << ans.size() << '\n';
-  for(int i = 0; i < ans.size(); i++) cout << ans[i] << " ";  
-  return 0;
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	getline(cin, T);
+	getline(cin, P);
+	makepi(P);
+	kmp(T, P);
+	cout << ans.size() << '\n';
+	for (int i = 0; i < ans.size(); i++) cout << ans[i] << " ";
+	return 0;
 }
 
-void makePi(){
-  int j = 0;
-  for(int i = 1; i < plen; i++){
-    while(j > 0 && P[i] != P[j]) j = pi[j-1];
-    if(P[i] == P[j]) pi[i] = ++j;
-  }
+void makepi(string str) {
+	int n = str.length(), pos = 1, k = 0;
+	while (pos + k < n) {
+		if (str[pos + k] == str[k]) {
+			k++;
+			pi[pos + k - 1] = k;
+		}
+		else {
+			if (k == 0) pos++;
+			else {
+				pos += (k - pi[k - 1]);
+				k = pi[k - 1];
+			}
+		}
+	}
+	return;
 }
 
-void kmp(){
-  int j = 0;
-  for(int i = 0; i < tlen; i++){
-    while(j > 0 && T[i] != P[j]) j = pi[j - 1];
-    if(T[i] == P[j]){
-      if(j == plen - 1){
-        ans.push_back(i - plen + 2);
-        j = pi[j];
-      }
-      else j++;
-    }
-  }
+void kmp(string org, string cmp) {
+	int n = org.length();
+	int m = cmp.length();
+	int pos = 0, k = 0;
+	while (pos + m <= n) {
+		if (org[pos + k] == cmp[k]) {
+			k++;
+			if (k == m) ans.push_back(pos + 1);
+		}
+		else {
+			if (k == 0) pos++;
+			else {
+				pos += (k - pi[k - 1]);
+				k = pi[k - 1];
+			}
+		}
+	}
+	return;
 }
