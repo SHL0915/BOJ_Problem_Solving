@@ -2,37 +2,40 @@
 using namespace std;
 
 struct Trie {
-	bool end;
-	Trie* children[10];
+	bool end, check;
+	Trie* ch[10];
 	
 	Trie() {
 		end = false;
-		memset(children, 0, sizeof(children));
+		check = false;
+		memset(ch, 0, sizeof(ch));
 	}
 	~Trie() {
-		for (int i = 0; i < 10; i++) if (children[i]) delete children[i];
+		for (int i = 0; i < 10; i++) if (ch[i]) delete ch[i];
 	}
 
 	void insert(const char* s) {
 		if (!*s) end = true;
 		else {
 			int now = *s - '0';
-			if (!children[now]) children[now] = new Trie;
-			children[now]->insert(s + 1);
+			if (!ch[now]) {
+				ch[now] = new Trie;
+				check = true;
+			}
+			ch[now]->insert(s + 1);
 		}
 	}
 
 	bool find(const char* s) {
 		if (!*s) {
-			for (int i = 0; i < 10; i++) if (children[i]) return false;
-			if (end) return true;
-			else return false;
+			if (check == true || end == false) return false;
+			else return true;			
 		}
 		else {
 			if (end) return false;
 			int now = *s - '0';
-			if (!children[now]) return false;
-			return children[now]->find(s + 1);
+			if (!ch[now]) return false;
+			return ch[now]->find(s + 1);
 		}
 	}
 };
