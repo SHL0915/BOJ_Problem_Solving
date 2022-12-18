@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 struct cmp {
@@ -10,11 +8,11 @@ struct cmp {
 };
 
 int N, M;
-int check[32001];
 vector <int> graph[32001];
-priority_queue <int, vector <int>, cmp> pq;
+int in_degree[32001];
+priority_queue <int, vector<int>, cmp> pq;
 
-void BFS();
+void Topological();
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -23,20 +21,23 @@ int main(void) {
 	for (int i = 0; i < M; i++) {
 		int A, B;
 		cin >> A >> B;
-		check[B]++;
 		graph[A].push_back(B);
+		in_degree[B]++;
 	}
-	for (int i = 1; i <= N; i++) if (check[i] == 0) pq.push(i);
-	while (pq.size()) BFS();
+	Topological();
 	return 0;
 }
 
-void BFS() {
-	int now = pq.top();
-	pq.pop();
-	check[now]--;
-	if (check[now] <= 0) {
-		cout << now << ' ';
-		for (int i = 0; i < graph[now].size(); i++) pq.push(graph[now][i]);
+void Topological() {
+	for (int i = 1; i <= N; i++) if (in_degree[i] == 0) pq.push(i);
+	for (int i = 1; i <= N; i++) {
+		int now = pq.top();
+		pq.pop();
+		cout << now << " ";
+		for (int j = 0; j < graph[now].size(); j++) {
+			int next = graph[now][j];
+			in_degree[next]--;
+			if (in_degree[next] == 0) pq.push(next);
+		}
 	}
 }
