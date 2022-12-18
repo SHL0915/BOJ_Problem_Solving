@@ -10,10 +10,12 @@ int main(void) {
 	cin >> N >> M;
 	for (int i = 0; i < N; i++) cin >> arr[i];
 	for (int i = 1; i < (1 << N); i++) {
-		int cnt = popcount((unsigned int)i);
-		long long now = 1, bit = 1, idx = 0;
+		long long now = 1, bit = 1, idx = 0, cnt = 0;
 		while (bit <= i) {
-			if (bit & i) now *= arr[idx];
+			if (bit & i) {
+				now *= arr[idx];
+				cnt++;
+			}
 			bit <<= 1;
 			idx++;
 		}
