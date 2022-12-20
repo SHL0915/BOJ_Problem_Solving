@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int N, M, K, ans;
+int N, M, K, cost;
 int arr[10001];
 int parent[10001];
 
@@ -17,24 +17,26 @@ int main(void) {
 		parent[i] = i;
 	}
 	for (int i = 0; i < M; i++) {
-		int A, B;
-		cin >> A >> B;
-		Union(Find(A), Find(B));
+		int v, w;
+		cin >> v >> w;
+		v = Find(v);
+		w = Find(w);
+		Union(v, w);
 	}
-
 	for (int i = 1; i <= N; i++) {
+		int me = Find(0);
 		int now = Find(i);
-		if (now == Find(0)) continue;
-		ans += arr[now];
-		Union(Find(now), Find(0));
+		if (me == now) continue;
+		Union(me, now);
+		cost += arr[now];
 	}
-	if (ans > K) cout << "Oh no";
-	else cout << ans;
+	if (cost > K) cout << "Oh no";
+	else cout << cost;
 	return 0;
 }
 
 int Find(int node) {
-	if (parent[node] == node) return parent[node];
+	if (node == parent[node]) return parent[node];
 	else return parent[node] = Find(parent[node]);
 }
 
