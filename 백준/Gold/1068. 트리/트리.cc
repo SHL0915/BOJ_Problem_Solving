@@ -16,17 +16,14 @@ int main(void) {
 		if (A == -1) root = i;
 		else graph[A].push_back(i);		
 	}
-	cin >> del;
-	if (root == del) {
-		cout << 0;
-		return 0;
-	}
+	cin >> del;	
 	DFS(root);
 	cout << cnt;
 	return 0;
 }
 
 void DFS(int node) {
+	if (node == del) return;
 	int temp = 0;
 	for (int i = 0; i < graph[node].size(); i++) {
 		if (graph[node][i] != del) {
