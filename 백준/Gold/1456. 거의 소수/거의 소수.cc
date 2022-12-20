@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+typedef __int128 lli;
 
 ll A, B, ans;
 ll table[10000006];
@@ -19,12 +20,11 @@ int main(void) {
 	for (int i = 0; i < primeNum.size(); i++) {
 		ll now = primeNum[i];
 		if (now * now > B) break;
-		ll temp = now * now;
-		while (temp <= B) {
+		lli temp = now * now;
+		while (temp <= (lli)B) {
 			if (temp >= A) ans++;
-			if (temp <= B / now) temp *= now;
-			else break;
-		}		
+			temp *= now;
+		}
 	}
 	cout << ans;
 	return 0;
