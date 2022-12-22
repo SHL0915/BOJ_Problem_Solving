@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long ll;
 
-ll N, len, damage, C;
+int N, len, damage, C;
 ll arr[3000001];
 ll psum[3000001];
 
@@ -14,7 +14,7 @@ int main(void) {
 	cin >> C;
 	for (int i = 1; i <= N; i++) cin >> arr[i];
 	for (int i = 1; i <= N; i++) {
-		ll now = psum[i - 1] - psum[max(0LL, (ll)i - len)];
+		ll now = psum[i - 1] - psum[max(0, i - len)];
 		if (arr[i] <= now + damage) {
 			psum[i] = psum[i - 1] + damage;
 			continue;
