@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long table[10000001];
+map <long long, long long> table;
 long long N, P, Q;
 
 long long DP(long long A);
@@ -16,11 +16,8 @@ int main(void) {
 }
 
 long long DP(long long A) {
-	if (A >= 10000000) return DP(A / P) + DP(A / Q);	
-	else {
-		long long& ret = table[A];
-		if (ret != 0) return ret;
-		ret = DP(A / P) + DP(A / Q);
-		return ret;
-	}
+	long long& ret = table[A];
+	if (ret != 0) return ret;
+	ret = DP(A / P) + DP(A / Q);
+	return ret;
 }
