@@ -1,42 +1,33 @@
-#include <iostream>
-#include <deque>
-#include <stack>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
+string s, explode;
+deque <char> dq;
+stack <char> st;
+
 int main(void) {
-	string s, explode;
-	deque <char> d;
-	stack <char> temp;
-	int i, j;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> s >> explode;
-	for (i = 0; i < s.size(); i++) {
+	for (int i = 0; i < s.size(); i++) {
 		if (s[i] == explode.back()) {
-			temp.push(s[i]);
-			for (j = explode.size() - 2; j >= 0; j--) {
-				if (d.size() == 0 || d.back() != explode[j]) {
-					while (temp.size()) {
-						d.push_back(temp.top());
-						temp.pop();
+			st.push(s[i]);
+			for (int j = explode.size() - 2; j >= 0; j--) {
+				if (dq.size() == 0 || dq.back() != explode[j]) {
+					while (st.size()) {
+						dq.push_back(st.top());
+						st.pop();
 					}
 					break;
 				}
-				else {
-					temp.push(d.back());
-					d.pop_back();
-				}
+				st.push(dq.back());
+				dq.pop_back();
 			}
-			while (temp.size()) temp.pop();
+			while (st.size()) st.pop();
 		}
-		else {
-			d.push_back(s[i]);
-		}
+		else dq.push_back(s[i]);
 	}
-	if (d.size() == 0) {
-		cout << "FRULA";
-		return 0;
-	}	
-	for (i = 0; i < d.size(); i++) 
-		cout << d[i];
+	if (dq.size() == 0) cout << "FRULA";
+	else for (int i = 0; i < dq.size(); i++) cout << dq[i];	
 	return 0;
 }

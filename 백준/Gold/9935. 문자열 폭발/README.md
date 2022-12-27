@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 4920 KB, 시간: 76 ms
+메모리: 4116 KB, 시간: 36 ms
 
 ### 분류
 
@@ -12,29 +12,31 @@
 
 ### 문제 설명
 
-<p>상근이는 문자열에 폭발 문자열을 심어 놓았다. 폭발 문자열이 폭발하면 그 문자는 문자열에서 사라지며, 남은 문자열은 합쳐지게 된다.</p>
+<p>Mirko likes to play with strings of characters, but this time he has taken it too far – he put an “explosion” in the string! An explosion is a series of characters which, if found in the vicinity of fire, explodes and starts a chain reaction. </p>
 
-<p>폭발은 다음과 같은 과정으로 진행된다.</p>
+<p>Mirko, being as negligent as he usually is, forgot that his string contained an explosion and placed it near a candlelight. Thus the chain reaction began. </p>
+
+<p>The chain reaction takes place in the following way: </p>
 
 <ul>
-	<li>문자열이 폭발 문자열을 포함하고 있는 경우에, 모든 폭발 문자열이 폭발하게 된다. 남은 문자열을 순서대로 이어 붙여 새로운 문자열을 만든다.</li>
-	<li>새로 생긴 문자열에 폭발 문자열이 포함되어 있을 수도 있다.</li>
-	<li>폭발은 폭발 문자열이 문자열에 없을 때까지 계속된다.</li>
+	<li>if a string contains explosions, they all explode and a new string is formed by concatenating the pieces without the exploding parts </li>
+	<li>this concatenation could possibly create new explosions </li>
+	<li>the chain reaction repeats while there are explosions in the string </li>
 </ul>
 
-<p>상근이는 모든 폭발이 끝난 후에 어떤 문자열이 남는지 구해보려고 한다. 남아있는 문자가 없는 경우가 있다. 이때는 "FRULA"를 출력한다.</p>
+<p>Now Mirko wants to know whether anything will be left after this series of chain reactions. If nothing remains, output “FRULA” (without quotes). If, by any chance, something is left, output the final string remaining after all the reactions. </p>
 
-<p>폭발 문자열은 같은 문자를 두 개 이상 포함하지 않는다.</p>
+<p>Please note: The explosion will not contain two equal characters. </p>
 
 ### 입력 
 
- <p>첫째 줄에 문자열이 주어진다. 문자열의 길이는 1보다 크거나 같고, 1,000,000보다 작거나 같다.</p>
+ <p>The first line of input contains Mirko's string, (1 ≤ |Mirko's string| ≤ 1 000 000). </p>
 
-<p>둘째 줄에 폭발 문자열이 주어진다. 길이는 1보다 크거나 같고, 36보다 작거나 같다.</p>
+<p>The second line of input contains the explosion string, (1 ≤ |explosion| ≤ 36). </p>
 
-<p>두 문자열은 모두 알파벳 소문자와 대문자, 숫자 0, 1, ..., 9로만 이루어져 있다.</p>
+<p>Both Mirko's string and the explosion string consist of uppercase and lowercase letters of the English alphabet and digits 0, 1, … 9. </p>
 
 ### 출력 
 
- <p>첫째 줄에 모든 폭발이 끝난 후 남은 문자열을 출력한다.</p>
+ <p>The first and only line of output must contain the final string remaining after all the reactions as stated in the task. </p>
 
