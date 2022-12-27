@@ -1,17 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
 
-ll N, T, ans;
-pair<ll, ll> arr[1000];
+int N, T, ans;
+pair<int, int> arr[1000];
 
-ll BinarySearch(ll left, ll right);
+int BinarySearch(int left, int right);
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> N >> T;
-	ll msum = 0, Msum = 0;
+	int msum = 0, Msum = 0;
 	for (int i = 0; i < N; i++) {
 		cin >> arr[i].first >> arr[i].second;
 		msum += arr[i].first;
@@ -25,10 +24,10 @@ int main(void) {
 	return 0;
 }
 
-ll BinarySearch(ll left, ll right) {
+int BinarySearch(int left, int right) {
 	if (left < right) {
-		ll mid = (left + right) / 2;
-		ll flag = 0, sum = 0;
+		int mid = (left + right) / 2;
+		int flag = 0, sum = 0;
 		for (int i = 0; i < N; i++) {
 			if (arr[i].first > mid) {
 				flag = 1;
