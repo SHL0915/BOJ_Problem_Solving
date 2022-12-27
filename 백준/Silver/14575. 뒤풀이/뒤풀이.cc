@@ -23,13 +23,7 @@ int main(void) {
 	}
 	ans = BinarySearch(0, 100000000000);
 	ll flag = 0, sum = 0;
-	for (int i = 0; i < N; i++) {
-		if (arr[i].first > ans) {
-			cout << -1;
-			return 0;
-		}
-		sum += arr[i].first;
-	}
+	for (int i = 0; i < N; i++) sum += arr[i].first;
 	if (sum > T) cout << -1;
 	else cout << ans;
 	return 0;
