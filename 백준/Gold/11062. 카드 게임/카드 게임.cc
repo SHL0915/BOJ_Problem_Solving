@@ -2,8 +2,8 @@
 using namespace std;
 
 int t, N;
-int arr[1001];
-int table[1001][1001];
+int arr[1000];
+int table[1000][1000];
 
 int DP(int left, int right, int turn);
 
@@ -24,7 +24,6 @@ int DP(int left, int right, int turn) {
 	if (left > right) return 0;
 	int& ret = table[left][right];
 	if (ret != -1) return ret;
-	if (turn) ret = min(DP(left + 1, right, turn ^ 1), DP(left, right - 1, turn ^ 1));
-	else ret = max(arr[left] + DP(left + 1, right, turn ^ 1), arr[right] + DP(left, right - 1, turn ^ 1));
-	return ret;
+	if (turn) return ret = min(DP(left + 1, right, turn ^ 1), DP(left, right - 1, turn ^ 1));
+	else return ret = max(arr[left] + DP(left + 1, right, turn ^ 1), arr[right] + DP(left, right - 1, turn ^ 1));
 }
