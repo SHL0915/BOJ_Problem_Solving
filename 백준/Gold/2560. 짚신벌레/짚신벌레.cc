@@ -13,14 +13,10 @@ int main(void) {
 	table[0] = 1;
 	psum[0] = 1;
 	for (int i = 1; i <= N; i++) {
-		int r, l;
-		if (i - A < 0) r = 0;
-		else r = psum[i - A];
-		if (i - B < 0) l = 0;
-		else l = psum[i - B];
-		table[i] = r - l;
-		if (table[i] < 0) table[i] += mod;
-		psum[i] = (psum[i - 1] + table[i]) % mod;		
+		int r = (i - A < 0) ? 0 : psum[i - A];
+		int l = (i - B < 0) ? 0 : psum[i - B];
+		table[i] = (r - l < 0) ? (r - l + mod) : (r - l);
+		psum[i] = (psum[i - 1] + table[i]) % mod;	
 	}
 	ans = psum[N] - psum[N - D];
 	if (ans < 0) ans += mod;
