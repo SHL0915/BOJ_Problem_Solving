@@ -1,14 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-const ll INF = 0x3f3f3f3f3f3f3f3fLL;
+const int INF = 0x3f3f3f3f;
 
 int N, M;
 vector <int> graph[20][26];
-ll table[20][20];
+int table[20][20];
 int adj[20][20];
 
-ll DP(int start, int end);
+int DP(int start, int end);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -29,10 +28,10 @@ int main(void) {
 	return 0;
 }
 
-ll DP(int start, int end) {
+int DP(int start, int end) {
 	if (start == end) return 0;
 	if (adj[start][end] == 1) return 1;
-	ll& ret = table[start][end];
+	int& ret = table[start][end];
 	if (ret != -1) return ret;
 	ret = INF;
 	for (int i = 0; i < 26; i++) {
