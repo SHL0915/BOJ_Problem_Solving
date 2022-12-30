@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int V, E, id = 1;
-int d[10001];
-int mark[10001];
+int V, E, id;
 vector <int> graph[10001];
-vector <vector<int>> SCC;
+int par[10001];
+int mark[10001];
 stack <int> s;
+vector <vector<int>> SCC;
 
 int DFS(int node);
 
@@ -19,36 +19,36 @@ int main(void) {
 		cin >> A >> B;
 		graph[A].push_back(B);
 	}
-	for (int i = 1; i <= V; i++) if (d[i] == 0) DFS(i);
+	for (int i = 1; i <= V; i++) if (par[i] == 0) DFS(i);
 	sort(SCC.begin(), SCC.end());
 	cout << SCC.size() << '\n';
 	for (int i = 0; i < SCC.size(); i++) {
 		for (int j = 0; j < SCC[i].size(); j++) cout << SCC[i][j] << " ";
-		cout << -1 << '\n';
+		cout << "-1\n";
 	}
 	return 0;
 }
 
 int DFS(int node) {
-	d[node] = id++;
+	par[node] = ++id;
+	int ret = par[node];
 	s.push(node);
-	int parent = d[node];
 	for (int i = 0; i < graph[node].size(); i++) {
 		int next = graph[node][i];
-		if (d[next] == 0) parent = min(parent, DFS(next));
-		else if (mark[next] == 0) parent = min(parent, d[next]);
+		if (par[next] == 0) ret = min(ret, DFS(next));
+		else if (mark[next] == 0) ret = min(ret, par[next]);
 	}
-	if (parent == d[node]) {
-		vector <int> scc;
+	if (ret == par[node]) {
+		vector <int> v;
 		while (1) {
 			int t = s.top();
 			s.pop();
-			scc.push_back(t);
 			mark[t] = 1;
+			v.push_back(t);
 			if (t == node) break;
 		}
-		sort(scc.begin(), scc.end());
-		SCC.push_back(scc);
+		sort(v.begin(), v.end());
+		SCC.push_back(v);
 	}
-	return parent;
+	return ret;
 }
