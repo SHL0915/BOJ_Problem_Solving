@@ -1,55 +1,60 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int N, M;
-int function[100][2];
-int variable[20];
+int N, M, cnt, sz;
+vector <int> graph[41];
+int par[41];
+int ID[41];
+int mark[41];
+stack <int> s;
 
-void ChooseVariable(int k);
-void Judge(int k);
+int convert(int node);
+int DFS(int node);
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N >> M;
 	for (int i = 0; i < M; i++) {
-		cin >> function[i][0] >> function[i][1];
+		int A, B;
+		cin >> A >> B;
+		graph[convert(-A)].push_back(convert(B));
+		graph[convert(-B)].push_back(convert(A));
 	}
-	ChooseVariable(0);
-	cout << 0;
+	for (int i = 1; i <= 2 * N; i++) if (par[i] == 0) DFS(i);
+	for (int i = 1; i <= N; i++) {
+		if (ID[i * 2] == ID[i * 2 - 1]) {
+			cout << 0;
+			return 0;
+		}
+	}
+	cout << 1;
 	return 0;
 }
 
-void ChooseVariable(int k) {
-	if (k == N) {
-		Judge(0);
-	}
-	else {
-		for (int i = 0; i < 2; i++) {
-			variable[k] = i;
-			ChooseVariable(k + 1);
-		}
-	}
+int convert(int node) {
+	if (node < 0) return -node * 2;
+	else return node * 2 - 1;
 }
 
-void Judge(int k) {
-	int A, B;
-	if (k == M) {
-		cout << 1;
-		exit(0);
+int DFS(int node) {
+	par[node] = ++cnt;
+	int ret = par[node];
+	s.push(node);
+	for (int i = 0; i < graph[node].size(); i++) {
+		int next = graph[node][i];
+		if (par[next] == 0) ret = min(ret, DFS(next));
+		else if (mark[next] == 0) ret = min(ret, par[next]);
 	}
-	else {
-		A = function[k][0];
-		B = function[k][1];
-		if (A > 0)
-			A = variable[A - 1];
-		else
-			A = (variable[(A * (-1) - 1)] + 1) % 2;
-		if (B > 0)
-			B = variable[B - 1];
-		else
-			B = (variable[(B * (-1) - 1)] + 1) % 2;
-		if (A + B > 0)
-			Judge(k + 1);
-		else
-			return;		
+	if (ret == par[node]) {
+		sz++;
+		while(1){
+			int t = s.top();
+			s.pop();
+			mark[t] = 1;
+			ID[t] = sz;
+			if (t == node) break;
+		}
 	}
+	return ret;
 }
