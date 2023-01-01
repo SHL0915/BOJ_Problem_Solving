@@ -12,19 +12,23 @@
 
 ### 문제 설명
 
-<p>이웃 농장의 소가 길을 마구잡이로 건너는 것에 진절머리가 난 존은 극단의 결정을 내린다. 농장 둘레에 매우 큰 울타리를 짓는 것이다. 이렇게 하면 근처 농장 출신의 소가 들어올 일이 거의 없다. 이 일로 주변 소들이 분개하였다. 친구네 집에 놀러 갈 수 없을 뿐만 아니라, 매년 참가하던 국제 젖 짜기 올림피아드에도 올해는 참가할 수 없게 되었기 때문이다.</p>
+<p> </p>
 
-<p>이웃 농장의 소 중 존의 농장에 방문할 수 있는 소가 조금 있긴 하지만, 그들도 안심할 수 있는 건 아니다. 존의 농장에 들어가는 문은 하나밖에 없고, 그 문을 통과하려면 감시관의 길고 긴 검문을 받아야 한다. 여러 마리의 소가 한 번에 들어가려고 하면 줄이 그 만큼 길어진다.</p>
+<p>Farmer John, in his old age, has unfortunately become increasingly grumpy and paranoid. Forgetting the extent to which bovine diversity helped his farm truly flourish over the years, he has recently decided to build a huge fence around the farm, discouraging cows from neighboring farms from visiting, and completely prohibiting entry from a handful of neighboring farms. The cows are quite upset by this state of affairs, not only since they can no longer visit with their friends, but since it has caused them to cancel participation in the International Milking Olympiad, an event to which they look forward all year.</p>
 
-<p>N마리의 소가 이 농장에 방문하러 왔다. 소가 도착한 시간과 검문받는 데 걸리는 시간은 소마다 다르다. (물론 같을 수도 있다.) 두 소가 동시에 검문을 받을 수는 없다. 예를 들어, 한 소가 5초에 도착했고 7초 동안 검문을 받으면, 8초에 도착한 그 다음 소는 12초까지 줄을 서야 검문을 받을 수 있다.</p>
+<p>Neighboring cows that still have the ability to enter Farmer John's property find the process has become more arduous, as they can enter only through a single gate where each cow is subject to intense questioning, often causing the cows to queue up in a long line.</p>
 
-<p>모든 소가 농장에 입장하려면 얼마나 걸리는 지 구해보자.</p>
+<p>For each of the N cows visiting the farm, you are told the time she arrives at the gate and the duration of time required for her to answer her entry questions. Only one cow can be undergoing questioning at any given time, so if many cows arrive near the same time, they will likely need to wait in line to be processed one by one. For example, if a cow arrives at time 5 and answers questions for 7 units of time, another cow arriving at time 8 would need to wait until time 12 to start answering questions herself.</p>
+
+<p>Please determine the earliest possible time by which all cows are able to enter the farm.</p>
+
+<p> </p>
 
 ### 입력 
 
- <p>첫 줄에 100 이하의 양의 정수 N이 주어진다. 다음 N줄에는 한 줄에 하나씩 소의 도착 시각과 검문 시간이 주어진다. 각각 1,000,000 이하의 양의 정수이다.<br></p>
+ <p>The first line of input contains N, a positive integer at most 100. Each of the next N lines describes one cow, giving the time it arrives and the time it requires for questioning; each of these numbers are positive integers at most 1,000,000.</p>
 
 ### 출력 
 
- <p>모든 소가 농장에 입장하는 데 걸리는 최소 시간을 출력한다.<br></p>
+ <p>Please determine the minimum possible time at which all the cows could have completed processing.</p>
 
