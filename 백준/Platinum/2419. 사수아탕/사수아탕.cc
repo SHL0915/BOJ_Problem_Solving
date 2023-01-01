@@ -1,65 +1,46 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-int n, m;
-int dp[333][333][2];
-bool v[333][333][2];
-vector<int> pos;
+int N, M, ans, flag;
+int arr[305];
+int table[305][305][2];
 
-// 실험용 코드: 출처 https://egod1537.tistory.com/9
+int DP(int left, int right, int pos, int k);
 
-int dst(int s, int e) {
-    return abs(pos[s] - pos[e]);
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> N >> M;
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i];
+		if (arr[i] == 0) flag = 1;
+	}
+	if (flag == 0) N++;
+	sort(arr, arr + N);
+	int start = lower_bound(arr, arr + N, 0) - arr;
+	for (int i = 0; i <= N; i++) {
+		memset(table, -1, sizeof(table));
+		ans = max(ans, DP(start, start, 0, i));
+	}
+	if (flag) ans += M;
+	cout << ans;
+	return 0;
 }
 
-int solve(int l, int r, int k, int w) {
-    if (w == 0) return 0;
-    if (l == 0 && r == n) return 0;
-
-    int& ret = dp[l][r][k];
-    if (v[l][r][k]) return ret;
-
-    int now = (k) ? r : l;
-    if (l > 0)
-        ret = max(ret, solve(l - 1, r, 0, w - 1) - w * dst(now, l - 1) + m);
-
-    if (r < n)
-        ret = max(ret, solve(l, r + 1, 1, w - 1) - w * dst(now, r + 1) + m);
-
-    v[l][r][k] = true;
-    return ret;
-}
-
-int main() {
-    cin >> n >> m;
-
-    pos.resize(n);
-    bool isZero = false;
-    for (int i = 0; i < n; i++) {
-        cin >> pos[i];
-        if (pos[i] == 0) isZero = true;
-    }
-
-    if (!isZero)
-        pos.push_back(0);
-    else
-        n--;
-
-    sort(pos.begin(), pos.end());
-    int idx = lower_bound(pos.begin(), pos.end(), 0) - pos.begin();
-
-    int ans = 0;
-    for (int i = 0; i <= n; i++) {
-        memset(dp, 0, sizeof(dp));
-        memset(v, 0, sizeof(v));
-        int k = solve(idx, idx, 0, i);
-        if (isZero)
-            k += m;
-
-        ans = max(ans, k);
-    }
-
-    cout << ans;
-    return 0;
+int DP(int left, int right, int pos, int k) {
+	if (!k) return 0;
+	if (left == 0 && right == N - 1) return 0;
+	int& ret = table[left][right][pos];
+	if (ret != -1) return ret;
+	int now = pos ? arr[right] : arr[left];
+	ret = 0;
+	if (left > 0) {
+		int d = now - arr[left - 1];
+		ret = max(ret, DP(left - 1, right, 0, k - 1) + M - k * d);
+	}
+	if (right < N - 1) {
+		int d = arr[right + 1] - now;
+		ret = max(ret, DP(left, right + 1, 1, k - 1) + M - k * d);
+	}
+	return ret;
 }
