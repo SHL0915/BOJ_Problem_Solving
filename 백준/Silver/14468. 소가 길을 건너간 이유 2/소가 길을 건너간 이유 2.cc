@@ -1,27 +1,21 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
+int cnt;
 string S;
-vector <int> cow[26];
-int ans;
-
-bool cmp(vector <int> A, vector <int> B) {
-	return A.front() < B.front();
-}
+vector <int> arr[26];
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> S;
-	for (int i = 0; i < S.length(); i++) cow[S[i] - 'A'].push_back(i);
-	sort(cow, cow + 26, cmp);	
+	for (int i = 0; i < S.length(); i++) arr[S[i] - 'A'].push_back(i);
 	for (int i = 0; i < 26; i++) {
 		for (int j = 0; j < 26; j++) {
-			if (cow[i][0] < cow[j][0] && cow[j][0] < cow[i][1] && cow[i][1] < cow[j][1]) ans++;
+			if (i == j) continue;
+			if (arr[j][0] > arr[i][0] && arr[j][0] < arr[i][1] && arr[j][1] > arr[i][1]) cnt++;
 		}
 	}
-	cout << ans;
+	cout << cnt;
 	return 0;
 }

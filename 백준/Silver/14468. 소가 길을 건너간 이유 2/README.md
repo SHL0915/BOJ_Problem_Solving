@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 2028 KB, 시간: 0 ms
+메모리: 2024 KB, 시간: 0 ms
 
 ### 분류
 
@@ -12,17 +12,19 @@
 
 ### 문제 설명
 
-<p>존의 농장에는 원형 목초지가 있고, 그 둘레에 길이 둘러져 있다. 존의 소는 매일 아침 이 길을 건너가 풀을 먹고 저녁에 다시 길을 건너가 헛간으로 돌아간다.</p>
+<p>The layout of Farmer John's farm is quite peculiar, with a large circular road running around the perimeter of the main field on which his cows graze during the day. Every morning, the cows cross this road on their way towards the field, and every evening they all cross again as they leave the field and return to the barn.</p>
 
-<p>이 소들은 자신의 습관대로 매일 똑같은 방법으로 길을 건넌다. 각각의 소는 원형 길의 정해진 한 점을 지나 들어오고, 다른 점을 지나 나간다. 어떤 두 소도 길 위의 같은 점을 지나가지 않는다. 이걸 지켜본 존은 이 점들을 분석해 보기로 했다. 소는 총 26마리고, A, B, ... Z라는 이름이 붙는다. 존은 52개의 점을 시계방향으로 보면서 각 점을 어떤 소가 지나가는지 기록했다. 이렇게 만들어 낸 52글자의 문자열에는 각 알파벳이 두 번씩 나타날 것이다.</p>
+<p>As we know, cows are creatures of habit, and they each cross the road the same way every day. Each cow crosses into the field at a different point from where she crosses out of the field, and all of these crossing points are distinct from each-other. Farmer John owns exactly 26 cows, which he has lazily named A through Z (he is not sure what he will do if he ever acquires a 27th cow...), so there are precisely 52 crossing points around the road. Farmer John records these crossing points concisely by scanning around the circle clockwise, writing down the name of the cow for each crossing point, ultimately forming a string with 52 characters in which each letter of the alphabet appears exactly twice. He does not record which crossing points are entry points and which are exit points.</p>
 
-<p>어떤 두 소는 어떤 방법으로 걷든 그 경로가 어딘가에서 만나야 될 수도 있다. 그런 소가 총 몇 쌍인지 구해 보자.</p>
+<p>Looking at his map of crossing points, Farmer John is curious how many times various pairs of cows might cross paths during the day. He calls a pair of cows (a,b) a "crossing" pair if cow a's path from entry to exit must cross cow b's path from entry to exit. Please help Farmer John count the total number of crossing pairs.</p>
 
 ### 입력 
 
- <p>첫 줄에 52글자의 문자열이 주어진다. 각 글자는 알파벳 대문자이며, 각 알파벳이 정확히 두 번씩 나타난다.</p>
+ <p>The input consists of a single line containing a string of 52 upper-case characters. Each letter of the alphabet appears exactly twice.</p>
 
 ### 출력 
 
- <p>경로가 무조건 만나는 소가 몇 쌍인지 출력한다.</p>
+ <p>Please print the total number of crossing pairs.</p>
+
+<p> </p>
 
