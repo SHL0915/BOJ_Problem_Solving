@@ -6,7 +6,6 @@ const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 ll N, B, D, ans = INF;
 vector <int> tree[111223];
 ll sz[111223];
-ll table[111223][33];
 ll pow_2[33];
 
 void DFS(int node, int par);
@@ -26,7 +25,6 @@ int main(void) {
 		tree[b].push_back(a);
 	}
 	DFS(1, -1);
-	memset(table, -1, sizeof(table));
 	for (int i = 0; i < 33; i++) ans = min(ans, DP(1, -1, i));	
 	cout << ans;
 	return 0;
@@ -44,16 +42,14 @@ void DFS(int node, int par) {
 }
 
 ll DP(int node, int par, int h) {
-	if (h == 0) return D * (sz[node] - 1);
-	ll& ret = table[node][h];
-	if (ret != -1) return ret;
+	if (h == 0) return D * (sz[node] - 1);	
 	priority_queue <ll, vector <ll>, greater<>> pq;
 	for (int i = 0; i < tree[node].size(); i++) {
 		int ch = tree[node][i];
 		if (ch == par) continue;
 		pq.push(DP(ch, node, h - 1) - D * sz[ch]);
 	}
-	ret = D * (sz[node] - 1) + 2 * create_tree(h - 1);
+	ll ret = D * (sz[node] - 1) + 2 * create_tree(h - 1);
 	if (pq.size()) {
 		ll t = pq.top();
 		pq.pop();
