@@ -14,19 +14,15 @@ int main(void) {
 	memset(table, -1, sizeof(table));
 	while (t--) {
 		cin >> N >> M;
-		long long ans = 0;
-		for (int i = 0; i <= M; i++) {
-			ans += DP(N, i);
-			ans %= mod;
-		}
-		cout << ans << '\n';
+		cout << DP(N, M) << '\n';
 	}
 	return 0;
 }
 
 long long DP(int now, int k) {
 	if (now < 0) return 0;
-	if (now == 0) return (k == 0);
+	if (now == 0) return (k >= 0);
+	if (k < 0) return 0;
 	long long& ret = table[now][k];
 	if (ret != -1) return ret;
 	ret = 0;
