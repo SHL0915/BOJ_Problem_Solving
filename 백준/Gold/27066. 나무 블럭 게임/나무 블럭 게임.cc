@@ -3,7 +3,6 @@ using namespace std;
 
 int N, sum;
 int arr[100001];
-priority_queue <int> pq;
 double ans;
 
 int main(void) {
@@ -15,16 +14,14 @@ int main(void) {
 	for (int i = 0; i < N; i++) {
 		cin >> arr[i];
 		sum += arr[i];
-		pq.push(arr[i]);
 	}
 	if (N == 1) {
 		cout << sum;
 		return 0;
 	}
-	ans = (double)sum / N;
+	sort(arr, arr + N);
+	ans = max((double)sum / N, (double)arr[N - 2]);
 	for (int i = 0; i < N; i++) ans = max(ans, min((double)(sum - arr[i]) / (N - 1), (double)arr[i]));
-	pq.pop();
-	ans = max(ans, (double)pq.top());
 	cout << ans;
 	return 0;
 }
