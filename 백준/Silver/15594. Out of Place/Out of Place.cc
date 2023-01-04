@@ -1,28 +1,4 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-int N, cnt;
-int arr[100];
-int sorted[100];
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> N;
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		sorted[i] = arr[i];
-	}
-	sort(sorted, sorted + N);
-	for (int i = 0; i < N; i++) {
-		if (arr[i] == sorted[i]) continue;		
-		for (int j = i + 1; j < N; j++) {
-			if (arr[j] == sorted[i] && arr[j] != sorted[j]) {
-				swap(arr[i], arr[j]);
-				cnt++;
-			}
-		}
-	}
-	cout << cnt;
-	return 0;
-}
+int a,b,c[100],d[100],i,j;
+int main(void){scanf("%d",&a);for(i=0;i<a;i++){scanf("%d",&c[i]);d[i]=c[i];}sort(d,d+a);for(i=0;i<a;i++){if(c[i]==d[i])continue;for(j=i+1;j<a;j++){if(c[j]==d[i]&&c[j]!=d[j]){swap(c[i],c[j]);b++;}}}printf("%d",b);return 0;}
