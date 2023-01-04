@@ -31,18 +31,16 @@ int main(void) {
 				m = min(m, ans[k]);
 				M = max(M, ans[k]);
 			}
-			int cand1 = m + arr[j][i - j];
-			int cand2 = M - arr[j][i - j];
-			int flag2 = 0;
+			int a = m + arr[j][i - j];
+			int b = M - arr[j][i - j];
+			ans[i] = a;
 			for (int j = 0; j < i; j++) {
-				if (absol(ans[j] - cand1) > arr[j][i - j]) {
-					flag2 = 1;
+				if (absol(ans[j] - a) > arr[j][i - j]) {
+					ans[i] = b;
 					break;
 				}
 			}
-			if (absol(ans[i - 1] - cand1) != arr[i - 1][1]) flag2 = 1;
-			if (flag2) ans[i] = cand2;
-			else ans[i] = cand1;
+			if (absol(ans[i - 1] - a) != arr[i - 1][1]) ans[i] = b;
 			flag = 1;
 			break;
 		}
