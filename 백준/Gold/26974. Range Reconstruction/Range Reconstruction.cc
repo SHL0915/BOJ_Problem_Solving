@@ -6,7 +6,7 @@ int N;
 int arr[301][301];
 int ans[301];
 
-int absol(int A) {
+int ABS(int A) {
 	if (A < 0) return -A;
 	else return A;
 }
@@ -30,12 +30,12 @@ int main(void) {
 			int a = m + arr[j][i - j], b = M - arr[j][i - j];
 			ans[i] = a;
 			for (int j = 0; j < i; j++) {
-				if (absol(ans[j] - a) > arr[j][i - j]) {
+				if (ABS(ans[j] - a) > arr[j][i - j]) {
 					ans[i] = b;
 					break;
 				}
 			}
-			if (absol(ans[i - 1] - a) != arr[i - 1][1]) ans[i] = b;
+			if (ABS(ans[i - 1] - a) != arr[i - 1][1]) ans[i] = b;
 			flag = 1;
 			break;
 		}
