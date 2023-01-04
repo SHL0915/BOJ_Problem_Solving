@@ -2,7 +2,7 @@
 using namespace std;
 const int INF = 0x3f3f3f3f;
 
-int N, m, M;
+int N;
 int arr[301][301];
 int ans[301];
 
@@ -17,10 +17,6 @@ int main(void) {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N - i; j++) cin >> arr[i][j];
-	}
-	if (N == 1) {
-		cout << 0;
-		return 0;
 	}	
 	for (int i = 1; i < N; i++) {
 		int flag = 0;
@@ -31,8 +27,7 @@ int main(void) {
 				m = min(m, ans[k]);
 				M = max(M, ans[k]);
 			}
-			int a = m + arr[j][i - j];
-			int b = M - arr[j][i - j];
+			int a = m + arr[j][i - j], b = M - arr[j][i - j];
 			ans[i] = a;
 			for (int j = 0; j < i; j++) {
 				if (absol(ans[j] - a) > arr[j][i - j]) {
