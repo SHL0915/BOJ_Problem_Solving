@@ -1,27 +1,5 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-
-int N, sum;
-int arr[100001];
-double ans;
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cout << fixed;
-	cout.precision(10);
-	cin >> N;
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		sum += arr[i];
-	}
-	if (N == 1) {
-		cout << sum;
-		return 0;
-	}
-	sort(arr, arr + N);
-	ans = max((double)sum / N, (double)arr[N - 2]);
-	for (int i = 0; i < N; i++) ans = max(ans, min((double)(sum - arr[i]) / (N - 1), (double)arr[i]));
-	cout << ans;
-	return 0;
-}
+int a,b,c[100000],i;
+double d;
+int main(void) {ios::sync_with_stdio(false);cin.tie(0);cout<<fixed;cout.precision(7);cin>>a;for(i=0;i<a;i++){cin>>c[i];b+=c[i];}if(a==1){cout<<b;return 0;}sort(c,c+a);d=max((double)b/a,(double)c[a-2]);for(i=0;i<a;i++)d=max(d,min((double)(b-c[i])/(a-1),(double)c[i]));cout<<d;return 0;}
