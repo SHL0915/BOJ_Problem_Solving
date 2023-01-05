@@ -27,7 +27,7 @@ int main(void) {
 
 int DP(int x, int y, int state) {
     if (state & 1) return DP((x + 1) % M, y + (x + 1) / M, state >> 1);
-    if (x == M && y == N) return 0;
+    if (y == N) return 0;
     int& ret = table[x][y][state];
     if (ret != -1) return ret;
     ret = 0;
