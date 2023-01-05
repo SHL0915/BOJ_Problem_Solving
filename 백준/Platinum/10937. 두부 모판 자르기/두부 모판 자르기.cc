@@ -1,15 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int INF = 0x3f3f3f3f;
 
 int N;
-char arr[20][20];
-map <pair<char, char>, int> val;
-map <string, int> table;
-string s = "", e = "";
+char arr[12][12];
+int val[91][91];
+int table[12][12][(1 << 12)];
 
 void putval();
-int DP(string state);
+int DP(int x, int y, int state);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -21,59 +19,32 @@ int main(void) {
 		cin >> s;
 		for (int j = 0; j < N; j++) arr[i][j] = s[j];
 	}
-	string s = "";
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			s += '0';
-			e += '1';
-		}
-	}
-	cout << DP(s);
+	memset(table, -1, sizeof(table));
+	cout << DP(0, 0, 0);
 	return 0;
 }
 
-int DP(string state) {
-	if (state == e) return 0;
-	if (table.count(state)) return table[state];
-	table[state] = -INF;
-	int x, y, pos;
-	for (int i = 0; i < state.size(); i++) {
-		if (state[i] == '0') {
-			x = i % N;
-			y = i / N;
-			pos = i;
-			break;
-		}
-	}
-	string next = state; next[pos] = '1';
-	if (x < N - 1) {
-		if (state[pos + 1] == '0') {
-			next[pos + 1] = '1';
-			table[state] = max(table[state], val[{min(arr[y][x], arr[y][x + 1]), max(arr[y][x], arr[y][x + 1])}] + DP(next));
-			next[pos + 1] = '0';
-		}
-	}
-	if (y < N - 1) {
-		if (state[pos + N] == '0') {
-			next[pos + N] = '1';
-			table[state] = max(table[state], val[{min(arr[y][x], arr[y + 1][x]), max(arr[y][x], arr[y + 1][x])}] + DP(next));
-			next[pos + N] = '0';
-		}
-	}
-	table[state] = max(table[state], DP(next));
-	return table[state];
+int DP(int x, int y, int state) {
+	if (state & 1) return DP((x + 1) % N, y + (x + 1) / N, state >> 1);
+	if (x == N && y == N) return 0;
+	int& ret = table[x][y][state];
+	if (ret != -1) return ret;
+	ret = 0;
+	ret = max(ret, DP((x + 1) % N, y + (x + 1) / N, state >> 1));
+	if (x < N - 1 && (state & 2) == 0) ret = max(ret, val[arr[y][x]][arr[y][x + 1]] + DP((x + 2) % N, y + (x + 2) / N, state >> 2));
+	if (y < N - 1) ret = max(ret, val[arr[y][x]][arr[y + 1][x]] + DP((x + 1) % N, y + (x + 1) / N, (state | (1 << N)) >> 1));
+	return ret;
 }
 
 void putval() {
-	val[{'A', 'A'}] = 100;
-	val[{'A', 'B'}] = 70;
-	val[{'A', 'C'}] = 40;
-	val[{'A', 'F'}] = 0;
-	val[{'B', 'B'}] = 50;
-	val[{'B', 'C'}] = 30;
-	val[{'B', 'F'}] = 0;
-	val[{'C', 'C'}] = 20;
-	val[{'C', 'F'}] = 0;
-	val[{'F', 'F'}] = 0;
+	val['A']['A'] = 100;
+	val['A']['B'] = 70;
+	val['A']['C'] = 40;
+	val['B']['A'] = 70;
+	val['B']['B'] = 50;
+	val['B']['C'] = 30;
+	val['C']['A'] = 40;
+	val['C']['B'] = 30;
+	val['C']['C'] = 20;	
 	return;
 }
