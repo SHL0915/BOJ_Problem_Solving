@@ -12,15 +12,14 @@ int DP(int left, int right, int color);
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	cin >> S;
+	cin >> N >> S;
 	for (int i = 0; i < N; i++) {
-		if (S[i] == 'R') arr[i] = 0;
-		else if (S[i] == 'G') arr[i] = 1;
-		else arr[i] = 2;
+		if (S[i] == 'R') arr[i] = 1;
+		else if (S[i] == 'G') arr[i] = 2;
+		else arr[i] = 3;
 	}
 	memset(table, -1, sizeof(table));	
-	cout << DP(0, N - 1, 3);
+	cout << DP(0, N - 1, 0);
 	return 0;
 }
 
