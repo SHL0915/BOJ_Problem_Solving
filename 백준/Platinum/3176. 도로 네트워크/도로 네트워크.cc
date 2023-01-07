@@ -3,95 +3,99 @@ using namespace std;
 const int INF = 0x3f3f3f3f;
 
 int N, K;
-vector <int> tree[100001];
-map <pair<int, int>, int> m;
-int level[100001];
+vector <pair<int, int>> tree[100001];
 int parent[100001][21];
-int min_val[100001][21];
-int max_val[100001][21];
+int level[100001];
+int m_val[100001][21];
+int M_val[100001][21];
 
-void findParent(int node, int par, int lv);
-int LCA(int A, int B);
-pair<int, int> find_min_max(int A, int B);
+void pre(int node, int par, int lv, int val);
+int LCA(int a, int b);
+int m_query(int a, int b);
+int M_query(int a, int b);
 
 int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> N;
-	for (int i = 0; i < N - 1; i++) {
-		int A, B, C;
-		cin >> A >> B >> C;
-		tree[A].push_back(B);
-		tree[B].push_back(A);
-		m[{A, B}] = C;
-		m[{B, A}] = C;
-	}
-	memset(min_val, INF, sizeof(min_val));
-	m[{1, 0}] = 0;
-	findParent(1, 0, 1);	
-	cin >> K;
-	for (int i = 0; i < K; i++) {
-		pair<int, int> result;
-		int A, B;
-		cin >> A >> B;
-		result = find_min_max(A, B);
-		cout << result.first << " " << result.second << '\n';
-	}
-	return 0;
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin >> N;
+    for (int i = 0; i < N - 1; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        tree[a].push_back({ b,c });
+        tree[b].push_back({ a,c });
+    }
+    memset(m_val, INF, sizeof(m_val));
+    memset(M_val, -1, sizeof(M_val));
+    pre(1, 0, 1, 0);
+    cin >> K;
+    for (int i = 0; i < K; i++) {
+        int a, b;
+        cin >> a >> b;
+        int lca = LCA(a, b);
+        cout << min(m_query(lca, a), m_query(lca, b)) << " " << max(M_query(lca, a), M_query(lca, b)) << '\n';
+    }
+    return 0;
 }
 
-void findParent(int node, int par, int lv) {
-	level[node] = lv;
-	parent[node][0] = par;
-	min_val[node][0] = m[{node, par}];
-	max_val[node][0] = m[{node, par}];
-	for (int i = 1; i <= 20; i++) {
-		parent[node][i] = parent[parent[node][i - 1]][i - 1];
-		min_val[node][i] = min(min_val[node][i], min_val[parent[node][i - 1]][i - 1]);
-		min_val[node][i] = min(min_val[node][i - 1], min_val[node][i]);
-		max_val[node][i] = max(max_val[node][i - 1], max_val[node][i]);
-		max_val[node][i] = max(max_val[node][i], max_val[parent[node][i - 1]][i - 1]);
-	}
-	for (int i = 0; i < tree[node].size(); i++) {
-		if (tree[node][i] == par) continue;
-		findParent(tree[node][i], node, lv + 1);
-	}
-	return;
+void pre(int node, int par, int lv, int val) {
+    level[node] = lv;
+    parent[node][0] = par;
+    m_val[node][0] = val;
+    M_val[node][0] = val;
+    for (int i = 1; i < 21; i++) {
+        parent[node][i] = parent[parent[node][i - 1]][i - 1];
+        m_val[node][i] = min(m_val[node][i - 1], m_val[parent[node][i - 1]][i - 1]);
+        M_val[node][i] = max(M_val[node][i - 1], M_val[parent[node][i - 1]][i - 1]);
+    }
+    for (int i = 0; i < tree[node].size(); i++) {
+        int next = tree[node][i].first;
+        if (next == par) continue;
+        pre(next, node, lv + 1, tree[node][i].second);
+    }
+    return;
 }
 
-pair<int, int> find_min_max(int A, int B) {
-	if (level[A] < level[B]) {
-		int temp = A;
-		A = B;
-		B = temp;
-	}
-	int min_ret = INF;
-	int max_ret = 0;
-	if (level[A] != level[B]) {
-		for (int i = 20; i >= 0; i--) {
-			if (level[parent[A][i]] >= level[B]) {
-				min_ret = min(min_ret, min_val[A][i]);
-				max_ret = max(max_ret, max_val[A][i]);
-				A = parent[A][i];
-			}
-		}
-	}
-	if (A != B) {
-		for (int i = 20; i >= 0; i--) {
-			if (parent[A][i] != parent[B][i]) {
-				min_ret = min(min_ret, min_val[A][i]);
-				min_ret = min(min_ret, min_val[B][i]);
-				max_ret = max(max_ret, max_val[A][i]);
-				max_ret = max(max_ret, max_val[B][i]);
-				A = parent[A][i];
-				B = parent[B][i];
-			}
-		}
-		min_ret = min(min_ret, min_val[A][0]);
-		min_ret = min(min_ret, min_val[B][0]);
-		max_ret = max(max_ret, max_val[A][0]);
-		max_ret = max(max_ret, max_val[B][0]);
-	}
-	pair<int, int> ret = { min_ret, max_ret };
-	return ret;
+int LCA(int a, int b) {
+    if (a == 1 || b == 1) return 1;
+    if (level[a] < level[b]) swap(a, b);
+    if (level[a] != level[b]) {
+        for (int i = 20; i >= 0; i--) {
+            if (level[parent[a][i]] >= level[b]) a = parent[a][i];
+        }
+    }
+    int ret = a;
+    if (a != b) {
+        for (int i = 20; i >= 0; i--) {
+            if (parent[a][i] != parent[b][i]) {
+                a = parent[a][i];
+                b = parent[b][i];
+            }
+            ret = parent[a][i];
+        }
+    }
+    return ret;
+}
+
+int m_query(int a, int b) {
+    if (a == b) return INF;
+    int ret = INF;
+    for (int i = 20; i >= 0; i--) {
+        if (level[parent[b][i]] >= level[a]) {
+            ret = min(ret, m_val[b][i]);
+            b = parent[b][i];
+        }
+    }
+    return ret;
+}
+
+int M_query(int a, int b) {
+    if (a == b) return 0;
+    int ret = -1;
+    for (int i = 20; i >= 0; i--) {
+        if (level[parent[b][i]] >= level[a]) {
+            ret = max(ret, M_val[b][i]);
+            b = parent[b][i];
+        }
+    }
+    return ret;
 }
