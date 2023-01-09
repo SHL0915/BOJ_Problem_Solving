@@ -3,7 +3,7 @@ using namespace std;
 
 int N, ans;
 int arr[262145];
-int table[262145][101];
+int table[262145][61];
 
 int DP(int pos, int k);
 
@@ -13,7 +13,7 @@ int main(void) {
     cin >> N;
     for (int i = 0; i < N; i++) cin >> arr[i];
     memset(table, -1, sizeof(table));
-    for (int i = 100; i >= 0; i--) {
+    for (int i = 60; i >= 0; i--) {
         for (int j = 0; j < N; j++) {
             if (DP(j, i) != 0) ans = max(ans, i);
         }
