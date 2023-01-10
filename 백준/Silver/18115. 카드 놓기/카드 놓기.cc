@@ -1,28 +1,26 @@
-#include <iostream>
-#include <deque>
+#include <bits/stdc++.h>
 using namespace std;
 
+int N;
+deque <int> dq;
+int arr[1000001];
+
 int main(void) {
-	deque <int> Deque;
-	int N, temp;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N;
-	int* Arr = new int[N];
-	for (int i = 0; i < N; i++) 
-		cin >> Arr[i];
-	for (int i = N - 1; i >= 0; i--) {
-		switch (Arr[i]) {
-		case 1: Deque.push_back(N - i); break;
-		case 2: temp = Deque.back();
-			Deque.pop_back();
-			Deque.push_back(N - i);
-			Deque.push_back(temp);
-			break;
-		case 3: Deque.push_front(N - i);
+	for (int i = 1; i <= N; i++) cin >> arr[i];
+	for (int i = 1; i <= N; i++) {
+		int now = arr[N - i + 1];
+		if (now == 1) dq.push_back(i);
+		else if (now == 2) {
+			int b = dq.back();
+			dq.pop_back();
+			dq.push_back(i);
+			dq.push_back(b);
 		}
+		else dq.push_front(i);
 	}
-	while (Deque.size() != 0) {		
-		cout << Deque.back() << " ";
-		Deque.pop_back();
-	}
+	for (int i = dq.size() - 1; i >= 0; i--) cout << dq[i] << " ";
 	return 0;
 }
