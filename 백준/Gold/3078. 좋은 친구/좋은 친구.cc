@@ -1,20 +1,31 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main(void) {	
-	long long N, K, sum = 0;
+int N, K;
+long long ans;
+deque <string> dq;
+int cnt[21];
+
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> N >> K;
-	long long lenArr[21] = { 0 };
-	string* Arr = new string[N];
-	for (long long i = 0; i < K; i++) {
-		cin >> Arr[i];
-		sum += lenArr[Arr[i].length()]++;
+	for (int i = 0; i < N; i++) {
+		string s;
+		cin >> s;
+		if (dq.size() < K + 1) {
+			dq.push_back(s);
+			ans += cnt[s.length()];
+			cnt[s.length()]++;
+		}
+		else {
+			cnt[dq.front().length()]--;
+			dq.pop_front();
+			dq.push_back(s);
+			ans += cnt[s.length()];
+			cnt[s.length()]++;
+		}
 	}
-	for (long long i = K; i < N; i++) {
-		cin >> Arr[i];
-		sum += lenArr[Arr[i].length()]++;
-		lenArr[Arr[i - K].length()] --;
-	}
-	cout << sum;
-	return 0;	
+	cout << ans;
+	return 0;
 }
