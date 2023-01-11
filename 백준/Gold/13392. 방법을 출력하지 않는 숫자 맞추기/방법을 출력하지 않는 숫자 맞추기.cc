@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-using namespace std; 
+using namespace std;
 const long long INF = 0x3f3f3f3f3f3f3f3fLL;
 const int mod = 10;
 
@@ -28,7 +28,9 @@ long long DP(int pos, int left, int right) {
 	ret = INF;
 	int now_num = (num[pos] - right + left + mod) % mod;
 	if (now_num == B[pos] - '0') ret = min(ret, DP(pos + 1, left, 0));
-	ret = min(ret, 1 + DP(pos, (left + 1) % mod, right));
-	ret = min(ret, 1 + DP(pos, left, (right + 1) % mod));
-	return ret;	
+	else {
+		ret = min(ret, 1 + DP(pos, (left + 1) % mod, right));
+		ret = min(ret, 1 + DP(pos, left, (right + 1) % mod));
+	}
+	return ret;
 }
