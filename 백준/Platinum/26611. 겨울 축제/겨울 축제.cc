@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long N, M, K, flag;
-vector <long long> arr, add;
+int N, M, K, flag;
+vector <int> arr, add;
 
-void func(long long pos);
+void func(int pos);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -31,9 +31,9 @@ int main(void) {
 	return 0;
 }
 
-void func(long long pos) {
+void func(int pos) {
 	if (pos == -1) return;
-	long long out = arr[pos] / M;
+	int out = arr[pos] / M;
 	if (out) {
 		cout << out;
 		flag = 1;
