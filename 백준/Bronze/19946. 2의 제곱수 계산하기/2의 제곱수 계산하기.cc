@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-unsigned long long N, temp = 1;
+unsigned long long N, cnt = 64;
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	temp <<= 63;
-	N = (__int128)temp * 2 - N;
-	int cnt = 0;
+	cin >> N;	
 	while (N) {
-		cnt++;
-		N /= 2;
+		if (N & 1) {
+			cout << cnt;
+			return 0;
+		}
+		N >>= 1;
+		cnt--;
 	}
-	cout << 64 - cnt + 1;
 	return 0;
 }
