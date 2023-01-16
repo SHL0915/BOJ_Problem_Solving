@@ -2,9 +2,6 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const int INF = 1000000000;
-
-ll t, K, C;
 
 ll GCD(ll a, ll b);
 ll EEu(ll a, ll b);
@@ -12,14 +9,14 @@ ll EEu(ll a, ll b);
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> t;
+	int t; cin >> t;
 	while (t--) {
-		cin >> K >> C;
+		ll K, C; cin >> K >> C;
 		if (GCD(K, C) != 1) cout << "IMPOSSIBLE\n";
 		else {
-			ll ans = (EEu(C, K) + K) % K;
+			ll ans = EEu(C, K);
 			while (ans * C <= K) ans += K;
-			if (ans > INF) cout << "IMPOSSIBLE\n";
+			if (ans > 1e9) cout << "IMPOSSIBLE\n";
 			else cout << ans << '\n';
 		}
 	}
