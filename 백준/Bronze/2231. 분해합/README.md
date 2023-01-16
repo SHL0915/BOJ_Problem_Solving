@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 1112 KB, 시간: 8 ms
+메모리: 2020 KB, 시간: 12 ms
 
 ### 분류
 
@@ -12,15 +12,19 @@
 
 ### 문제 설명
 
-<p>어떤 자연수 N이 있을 때, 그 자연수 N의 분해합은 N과 N을 이루는 각 자리수의 합을 의미한다. 어떤 자연수 M의 분해합이 N인 경우, M을 N의 생성자라 한다. 예를 들어, 245의 분해합은 256(=245+2+4+5)이 된다. 따라서 245는 256의 생성자가 된다. 물론, 어떤 자연수의 경우에는 생성자가 없을 수도 있다. 반대로, 생성자가 여러 개인 자연수도 있을 수 있다.</p>
+<p>For a positive integer N, the digit-sum of N is defined as the sum of N itself and its digits. When M is the digitsum of N, we call N a generator of M.</p>
 
-<p>자연수 N이 주어졌을 때, N의 가장 작은 생성자를 구해내는 프로그램을 작성하시오.</p>
+<p>For example, the digit-sum of 245 is 256 (= 245 + 2 + 4 + 5). Therefore, 245 is a generator of 256.</p>
+
+<p>Not surprisingly, some numbers do not have any generators and some numbers have more than one generator. For example, the generators of 216 are 198 and 207.</p>
+
+<p>You are to write a program to find the smallest generator of the given integer.</p>
 
 ### 입력 
 
- <p>첫째 줄에 자연수 N(1 ≤ N ≤ 1,000,000)이 주어진다.</p>
+ <p>Your program is to read from standard input. The input consists of T test cases. The number of test cases T is given in the first line of the input. Each test case takes one line containing an integer N, 1 ≤ N ≤ 100,000.</p>
 
 ### 출력 
 
- <p>첫째 줄에 답을 출력한다. 생성자가 없는 경우에는 0을 출력한다.</p>
+ <p>Your program is to write to standard output. Print exactly one line for each test case. The line is to contain a generator of N for each test case. If N has multiple generators, print the smallest. If N does not have any generators, print 0.</p>
 
