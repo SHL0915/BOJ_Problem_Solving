@@ -5,7 +5,6 @@ using pii = pair<int, int>;
 
 ll N, K, M, ans = 1;
 int table[2001][2001];
-pii arr[100];
 
 int nCr(int n, int r);
 
@@ -15,10 +14,9 @@ int main(void) {
 	cin >> N >> K >> M;
 	ll idx = 0;
 	while (N) {
-		arr[idx++] = { N % M, K % M };
+		ans = (ans * nCr(N % M, K % M)) % M;
 		N /= M; K /= M;
 	}
-	for (int i = 0; i < idx; i++) ans = (ans * nCr(arr[i].first, arr[i].second) % M) % M;	
 	cout << ans;
 	return 0;
 }
