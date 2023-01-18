@@ -1,51 +1,57 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
 int N;
-vector <long long> arr, compressed, val, tree;
+int arr[500001];
+vector <int> val, tree;
 
-long long query(int node, int start, int end, int left, int right);
-void update(int node, int start, int end, int idx);
+void update(int node, int start, int end, int idx, int val);
+int query(int node, int start, int end, int left, int right);
+
+void solve() {
+	cin >> N;
+	tree.resize(4 * N);
+	for (int i = 1; i <= N; i++) {
+		cin >> arr[i];
+		val.push_back(arr[i]);
+	}
+	sort(val.begin(), val.end());
+	val.erase(unique(val.begin(), val.end()), val.end());
+	for (int i = 1; i <= N; i++) arr[i] = lower_bound(val.begin(), val.end(), arr[i]) - val.begin() + 1;
+	for (int i = 1; i <= N; i++) {
+		cout << i - query(1, 1, N, 1, arr[i] - 1) << '\n';
+		update(1, 1, N, arr[i], 1);
+	}
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	arr.resize(N);
-	compressed.resize(N);
-	val.resize(N);
-	tree.resize(4 * N);
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		val[i] = arr[i];
-	}
-	sort(val.begin(), val.end());
-	for (int i = 0; i < N; i++) compressed[i] = lower_bound(val.begin(), val.end(), arr[i]) - val.begin();
-	for (int i = 0; i < N; i++) {
-		cout << i + 1 - query(1, 0, N - 1, 0, compressed[i] - 1) << '\n';
-		update(1, 0, N - 1, compressed[i]);
-	}
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-long long query(int node, int start, int end, int left, int right) {
-	if (left > end || right < start) return 0;
-	if (left <= start && end <= right) return tree[node];
-	int mid = (start + end) / 2;
-	return query(node * 2, start, mid, left, right) + query(node * 2 + 1, mid + 1, end, left, right);
-}
-
-void update(int node, int start, int end, int idx) {
+void update(int node, int start, int end, int idx, int val) {
 	if (idx > end || idx < start) return;
 	if (start == end) {
-		tree[node] ++;
+		tree[node] += val;
 		return;
 	}
 	int mid = (start + end) / 2;
-	update(node * 2, start, mid, idx);
-	update(node * 2 + 1, mid + 1, end, idx);
+	update(node * 2, start, mid, idx, val);
+	update(node * 2 + 1, mid + 1, end, idx, val);
 	tree[node] = tree[node * 2] + tree[node * 2 + 1];
 	return;
+}
+
+int query(int node, int start, int end, int left, int right) {
+	if (left > end || right < start) return 0;
+	if (left <= start && end <= right) return tree[node];
+	int mid = (start + end) / 2;
+	return (query(node * 2, start, mid, left, right) + query(node * 2 + 1, mid + 1, end, left, right));
 }
