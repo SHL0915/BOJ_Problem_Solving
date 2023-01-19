@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 5432 KB, 시간: 876 ms
+메모리: 5432 KB, 시간: 796 ms
 
 ### 분류
 
@@ -12,36 +12,29 @@
 
 ### 문제 설명
 
-<p>최근 유튜브와 같은 온라인 비디오 스트리밍 서비스 때문에 DVD 대여점들이 자취를 감추고 있다. 이러한 어려운 상황 속에서, DVD 대여점 주인들은 실낱같은 희망을 잡고자 인기있는 N개의 DVD들로 구성된 시리즈를 구매한다(각 DVD들은 0번부터 N-1 까지 이루어져 있다).</p>
+<p>DVD Rental shops are disappearing because of online video streaming. However, a very popular series has just been released and the shops are hoping that this series will boost their popularity. This series consists of n DVDs (numbered from 0 to N-1). </p>
 
-<p>ACM 대여점의 주인 원주연 또한 울며 겨자먹기로 인기있는 시리즈물을 구매했고, 진열을 하기 위해 맞춤형 선반을 주문제작 하였다(맟춤제작이기 때문에 선반의 번호 또한 0번부터 N-1 까지 이루어져 있다). 주연이는 매우 정갈한 사람이기 때문에 DVD를 진열할 때 i번 DVD는 i번 선반에 진열을 한다.</p>
+<p>You own a rental shop and have a specific shelf for this series. There are N slots in this shelf (numbered from 0 to N-1 as well). When you first get this series, you place the DVD number i into the slot number i, obviously. A customer who is a fan of this series will want to rent a sequence of DVDs numbered l to r. Knowing that you have a shelf for this series, the customer will just pick up all DVDs from slot l to r, without checking the actual index of the DVDs.</p>
 
-<p>이 시리즈의 열렬한 팬인 민호는 주연이네 대여점에 시리즈가 입고되었다는 소식을 듣고 찾아왔다. 시리즈물은 연속으로 봐야 흥미가 안떨어지기 때문에 민호는 L번부터 R번까지의 DVD들을 빌리려고 한다. 민호는 주연이가 매우 정갈한 성격인 것임을 알기에 주연이를 믿고 실제 DVD들의 번호를 확인하지 않고 L번 선반부터 R번 선반까지 존재하는 DVD들을 들고 카운터에 가져왔다.</p>
+<p>However, there is one crazy customer who comes into your shop just to swap two DVDs in the slots, i.e., this customer takes a DVD from the slot a and exchanges it with the DVD in the slot b. This causes lots of problems for normal customers since normal customer do not check the index of the DVDs. For no reason, this crazy customer comes to your shop quite often and you don't have enough time to chase him away.</p>
 
-<p>그러나, 민호는 간과한 사실이 있다. 주연이네 대여점에는 진상 손님인 진일이가 찾아온다는 것이였다. 진일이는 선반 A 에 있는 DVD와 선반 B에 있는 DVD를 서로 바꿔 놓는다. 이러한 진일이의 몰상식한 행동때문에 민호와 같이 주연이를 믿고 DVD의 번호를 확인 안하는 선량한 고객들이 피해를 입는 사례들이 속출하였다. 아무 이유가 없는 묻지마 테러로 인해 가게매출이 떨어질 위기에 처하자 주연이는 진일이가 보일때마다 쫒아 냈지만, 시도때도없이 찾아오는 진일이의 진상짓을 막기에는 역부족이였다.</p>
+<p>Your task is to write a program that monitors the activities in this shop and indicates whether a renting customer actually get the DVDs she wants, i.e., the customer actually get the DVDs numbered l to r. Be noted that the DVDs may be in any order, we just want to know if the customer get the DVDs numbered l to r. For example, let us assume that a customer comes to get DVDs from slot 2 to 4 and the slot 2, 3 and 4 have DVDs numbered 4, 2, and 3, respectively, we will say that the customer get what she wants.</p>
 
-<p>이러한 주연이를 보고 안타까운 마음이 든 민호는 주연이를 위해 프로그램을 작성하기로 결심을 한다. 의욕이 넘치는 민호의 마음과는 달리 실력이 따라주지 못해 프로그램의 기능은 조촐하기만 하다. 프로그램의 기능은 다음과 같다.</p>
-
-<ol>
-	<li>손님이 L번 선반부터 R번 선반까지에 있는 DVD들을 가져 왔을때 실제로 DVD가 L번부터 R번까지 있나 확인을 해 줄 수 있다.</li>
-	<li>DVD의 순서는 상관이 없다. 예를 들어 손님이 2번 선반부터 4번 선반까지에 있는 DVD를 가져왔을 때 DVD가 2, 3, 4 순서로 진열되어 있건, 4, 2, 3 순서로 진열되어 있건 상관이 없다는 얘기다. 즉 L번부터 R번까지의 DVD가 있으면 된다.</li>
-</ol>
-
-<p>문제의 단순화를위해 고객이 DVD를 빌려가면, 그 즉시 시청한뒤 바로 반납한다고 가정한다. 또한 가져다 놓는 위치는 빌리기 전과 동일하다(4, 3, 2 순서로 진열되어 있었으면 다시 4, 3, 2 순서로 진열한다).</p>
+<p>For simplicity, we will assume that when a customer rents the DVDs, she will immediately watch all of it and place it back into the same slot they are taken. In other words, renting DVDs has no effect on the position of the DVDs at all. </p>
 
 ### 입력 
 
- <p>첫 번째 줄에는 테스트 케이스의 수 T가 주어진다. (T ≤ 20 인 자연수)</p>
+ <p>First line of input is a number of test cases T ≤ 20. </p>
 
-<p>각각의 테스트 케이스 첫 번째 줄에는 DVD들의 수를 의미하는 정수 N 과 대여점에서 일어나는 사건의 수를 의미하는 정수 K 가 주어진다. (1 ≤ N ≤ 100,000 , 1 ≤ K ≤ 50,000)</p>
+<p>The first line of each test case contains two integer N and K (1 ≤ N ≤ 100 000, 1 ≤ K ≤ 50 000) which gives the number of DVDs and the number of activities that happens in the shops, respectively. </p>
 
-<p>이어서 대여점에서 일어나는 사건 K 개가 주어진다. 각각의 줄은 세 정수 Q, A, B 을 포함한다. (Q는 0또는 1이고, 0 ≤ A ≤ B < N )</p>
+<p>Following K lines describes the activities in the shop in the order that they happen. Each line contains three integers q, a and b (q is either 0 or 1 and 0 ≤ a ≤ b < N) </p>
 
-<p>Q는 0 일때, 진상 손님 진일이가 선반 A의 DVD와 선반 B의 DVD를 서로 바꿔 끼우는 사건을 의미한다. </p>
+<p>When q is 0, the activity is that a crazy customer comes in to swap DVDs in the slot number a and b. </p>
 
-<p>Q가 1 일때는 손님이 선반 A부터 선반 B에 있는 DVD를 카운터에 가져오는 사건을 의미한다. 위에서도 언급했듯이 이 사건이 DVD들의 위치를 바꾸는 일은 일어나지 않는다.</p>
+<p>When q is 1, a renting activity happens. A normal customer who needs DVD numbered a to b comes in and get DVDs from slot a to b. As noted earlier, this customer immediately uses the DVDs and returns it to the same slot (there is no change to the DVDs for this activity). </p>
 
 ### 출력 
 
- <p>손님이 DVD를 카운터에 가져왔을 때 손님이 원하는 DVD가 전부 존재하면, (A번 선반부터 B번 선반까지에 있는 DVD를 전부 가져왔을 때 순서에 상관없이 A번 DVD부터 B번 DVD까지 있다면) "YES"를 출력하고, 그렇지 않다면 "NO"를 출력한다.</p>
+ <p>For each renting activity, display a line with a word “YES” when the customer gets what she wants, i.e., when slot a to b have DVDs numbered a to b, and display a word “NO” in any other case.</p>
 
