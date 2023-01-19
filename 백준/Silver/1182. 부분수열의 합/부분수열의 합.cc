@@ -3,24 +3,22 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, S;
+int N, S, ans;
 int arr[21];
 
 void solve() {
 	cin >> N >> S;
-	int cnt = 0;
 	for (int i = 0; i < N; i++) cin >> arr[i];
 	for (int i = 1; i < (1 << N); i++) {
-		int sum = 0;
-		int bit = 1, idx = 0;
+		int bit = 1, idx = 0, sum = 0;
 		while (bit <= i) {
-			if (i & bit) sum += arr[idx];
-			bit <<= 1;
+			if (bit & i) sum += arr[idx];
 			idx++;
+			bit <<= 1;
 		}
-		if (sum == S) cnt++;
+		if (sum == S) ans++;
 	}
-	cout << cnt;
+	cout << ans << '\n';
 	return;
 }
 
