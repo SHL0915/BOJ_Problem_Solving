@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 1116 KB, 시간: 8 ms
+메모리: 2024 KB, 시간: 0 ms
 
 ### 분류
 
@@ -12,23 +12,23 @@
 
 ### 문제 설명
 
-<p>트럭을 타고 이동하던 상근이는 경찰의 검문을 받게 되었다. 경찰은 상근이가 운반하던 화물을 하나하나 모두 확인할 것이기 때문에, 검문하는데 엄청나게 오랜 시간이 걸린다.</p>
+<p>Luka started driving international routes with his truck. His biggest problem is the border with Slovenia. The border is a point of entrance into the European Union, so every truck is thoroughly examined. Because of this, Luka always has to wait several hours there. To kill the time, he comes up with various logic and math games. </p>
 
-<p>상근이는 시간을 때우기 위해서 수학 게임을 하기로 했다.</p>
+<p>In one of them, Luka first reads the numbers off of N license plates and writes them down on a piece of paper. Then he tries to find an integer M greater than 1 such that all integers on the paper give the same remainder when divided by M. Luka tries to find as many such integers M as possible. </p>
 
-<p>먼저 근처에 보이는 숫자 N개를 종이에 적는다. 그 다음, 종이에 적은 수를 M으로 나누었을 때, 나머지가 모두 같게 되는 M을 모두 찾으려고 한다. M은 1보다 커야 한다.</p>
-
-<p>N개의 수가 주어졌을 때, 가능한 M을 모두 찾는 프로그램을 작성하시오.</p>
+<p>Write a program that, given Luka's N integers, determines all such integers M. </p>
 
 ### 입력 
 
- <p>첫째 줄에 종이에 적은 수의 개수 N이 주어진다. (2 ≤ N ≤ 100)</p>
+ <p>The first line contains the integer N (2 ≤ N ≤ 100), the number of integers on paper. </p>
 
-<p>다음 줄부터 N개 줄에는 종이에 적은 수가 하나씩 주어진다. 이 수는 모두 1보다 크거나 같고, 1,000,000,000보다 작거나 같은 자연수이다. 같은 수가 두 번 이상 주어지지 않는다.</p>
+<p>Each of the following N lines contains one integer between 1 and 1 000 000 000 (one billion). All these integers will be distinct. </p>
 
-<p>항상 M이 하나 이상 존재하는 경우만 입력으로 주어진다.</p>
+<p>The input data will guarantee that at least one integer M will always exist. </p>
 
 ### 출력 
 
- <p>첫째 줄에 가능한 M을 공백으로 구분하여 모두 출력한다. 이때, M은 증가하는 순서이어야 한다.</p>
+ <p>Output all integers M separated by spaces, in any order. </p>
+
+<p> </p>
 
