@@ -1,81 +1,57 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
+const int INF = 0x3f3f3f3f;
 
-int N, minNum = 0;
-int coins[20][20];
-int temp1[20][20];
-int temp2[20][20];
+int N, ans = INF;
+int org[21][21];
+int mark[21];
 
-void FlipRow(int bit);
-void FlipColumn();
+void BF();
 
-int main(void) {
+void solve() {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
-		string s;
-		cin >> s;
+		string s; cin >> s;
 		for (int j = 0; j < N; j++) {
-			if (s[j] == 'H') coins[i][j] = 0;
-			else {
-				coins[i][j] = 1;
-				minNum++;
-			}
+			if (s[j] == 'H') org[i][j] = 1;
+			else org[i][j] = 0;
 		}
 	}
-	int last = (1 << N);
-	for (int i = 0; i < last; i++) {
-		int bit = i;
-		FlipRow(bit);
-	}
-	cout << minNum;
-	return 0;
-}
-
-void FlipRow(int bit) {
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			temp1[i][j] = coins[i][j];
+	for (int i = 0; i < (1 << N); i++) {
+		int bit = 1, idx = 0;
+		memset(mark, 0, sizeof(mark));
+		while (bit <= i) {
+			if (bit & i) mark[idx] = 1;
+			idx++;
+			bit <<= 1;
 		}
+		BF();
 	}
-	int row = 0;
-	while (bit) {
-		if (bit & 1) {
-			for (int i = 0; i < N; i++) {
-				temp1[row][i] += 1;
-				temp1[row][i] %= 2;
-			}
-		}
-		bit = bit >> 1;
-		row++;
-	}
-	FlipColumn();
+	cout << ans;
 	return;
 }
 
-void FlipColumn() {
-	int sum;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			temp2[i][j] = temp1[i][j];
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
+	return 0;
+}
+
+void BF() {
+	int sum = 0;
+	for (int i = 0; i < N; i++) { // 행
+		int cnt = 0;
+		for (int j = 0; j < N; j++) { // 열
+			if (mark[j]) cnt += org[j][i] ^ 1;
+			else cnt += org[j][i];
 		}
+		sum += min(cnt, N - cnt);
 	}
-	for (int i = 0; i < N; i++) {
-		sum = 0;
-		for (int j = 0; j < N; j++)
-			sum += temp2[j][i];
-		if (sum > N / 2) {
-			for (int j = 0; j < N; j++) {
-				temp2[j][i] += 1;
-				temp2[j][i] %= 2;
-			}
-		}		
-	}
-	sum = 0;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++)
-			sum += temp2[i][j];		
-	}
-	minNum = min(minNum, sum);
+	ans = min(ans, sum);
 	return;
 }
