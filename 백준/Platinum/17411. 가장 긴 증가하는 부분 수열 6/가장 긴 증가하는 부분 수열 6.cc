@@ -29,9 +29,9 @@ void solve() {
 		q.first++;
 		q.second = max(q.second, 1);
 		update(1, 1, N, arr[i], q);
-		ans = max(ans, q);
 	}
-	cout << tree[1].first << " " << tree[1].second;
+	ans = query(1, 1, N, 1, N);
+	cout << ans.first << " " << ans.second;
 	return;
 }
 
