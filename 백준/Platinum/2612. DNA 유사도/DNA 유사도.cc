@@ -19,15 +19,15 @@ void solve() {
 	int a = 0, b = 0, c = 0;
 	string ans_a = "", ans_b = "";
 	while (1) {
-		pair<pii, int> temp = ans[a][b][c];		
-		if (temp.second == 1) {
-			if (temp.first.first == a + 1) ans_a += A[a];
-			if (temp.first.second == b + 1) ans_b += B[b];
+		pair<pii, int> p = ans[a][b][c];		
+		if (p.second == 1) {
+			if (p.first.first == a + 1) ans_a += A[a];
+			if (p.first.second == b + 1) ans_b += B[b];
 		}		
-		a = temp.first.first;
-		b = temp.first.second;
-		if (c == 1 && temp.second == -1) break;
-		c = temp.second;
+		a = p.first.first;
+		b = p.first.second;
+		if (p.second == -1) break;
+		c = p.second;
 		if (a >= N || b >= M) break;
 	}
 	cout << ans_a << '\n' << ans_b;
