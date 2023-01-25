@@ -23,16 +23,11 @@ void solve() {
 		if (i % 2 == 0) ans[i] = max(ans[i], ans[i + 2]);
 	}	
 	for (int i = 1; i <= N; i++) {
-		if (i % 2) {
-			if (len >= i) cout << 2 << '\n';
-			else cout << 1 << '\n';
-		}
-		else {
-			int temp;
-			if (len >= i) temp = 2;
-			else temp = 1;
-			cout << max(ans[i], temp) << '\n';
-		}
+		int output;
+		if (len >= i) output = 2;
+		else output = 1;
+		if (i % 2) cout << output << '\n';
+		else cout << max(output, ans[i]) << '\n';
 	}	
 	return;
 }
@@ -61,10 +56,9 @@ pii DFS(int node, int par, int level) {
 		v.push_back({ level + 1,0 });
 		sort(v.begin(), v.end());
 		for (int i = 0; i < v.size(); i++) {
-			int now = v[i].first - 1;
+			int now = v[i].first - 1, cnt = v.size() - i;
 			if (now < 1) continue;
 			if (now * 2 > N) break;
-			int cnt = v.size() - i;
 			ans[now * 2] = max(ans[now * 2], cnt);
 		}
 	}
