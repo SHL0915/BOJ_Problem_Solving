@@ -1,44 +1,54 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
+const int INF = 0x3f3f3f3f;
 
-int N, ans;
-vector <int> tree[1000001];
+int N;
+vector <int> graph[1000001];
 int table[1000001][2];
 
-int DFS(int node, int parent, int type);
+int DP(int node, int mode, int par);
+
+void solve() {
+	cin >> N;
+	for (int i = 0; i < N - 1; i++) {
+		int a, b;
+		cin >> a >> b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+	memset(table, -1, sizeof(table));
+	cout << min(DP(1, 0, -1), DP(1, 1, -1));
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	for (int i = 0; i < N - 1; i++) {
-		int u, v;
-		cin >> u >> v;
-		tree[u].push_back(v);
-		tree[v].push_back(u);
-	}	
-	for (int i = 1; i <= N; i++) {
-		table[i][0] = -1;
-		table[i][1] = -1;
-	}
-	ans = min(DFS(1, 1, 1), DFS(1, 1, 0));
-	cout << ans;
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-int DFS(int node, int parent, int type) {
-	if (table[node][type] != -1) return table[node][type];
-	int A = 0, B = 0;
-	for (int i = 0; i < tree[node].size(); i++) {
-		if (tree[node][i] != parent) A += DFS(tree[node][i], node, 1);		
+int DP(int node, int mode, int par) {
+	int& ret = table[node][mode];
+	if (ret != -1) return ret;
+	ret = mode;
+	if (mode) {
+		for (int i = 0; i < graph[node].size(); i++) {
+			int next = graph[node][i];
+			if (next == par) continue;
+			ret += min(DP(next, 0, node), DP(next, 1, node));
+		}
 	}
-	if(type == 1) {
-		for (int i = 0; i < tree[node].size(); i++) {
-			if (tree[node][i] != parent) B += min(DFS(tree[node][i], node, 0), DFS(tree[node][i], node, 1));
-		}		
+	else {
+		for (int i = 0; i < graph[node].size(); i++) {
+			int next = graph[node][i];
+			if (next == par) continue;
+			ret += DP(next, 1, node);
+		}
 	}
-	if (type == 0) table[node][type] = A;
-	else table[node][type] = 1 + B;
-	return table[node][type];
+	return ret;
 }
