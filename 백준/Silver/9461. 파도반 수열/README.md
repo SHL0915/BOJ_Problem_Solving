@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 1124 KB, 시간: 0 ms
+메모리: 2020 KB, 시간: 0 ms
 
 ### 분류
 
@@ -12,17 +12,17 @@
 
 ### 문제 설명
 
-<p><img alt="" src="" style="float:right; height:182px; width:289px">오른쪽 그림과 같이 삼각형이 나선 모양으로 놓여져 있다. 첫 삼각형은 정삼각형으로 변의 길이는 1이다. 그 다음에는 다음과 같은 과정으로 정삼각형을 계속 추가한다. 나선에서 가장 긴 변의 길이를 k라 했을 때, 그 변에 길이가 k인 정삼각형을 추가한다.</p>
+<p><img alt="" src="https://www.acmicpc.net/upload/images/pandovan.png" style="float:right; height:182px; width:289px">Consider the spiral of triangles shown in Figure 1. It starts with an equilateral triangle, that is, a triangle whose side lengths are the same, of side length 1 and it is extended by adding equilateral triangles repeatedly as follows: An equilateral triangle of side length k is added to the longest side of a spiral, where k is the length of the longest side of the spiral. </p>
 
-<p>파도반 수열 P(N)은 나선에 있는 정삼각형의 변의 길이이다. P(1)부터 P(10)까지 첫 10개 숫자는 1, 1, 1, 2, 2, 3, 4, 5, 7, 9이다.</p>
-
-<p>N이 주어졌을 때, P(N)을 구하는 프로그램을 작성하시오.</p>
+<p>Then, the Padovan sequence P(N) is the sequence of side lengths of the equilateral triangles in the spiral. The first 10 values P(1) through P(10) are 1, 1, 1, 2, 2, 3, 4, 5, 7, 9. <br>
+ <br>
+Given a positive integer N, write a program to compute P(N).</p>
 
 ### 입력 
 
- <p>첫째 줄에 테스트 케이스의 개수 T가 주어진다. 각 테스트 케이스는 한 줄로 이루어져 있고, N이 주어진다. (1 ≤ N ≤ 100)</p>
+ <p>Your program is to read from standard input. The input consists of T test cases. The number of test cases T is given in the first line of the input. Each test case consists of one line containing an integer N (1 ≤ N ≤ 100).</p>
 
 ### 출력 
 
- <p>각 테스트 케이스마다 P(N)을 출력한다.</p>
+ <p>Your program is to write to standard output. Print exactly one line for each test case. The line should contain P(N).</p>
 
