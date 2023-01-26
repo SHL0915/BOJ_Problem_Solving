@@ -1,36 +1,32 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, ans, temp;
-int arr[100000];
-int table[100000][2];
+int N, ans;
+int arr[100001];
+int A[100001], B[100001];
+
+void solve() {
+	cin >> N;
+	for (int i = 0; i < N; i++) cin >> arr[i];
+	for (int i = 0; i < N; i++) {
+		A[i] = 1, B[i] = 1;
+		if (i) {
+			if (arr[i] >= arr[i - 1]) A[i] = max(A[i], A[i - 1] + 1);
+			if (arr[i] <= arr[i - 1]) B[i] = max(B[i], B[i - 1] + 1);
+		}
+		ans = max({ ans, A[i], B[i] });
+	}
+	cout << ans;
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	for (int i = 0; i < N; i++) cin >> arr[i];
-	table[0][0] = 1;
-	table[0][1] = 1;
-	for (int i = 1; i < N; i++) {
-		if (arr[i] == arr[i - 1]) {
-			table[i][0] = table[i - 1][0] + 1;
-			table[i][1] = table[i - 1][1] + 1;
-		}
-		else if (arr[i] > arr[i - 1]) {
-			table[i][0] = table[i - 1][0] + 1;
-			table[i][1] = 1;
-		}
-		else {
-			table[i][0] = 1;
-			table[i][1] = table[i - 1][1] + 1;
-		}
-	}
-	for (int i = 0; i < N; i++) {
-		ans = max(ans, table[i][0]);
-		ans = max(ans, table[i][1]);
-	}
-	cout << ans;
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
