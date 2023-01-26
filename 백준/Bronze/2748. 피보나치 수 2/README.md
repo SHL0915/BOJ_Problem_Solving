@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 1116 KB, 시간: 0 ms
+메모리: 2020 KB, 시간: 0 ms
 
 ### 분류
 
@@ -12,21 +12,17 @@
 
 ### 문제 설명
 
-<p>피보나치 수는 0과 1로 시작한다. 0번째 피보나치 수는 0이고, 1번째 피보나치 수는 1이다. 그 다음 2번째 부터는 바로 앞 두 피보나치 수의 합이 된다.</p>
+<p>The Fibonacci sequence is calculated by adding the previous two numbers of the sequence. The first two numbers in the Fibonacci number are 0 and 1.</p>
 
-<p>이를 식으로 써보면 F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub> (n ≥ 2)가 된다.</p>
+<p>The sequence Fn of Fibonacci numbers is defined by the recurrence relation: F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub> (n ≥ 2).</p>
 
-<p>n=17일때 까지 피보나치 수를 써보면 다음과 같다.</p>
-
-<p>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597</p>
-
-<p>n이 주어졌을 때, n번째 피보나치 수를 구하는 프로그램을 작성하시오.</p>
+<p>Given an integer n, write a program which prints nth Fibonacci number.</p>
 
 ### 입력 
 
- <p>첫째 줄에 n이 주어진다. n은 90보다 작거나 같은 자연수이다.</p>
+ <p>The first line contains one integer n. (1 ≤ n ≤ 90)</p>
 
 ### 출력 
 
- <p>첫째 줄에 n번째 피보나치 수를 출력한다.</p>
+ <p>Output one line of one integer, nth Fibonacci number.</p>
 
