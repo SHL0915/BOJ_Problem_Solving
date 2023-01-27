@@ -16,7 +16,6 @@ void solve() {
 				cout << "Zzz";
 				return;
 			}
-			if (i == N - 1) continue;
 			if (b > M) {	
 				flag = 1;
 				continue;
