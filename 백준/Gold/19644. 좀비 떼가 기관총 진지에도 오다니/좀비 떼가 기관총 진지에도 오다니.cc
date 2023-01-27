@@ -1,35 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, len, damage, C;
-ll arr[3000001];
-ll psum[3000001];
+ll L, len, damage, C;
+int psum[3000001];
+
+void solve() {
+	cin >> L >> len >> damage >> C;
+	for (int i = 1; i <= L; i++) {
+		int a; cin >> a;
+		ll now = (psum[i - 1] - psum[max(0LL, i - len)]) * damage;
+		if (a > now + damage) {
+			if (C) C--;
+			else {
+				cout << "NO";
+				return;
+			}
+		}
+		else psum[i] = 1;
+		psum[i] += psum[i - 1];
+	}
+	cout << "YES";
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	cin >> len >> damage;
-	cin >> C;
-	for (int i = 1; i <= N; i++) cin >> arr[i];
-	for (int i = 1; i <= N; i++) {
-		ll now = psum[i - 1] - psum[max(0, i - len)];
-		if (arr[i] <= now + damage) {
-			psum[i] = psum[i - 1] + damage;
-			continue;
-		}
-		else {
-			if (C) {
-				C--;
-				psum[i] = psum[i - 1];
-			}
-			else {
-				cout << "NO";
-				return 0;
-			}
-		}
-	}
-	cout << "YES";
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
