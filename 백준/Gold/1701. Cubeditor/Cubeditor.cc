@@ -1,37 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
+string S;
 int ans;
-string s;
-int pi[5000];
+int pi[5001];
 
-void init() {
-	for (int i = 0; i < s.length(); i++) pi[i] = 0;
+void makePi(string s);
+
+void solve() {
+	cin >> S;
+	while (S.length()) {
+		makePi(S);
+		memset(pi, 0, sizeof(pi));
+		S.erase(S.begin());
+	}
+	cout << ans;
+	return;
 }
-void makepi(string str);
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> s;
-	int len = s.length();
-	for (int i = 0; i < len; i++) {
-		init();
-		makepi(s);
-		for (int i = 0; i < s.length(); i++) ans = max(ans, pi[i]);
-		s.erase(s.begin());
-	}
-	cout << ans;
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-void makepi(string str) {
-	int n = str.length();
-	int pos = 1, k = 0;
+void makePi(string s) {
+	int n = s.length(), pos = 1, k = 0;
 	while (pos + k < n) {
-		if (str[pos + k] == str[k]) {
+		if (s[pos + k] == s[k]) {
 			k++;
 			pi[pos + k - 1] = k;
+			ans = max(ans, pi[pos + k - 1]);
 		}
 		else {
 			if (k == 0) pos++;
@@ -41,4 +45,5 @@ void makepi(string str) {
 			}
 		}
 	}
+	return;
 }

@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 2176 KB, 시간: 92 ms
+메모리: 2176 KB, 시간: 80 ms
 
 ### 분류
 
@@ -12,21 +12,17 @@ KMP(kmp), 문자열(string)
 
 ### 문제 설명
 
-<p>Cubelover는 프로그래밍 언어 Whitespace의 코딩을 도와주는 언어인 Cubelang을 만들었다. Cubelang을 이용해 코딩을 하다보니, 점점 이 언어에 맞는 새로운 에디터가 필요하게 되었다. 오랜 시간 고생한 끝에 새로운 에디터를 만들게 되었고, 그 에디터의 이름은 Cubeditor이다.</p>
+<p><img alt="" src="https://www.acmicpc.net/upload/images/editor(1).png" style="float:right; height:195px; width:304px">Mr. Kim is a professional programmer. Recently he wants to design a new editor which has as many functions as possible. Most editors support a simple search function that finds one occurrence (or all occurrences successively) of a query pattern string in the text. </p>
 
-<p>텍스트 에디터는 찾기 기능을 지원한다. 대부분의 에디터는 찾으려고 하는 문자열이 단 한 번만 나와도 찾는다. Cubelover는 이 기능은 Cubelang에 부적합하다고 생각했다. Cubelang에서 필요한 기능은 어떤 문자열 내에서 부분 문자열이 두 번 이상 나오는 문자열을 찾는 기능이다. 이때, 두 부분 문자열은 겹쳐도 된다.</p>
+<p>He observed that the search function in commercial editors does nothing if no query pattern is given. His idea of a new search function regards each substring of the given text as a query pattern string itself and his new function finds another occurrence in the text. The problem is that there can be occurrences of many substrings in the text. So, Mr. Kim decides that the new function finds only occurrences of the longest substring in the text in order to remedy the problem. A formal definition of the search function is as follows: </p>
 
-<p>예를 들어, abcdabc에서 abc는 두 번 나오기 때문에 검색이 가능하지만, abcd는 한 번 나오기 때문에 검색이 되지를 않는다.</p>
-
-<p>이렇게 어떤 문자열에서 두 번 이상 나오는 부분 문자열은 매우 많을 수도 있다. 이러한 부분 문자열 중에서 가장 길이가 긴 것을 구하는 프로그램을 작성하시오.</p>
-
-<p>예를 들어, abcabcabc에서 abc는 세 번 나오기 때문에 검색할 수 있다. 또, abcabc도 두 번 나오기 때문에 검색할 수 있다. 하지만, abcabca는 한 번 나오기 때문에 검색할 수 없다. 따라서, 두 번 이상 나오는 부분 문자열 중에서 가장 긴 것은 abcabc이기 때문에, 이 문자열이 답이 된다.</p>
+<p>Given a text string S, find the longest substring in text string S such that the substring appears at least twice. The two occurrences are allowed to overlap. </p>
 
 ### 입력 
 
- <p>첫째 줄에 문자열이 주어진다. 문자열의 길이는 최대 5,000이고, 문자열은 모두 소문자로만 이루어져 있다.</p>
+ <p>Your program is to read from standard input. A text string S is given in one line. The length of S is less than or equal to 5,000 and the alphabet ∑ is the set of lowercase English characters. </p>
 
 ### 출력 
 
- <p>입력에서 주어진 문자열의 두 번이상 나오는 부분문자열 중에서 가장 긴 길이를 출력한다.</p>
+ <p>Your program is to write to standard output. Print the length of the longest substring in text string S such that the substring appears at least twice. </p>
 
