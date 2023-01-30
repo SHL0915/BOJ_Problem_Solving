@@ -1,19 +1,20 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
+void solve() {
+	int A, B;
+	cin >> A >> B;
+	cout << A + B << '\n';
+	return;
+}
 
-int main(void)
-{
-	int T, A, B, i;
-
-
-	scanf("%d", &T);
-
-	for (i = 0; i < T; i++)
-	{
-		scanf("%d %d", &A, &B);
-		printf("%d\n", A + B);
-	}
-
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	cin >> t;
+	while (t--) solve();
 	return 0;
 }
