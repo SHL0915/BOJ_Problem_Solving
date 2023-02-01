@@ -1,83 +1,95 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> pii;
+using ll = long long;
+using pii = pair<ll, ll>;
 
-int N, ans, cnt;
-pair<pii, pii> L[3000];
-int parent[3000];
-int sz[3000];
-int mark[3000];
+int N, cnt, ans;
+pair<pii, pii> arr[3001];
+int parent[3001];
+int sz[3001];
+int mark[3001];
 
-int func(pair<pii, pii> A, pair<pii, pii> B);
-int CCW(pii A, pii B, pii C);
-int Find(int node);
-void Union(int A, int B);
+int Find(int a);
+void Union(int a, int b);
+ll CCW(pii a, pii b, pii c);
+pii sub(pii a, pii b);
+bool check(pair<pii, pii> a, pair<pii, pii> b);
+
+
+void solve() {
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i].first.first >> arr[i].first.second >> arr[i].second.first >> arr[i].second.second;
+		parent[i] = i;
+		sz[i] = 1;
+	}
+	for (int i = 0; i < N; i++) {
+		for (int j = i + 1; j < N; j++) {
+			if (Find(i) == Find(j)) continue;
+			else if (check(arr[i], arr[j])) Union(i, j);
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		int now = Find(i);
+		if (mark[now] == 0) {
+			mark[now] = 1;
+			cnt++;
+			ans = max(ans, sz[now]);
+		}
+	}
+	cout << cnt << '\n' << ans;
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> N;
-	for (int i = 0; i < N; i++) {
-		parent[i] = i;
-		sz[i] = 1;
-		cin >> L[i].first.first >> L[i].first.second >> L[i].second.first >> L[i].second.second;
-	}
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			if (i == j) continue;
-			if (func(L[i], L[j])) {
-				int A = Find(i), B = Find(j);
-				Union(A, B);
-			}
-		}
-	}
-	for (int i = 0; i < N; i++) {
-		ans = max(ans, sz[i]);
-		if (mark[Find(i)] == 0) {
-			cnt++;
-			mark[Find(i)] = 1;
-		}
-	}
-	cout << cnt << '\n' << ans;
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-int func(pair<pii, pii> A, pair<pii, pii> B) {
-	pii p1 = A.first, p2 = A.second, p3 = B.first, p4 = B.second;
-	int ccw1 = CCW(p1, p2, p3) * CCW(p1, p2, p4);
-	int ccw2 = CCW(p3, p4, p1) * CCW(p3, p4, p2);
-	if (ccw1 == 0 && ccw2 == 0) {
-		if (p1 > p2) swap(p1, p2);
-		if (p3 > p4) swap(p3, p4);
-		return (p1 <= p4 && p3 <= p2);
-	}
-	else return (ccw1 <= 0 && ccw2 <= 0);
+int Find(int a) {
+	if (parent[a] == a) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
 
-int CCW(pii A, pii B, pii C) {
-	long long a = A.first * B.second + B.first * C.second + C.first * A.second;
-	long long b = B.first * A.second + C.first * B.second + A.first * C.second;
-	if (a > b) return 1;
-	else if (a == b) return 0;
-	else return -1;
-}
-
-int Find(int node) {
-	if (node == parent[node]) return parent[node];
-	else return parent[node] = Find(parent[node]);
-}
-
-void Union(int A, int B) {
-	A = Find(A);
-	B = Find(B);
-	if (A == B) return;
-	if (A > B) {
-		parent[A] = B;
-		sz[B] += sz[A];
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) {
+		parent[a] = b;
+		sz[b] += sz[a];
 	}
 	else {
-		parent[B] = A;
-		sz[A] += sz[B];
+		parent[b] = a;
+		sz[a] += sz[b];
 	}
 	return;
+}
+
+ll CCW(pii a, pii b, pii c) {
+	pii u = sub(b, a);
+	pii v = sub(c, b);
+	ll ret = u.first * v.second - u.second * v.first;
+	if (ret) ret /= abs(ret);
+	return ret;
+}
+
+pii sub(pii a, pii b) {
+	return { a.first - b.first, a.second - b.second };
+}
+
+bool check(pair<pii, pii> a, pair<pii, pii> b) {
+	ll ccw1 = CCW(a.first, a.second, b.first) * CCW(a.first, a.second, b.second);
+	ll ccw2 = CCW(b.first, b.second, a.first) * CCW(b.first, b.second, a.second);
+	if (ccw1 == 0 && ccw2 == 0) {
+		if (a.first > a.second) swap(a.first, a.second);
+		if (b.first > b.second) swap(b.first, b.second);
+		return (a.first <= b.second && b.first <= a.second);
+	}
+	else if (ccw1 <= 0 && ccw2 <= 0) return true;
+	else return false;
 }
