@@ -13,8 +13,8 @@ void solve() {
 	cin >> B.first >> B.second;
 	cin >> C.first >> C.second;
 	cin >> D.first >> D.second;
-	int ccw1 = CCW(A, B, C) * CCW(A, B, D);
-	int ccw2 = CCW(C, D, A) * CCW(C, D, B);
+	ll ccw1 = CCW(A, B, C) * CCW(A, B, D);
+	ll ccw2 = CCW(C, D, A) * CCW(C, D, B);
 	if (ccw1 == 0 && ccw2 == 0) {
 		if (A > B) swap(A, B);
 		if (C > D) swap(C, D);
@@ -44,5 +44,5 @@ ll CCW(pii a, pii b, pii c) {
 }
 
 pii sub(pii a, pii b) {
-	return { a.first - b.first, a.second - b.second };
+	return { a.first - b.first , a.second - b.second };
 }
