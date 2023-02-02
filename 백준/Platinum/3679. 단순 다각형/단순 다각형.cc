@@ -17,13 +17,16 @@ void solve() {
 		cin >> arr[i].first.first >> arr[i].first.second;
 		arr[i].second = i;
 	}
+
 	sort(arr, arr + N);
 	sort(arr + 1, arr + N, cmp);
+	
 	int ptr = N - 1;
 	while (1) {
 		if (CCW(arr[0].first, arr[ptr].first, arr[ptr - 1].first) == 0) ptr--;
 		else break;
 	}
+
 	for (int i = 0; i < ptr; i++) cout << arr[i].second << " ";
 	for (int i = N - 1; i >= ptr; i--) cout << arr[i].second << " ";
 	cout << '\n';
@@ -40,13 +43,14 @@ int main(void) {
 }
 
 bool cmp(pair<pii, int> a, pair<pii, int> b) {
-	if (CCW(arr[0].first, a.first, b.first)) return CCW(arr[0].first, a.first, b.first) > 0;
+	ll ccw = CCW(arr[0].first, a.first, b.first);
+	if (ccw) return ccw > 0;
 	else return dist(arr[0].first, a.first) < dist(arr[0].first, b.first);
 }
 
 ll CCW(pii a, pii b, pii c) {
 	pii u = sub(b, a);
-	pii v = sub(c, a);
+	pii v = sub(c, b);
 	ll ret = u.first * v.second - u.second * v.first;
 	if (ret) ret /= abs(ret);
 	return ret;
