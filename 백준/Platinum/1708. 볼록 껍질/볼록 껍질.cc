@@ -13,23 +13,18 @@ pii sub(pii a, pii b);
 void solve() {
 	cin >> N;
 	for (int i = 0; i < N; i++) cin >> arr[i].first >> arr[i].second;
-
 	sort(arr, arr + N);
 	sort(arr + 1, arr + N, cmp);
-
 	vector <pii> ans;
 	ans.push_back(arr[0]);
 	ans.push_back(arr[1]);
-
 	for (int i = 2; i < N; i++) {
 		pii c = arr[i];
-		while (ans.size() - 1) {
+		while (ans.size() >= 2) {
 			pii b = ans.back();
 			ans.pop_back();
-
 			pii a = ans.back();
-
-			if (CCW(b, c, a) > 0) {
+			if (CCW(a, b, c) > 0) {
 				ans.push_back(b);
 				break;
 			}
@@ -57,12 +52,12 @@ bool cmp(pii a, pii b) {
 
 ll CCW(pii a, pii b, pii c) {
 	pii u = sub(b, a);
-	pii v = sub(c, b);
+	pii v = sub(c, a);
 	ll ret = u.first * v.second - u.second * v.first;
 	if (ret) ret /= abs(ret);
 	return ret;
 }
 
 pii sub(pii a, pii b) {
-	return { a.first - b.first, a.second - b.second };
+	return { a.first - b.first , a.second - b.second };
 }
