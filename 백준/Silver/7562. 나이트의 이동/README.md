@@ -12,17 +12,23 @@
 
 ### 문제 설명
 
-<p>체스판 위에 한 나이트가 놓여져 있다. 나이트가 한 번에 이동할 수 있는 칸은 아래 그림에 나와있다. 나이트가 이동하려고 하는 칸이 주어진다. 나이트는 몇 번 움직이면 이 칸으로 이동할 수 있을까?</p>
+<p>Mr Somurolov, fabulous chess-gamer indeed, asserts that no one else but him can move knights from one position to another so fast. Can you beat him?</p>
 
-<p><img alt="" src="https://www.acmicpc.net/upload/images/knight.png" style="height:172px; width:175px"></p>
+<p>Your task is to write a program to calculate the minimum number of moves needed for a knight to reach one point from another, so that you have the chance to be faster than Somurolov.</p>
+
+<p>For people not familiar with chess, the possible knight moves are shown in Figure 1.</p>
+
+<p><img alt="" src="" style="height:172px; width:175px"></p>
+
+<p>Figure 1: Possible knight moves on the board.</p>
 
 ### 입력 
 
- <p>입력의 첫째 줄에는 테스트 케이스의 개수가 주어진다.</p>
+ <p>The input begins with the number n of scenarios on a single line by itself.</p>
 
-<p>각 테스트 케이스는 세 줄로 이루어져 있다. 첫째 줄에는 체스판의 한 변의 길이 l(4 ≤ l ≤ 300)이 주어진다. 체스판의 크기는 l × l이다. 체스판의 각 칸은 두 수의 쌍 {0, ..., l-1} × {0, ..., l-1}로 나타낼 수 있다. 둘째 줄과 셋째 줄에는 나이트가 현재 있는 칸, 나이트가 이동하려고 하는 칸이 주어진다.</p>
+<p>Next follow n scenarios. Each scenario consists of three lines containing integer numbers. The ﬁrst line speciﬁes the length l of a side of the chess board (4 ≤ l ≤ 300). The entire board has size l × l. The second and third line contain pair of integers {0, ..., l−1}× {0, ..., l−1} specifying the starting and ending position of the knight on the board. The integers are separated by a single blank. You can assume that the positions are valid positions on the chess board of that scenario</p>
 
 ### 출력 
 
- <p>각 테스트 케이스마다 나이트가 최소 몇 번만에 이동할 수 있는지 출력한다.</p>
+ <p>For each scenario of the input you have to calculate the minimal amount of knight moves which are necessary to move from the starting point to the ending point. If starting point and ending point are equal, distance is zero. The distance must be written on a single line.</p>
 

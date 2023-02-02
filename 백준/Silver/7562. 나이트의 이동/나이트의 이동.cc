@@ -1,50 +1,50 @@
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
+int dx[8] = { 1,2,2,1,-1,-2,-2,-1 };
+int dy[8] = { 2,1,-1,-2,-2,-1,1,2 };
 
-int T;
-int l, x_start, y_start, x_end, y_end, ans;
-int mark[300][300];
-queue<pair<pair<int, int>, int>> q;
+int N;
+pii s, e;
+int mark[301][301];
+queue <pair<pii, int>> q;
 
 void BFS();
+
+void solve() {
+	cin >> N;
+	cin >> s.first >> s.second;
+	cin >> e.first >> e.second;
+	memset(mark, 0, sizeof(mark));
+	q.push({ s, 1 });
+	while (q.size()) BFS();
+	cout << mark[e.second][e.first] - 1 << '\n';
+	return;
+}
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> T;
-	while (T--) {
-		ans = 0;
-		cin >> l;
-		for (int i = 0; i < l; i++) {
-			for (int j = 0; j < l; j++) mark[i][j] = 0;
-		}
-		cin >> x_start >> y_start;
-		cin >> x_end >> y_end;
-		q.push({ {x_start,y_start},0 });
-		while (q.size()) BFS();
-		cout << ans << '\n';
-	}
+	int t = 1;
+	cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
 void BFS() {
-	pair<pair<int, int>, int> temp = q.front();
+	pair<pii, int> f = q.front();
 	q.pop();
-	int x = temp.first.first;
-	int y = temp.first.second;
-	int d = temp.second;
-	if (x < 0 || x > l - 1 || y < 0 || y > l - 1) return;
-	if (mark[y][x] != 0) return;
-	mark[y][x] = 1;
-	if (x == x_end && y == y_end) ans = d;
-	q.push({ {x + 2,y + 1},d + 1 });
-	q.push({ {x - 2,y + 1},d + 1 });
-	q.push({ {x + 2,y - 1},d + 1 });
-	q.push({ {x - 2,y - 1},d + 1 });
-	q.push({ {x + 1,y + 2},d + 1 });
-	q.push({ {x + 1,y - 2},d + 1 });
-	q.push({ {x - 1,y + 2},d + 1 });
-	q.push({ {x - 1,y - 2},d + 1 });
+	int x = f.first.first;
+	int y = f.first.second;
+	int d = f.second;
+	if (x < 0 || x >= N || y < 0 || y >= N) return;
+	if (mark[y][x]) return;
+	mark[y][x] = d;
+	for (int i = 0; i < 8; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+		q.push({ {nx,ny},d + 1 });
+	}
 	return;
 }
