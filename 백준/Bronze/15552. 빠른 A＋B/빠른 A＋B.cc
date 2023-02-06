@@ -11,6 +11,9 @@ void solve() {
 }
 
 int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	int t = 1;
