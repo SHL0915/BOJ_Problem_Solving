@@ -4,11 +4,11 @@
 
 ### 성능 요약
 
-메모리: 42924 KB, 시간: 728 ms
+메모리: 35232 KB, 시간: 364 ms
 
 ### 분류
 
-자료 구조(data_structures), 분리 집합(disjoint_set), 느리게 갱신되는 세그먼트 트리(lazyprop), 오프라인 쿼리(offline_queries), 우선순위 큐(priority_queue), 세그먼트 트리(segtree)
+자료 구조(data_structures), 분리 집합(disjoint_set), 오프라인 쿼리(offline_queries), 세그먼트 트리(segtree)
 
 ### 문제 설명
 
