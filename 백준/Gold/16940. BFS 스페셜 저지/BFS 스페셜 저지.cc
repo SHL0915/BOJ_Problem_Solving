@@ -1,64 +1,66 @@
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, u, v, k;
-vector<int> graph[100000];
-queue<int> q;
-int mark[100000] = { 0 };
-int judge[100000];
-int order[100000];
+int N, cnt = 1;
+vector <int> tree[100001];
+int mark[100001];
+int key[100001];
+int arr[100001];
+int ans[100001];
+queue <int> q;
 
-bool cmp(int A, int B) {
-	return order[A] < order[B];
-}
-
+bool cmp(int a, int b);
 void BFS();
 
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+void solve() {
 	cin >> N;
 	for (int i = 0; i < N - 1; i++) {
-		cin >> u >> v;
-		graph[u - 1].push_back(v - 1);
-		graph[v - 1].push_back(u - 1);
+		int a, b;
+		cin >> a >> b;
+		tree[a].push_back(b);
+		tree[b].push_back(a);
 	}
-	for (int i = 0; i < N; i++) {
-		cin >> judge[i];
-		order[judge[i] - 1] = i;
+	for (int i = 1; i <= N; i++) {
+		cin >> arr[i];
+		key[arr[i]] = i;
 	}
-	for (int i = 0; i < N; i++) 
-		stable_sort(graph[i].begin(), graph[i].end(), cmp);
-	if (judge[0] == 1) {
-		k = 0;
-		q.push(0);
-		while(q.size())
-			BFS();
+	for (int i = 1; i <= N; i++) sort(tree[i].begin(), tree[i].end(), cmp);
+	q.push(1);
+	while (q.size()) BFS();
+	for (int i = 1; i <= N; i++) {
+		if (arr[i] != ans[i]) {
+			cout << 0;
+			return;
+		}
 	}
-	cout << 0;
+	cout << 1;
+	return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-void BFS() {	
-	int vertex = q.front();
-	q.pop();
-	if (mark[vertex] != 0)
-		return;
-	if (vertex == judge[k] - 1)
-		k++;
-	else {
-		cout << 0;
-		exit(0);
-	}
-	if (k == N) {
-		cout << 1;
-		exit(0);
-	}
-	mark[vertex] = 1;
-	for (int i = 0; i < graph[vertex].size(); i++) {	
-		q.push(graph[vertex][i]);
-	}
+bool cmp(int a, int b) {
+	return key[a] < key[b];
+}
+
+void BFS() {
+	int node = q.front();
+	q.pop();	
+	if (mark[node]) return;
+	mark[node] = 1;
+	ans[cnt++] = node;
+	for (int i = 0; i < tree[node].size(); i++) q.push(tree[node][i]);
+	return;
 }
