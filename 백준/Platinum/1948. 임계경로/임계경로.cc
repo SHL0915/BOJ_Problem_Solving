@@ -1,61 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
 int N, M, S, E, cnt;
-vector <pair<int, int>> graph[10001];
+vector <pii> graph[10001];
+int in_degree[10001];
+ll table[10001];
+int mark[10001];
 vector <int> path[10001];
-int dist[10001];
-int mark[10001][10001];
+queue <int> q;
 
-void Dijkstra(int start);
-void DFS(int node);
+void Topology();
+void count(int node);
 
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+void solve() {
 	cin >> N >> M;
 	for (int i = 0; i < M; i++) {
 		int a, b, c;
 		cin >> a >> b >> c;
 		graph[a].push_back({ b,c });
+		in_degree[b]++;
 	}
 	cin >> S >> E;
-	Dijkstra(S);
-	cout << dist[E] << '\n';
-	DFS(E);
-	cout << cnt;
+	Topology();
+	count(E);
+	cout << table[E] << '\n' << cnt;
+	return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-void Dijkstra(int start) {
-	priority_queue <pair<int, int>> pq;
-	pq.push({ 0, start });
-	while (pq.size()) {
-		int now = pq.top().second;
-		int val = pq.top().first;
-		pq.pop();
-		if (dist[now] > val) continue;
+void Topology() {
+	q.push(S);
+	while (q.size()) {
+		int now = q.front();
+		q.pop();
 		for (int i = 0; i < graph[now].size(); i++) {
 			int next = graph[now][i].first;
-			int new_val = val + graph[now][i].second;
-			if (dist[next] < new_val) {
+			int cost = graph[now][i].second;
+			if (table[next] < table[now] + cost) {
 				path[next].clear();
 				path[next].push_back(now);
-				dist[next] = new_val;
-				pq.push({ new_val, next });
+				table[next] = table[now] + cost;
 			}
-			else if (dist[next] == new_val) path[next].push_back(now);
+			else if (table[next] == table[now] + cost) path[next].push_back(now);
+			if (--in_degree[next] == 0) q.push(next);
 		}
 	}
+	return;
 }
 
-void DFS(int node) {
+void count(int node) {
 	if (node == S) return;
+	if (mark[node]) return;
+	mark[node]++;
 	for (int i = 0; i < path[node].size(); i++) {
-		if (mark[node][path[node][i]]) continue;
 		cnt++;
-		mark[node][path[node][i]] = 1;
-		DFS(path[node][i]);
+		count(path[node][i]);
 	}
 	return;
 }
