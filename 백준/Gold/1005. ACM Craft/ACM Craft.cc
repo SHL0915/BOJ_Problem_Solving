@@ -1,57 +1,60 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int T, N, K, W, ans;
-int building[1001];
+int N, K, W;
 vector <int> graph[1001];
-int check[1001];
-int mark[1001];
-queue <pair<int, int>> q;
+int in_degree[1001];
+ll arr[1001];
+ll table[1001];
+queue <int> q;
 
-void BFS();
+void Topology();
+
+void solve() {
+	cin >> N >> K;
+	memset(in_degree, 0, sizeof(in_degree));
+	for (int i = 1; i <= N; i++) {
+		cin >> arr[i];
+		graph[i].clear();
+	}
+	for (int i = 0; i < K; i++) {
+		int a, b;
+		cin >> a >> b;
+		graph[a].push_back(b);
+		in_degree[b]++;
+	}
+	Topology();
+	cin >> W;
+	cout << table[W] << '\n';
+	return;
+}
 
 int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> T;
-	while (T--) {
-		ans = 0;
-		cin >> N >> K;
-		for (int i = 1; i <= N; i++) {
-			cin >> building[i];
-			graph[i].clear();
-			mark[i] = -1;
-			check[i] = 0;
-		}
-		for (int i = 0; i < K; i++) {
-			int X, Y;
-			cin >> X >> Y;
-			graph[X].push_back(Y);
-			check[Y]++;
-		}
-		cin >> W;
-		for (int i = 1; i <= N; i++) {
-			if (check[i] == 0) {
-				check[i]++;
-				q.push({ i, 0 });
-			}
-		}
-		while (q.size()) BFS();
-		cout << mark[W] << '\n';
-	}
+	int t = 1;
+	cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-void BFS() {
-	pair<int, int> temp = q.front();
-	q.pop();
-	int now = temp.first;
-	int val = temp.second;
-	mark[now] = max(mark[now], building[now] + val);
-	check[now]--;
-	if (check[now] == 0) {
-		for (int i = 0; i < graph[now].size(); i++) q.push({ graph[now][i], mark[now] });
+void Topology() {
+	memset(table, 0, sizeof(table));
+	for (int i = 1; i <= N; i++) if (in_degree[i] == 0) q.push(i);
+	for (int i = 1; i <= N; i++) {		
+		int now = q.front();
+		q.pop();
+		table[now] += arr[now];
+		for (int j = 0; j < graph[now].size(); j++) {
+			int next = graph[now][j];
+			table[next] = max(table[next], table[now]);
+			if (--in_degree[next] == 0) q.push(next);
+		}
 	}
+	return;
 }
