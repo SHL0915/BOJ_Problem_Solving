@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 15328 KB, 시간: 160 ms
+메모리: 7204 KB, 시간: 160 ms
 
 ### 분류
 
@@ -12,23 +12,25 @@
 
 ### 문제 설명
 
-<p>세계적인 도둑 상덕이는 보석점을 털기로 결심했다.</p>
+<p>The difficult economic situation in the country and reductions in government agricultural subsidy funding have caused Mirko to change his career again, this time to a thief. His first professional endeavour is a jewellery store heist. </p>
 
-<p>상덕이가 털 보석점에는 보석이 총 N개 있다. 각 보석은 무게 M<sub>i</sub>와 가격 V<sub>i</sub>를 가지고 있다. 상덕이는 가방을 K개 가지고 있고, 각 가방에 담을 수 있는 최대 무게는 C<sub>i</sub>이다. 가방에는 최대 한 개의 보석만 넣을 수 있다.</p>
+<p>The store contains N pieces of jewellery, and each piece has some mass M<sub>i</sub> and value V<sub>i</sub>. Mirko has K bags to store his loot, and each bag can hold some maximum mass C<sub>i</sub>. He plans to store all his loot in these bags, but at most one jewellery piece in each bag, in order to reduce the likelihood of damage during the escape. </p>
 
-<p>상덕이가 훔칠 수 있는 보석의 최대 가격을 구하는 프로그램을 작성하시오.</p>
+<p>Find the maximum total jewellery value that Mirko can “liberate”. </p>
 
 ### 입력 
 
- <p>첫째 줄에 N과 K가 주어진다. (1 ≤ N, K ≤ 300,000)</p>
+ <p>The first line of input contains two numbers, N and K (1 ≤ N, K ≤ 300 000). </p>
 
-<p>다음 N개 줄에는 각 보석의 정보 M<sub>i</sub>와 V<sub>i</sub>가 주어진다. (0 ≤ M<sub>i</sub>, V<sub>i</sub> ≤ 1,000,000)</p>
+<p>Each of the following N lines contains a pair of numbers, M<sub>i</sub> and V<sub>i</sub> (0 ≤ M<sub>i</sub>, V<sub>i</sub> ≤ 1 000 000). </p>
 
-<p>다음 K개 줄에는 가방에 담을 수 있는 최대 무게 C<sub>i</sub>가 주어진다. (1 ≤ C<sub>i</sub> ≤ 100,000,000)</p>
+<p>Each of the following K lines contains a number, C<sub>i</sub> (1 ≤ C<sub>i</sub> ≤ 100 000 000). </p>
 
-<p>모든 숫자는 양의 정수이다.</p>
+<p>All numbers in the input are positive integers. </p>
 
 ### 출력 
 
- <p>첫째 줄에 상덕이가 훔칠 수 있는 보석 가격의 합의 최댓값을 출력한다.</p>
+ <p>The first and only line of output must contain the maximum possible total jewellery value. </p>
+
+<p> </p>
 
