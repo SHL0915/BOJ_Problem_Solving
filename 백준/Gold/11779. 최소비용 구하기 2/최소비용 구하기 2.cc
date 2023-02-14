@@ -1,69 +1,61 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
-typedef pair<long long, int> pli;
-const long long INF = 0x3f3f3f3f3f3f3f3fLL;
+
+const long long INF = 1000000000000LL;
 
 struct cmp {
-	bool operator() (pli A, pli B) {
+	bool operator() (pair<long long, long long> A, pair<long long, long long> B) {
 		return A.first > B.first;
 	}
 };
 
-int N, M, S, E;
-vector <pli> graph[1001];
-long long dist[1001];
-vector <int> path[1001];
-deque <int> ans;
+long long N, M, S, E;
+vector <pair<long long, long long>> graph[1001];
+pair <long long, long long> dist[1001];
+vector <long long> route;
 
-void Dijkstra(int start);
-void Find_Path(int node);
+void Dijkstra(long long start);
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> N >> M;
 	for (int i = 0; i < M; i++) {
-		int A, B;
-		long long C;
+		int A, B, C;
 		cin >> A >> B >> C;
-		graph[A].push_back({ C,B });
+		graph[A].push_back({ B,C });
 	}
 	cin >> S >> E;
 	Dijkstra(S);
-	Find_Path(E);
-	cout << dist[E] << '\n';
-	cout << ans.size() << '\n';
-	for (int i = 0; i < ans.size(); i++) cout << ans[i] << " ";
+	route.push_back(E);
+	long long temp = dist[E].second;
+	while (1) {
+		route.push_back(temp);
+		if (temp == S) break;
+		temp = dist[temp].second;
+	}
+	cout << dist[E].first << '\n' << route.size() << '\n';
+	for (int i = route.size() - 1; i >= 0; i--) cout << route[i] << " ";
 	return 0;
 }
 
-void Dijkstra(int start) {
-	for (int i = 1; i <= N; i++) dist[i] = INF;
-	priority_queue <pli, vector<pli>, cmp> pq;
-	dist[start] = 0;
-	pq.push({ 0, start });
+void Dijkstra(long long start) {
+	for (int i = 1; i <= N; i++) dist[i].first = INF;
+	priority_queue < pair<long long, long long>, vector <pair<long long, long long>>, cmp> pq;
+	dist[start] = { 0, start };
+	pq.push({ start, 0 });
 	while (pq.size()) {
-		int now = pq.top().second;
-		long long val = pq.top().first;
+		long long idx = pq.top().first;
+		long long val = pq.top().second;
 		pq.pop();
-		if (dist[now] < val) continue;
-		for (int i = 0; i < graph[now].size(); i++) {
-			int next = graph[now][i].second;
-			long long new_val = val + graph[now][i].first;
-			if (dist[next] > new_val) {
-				dist[next] = new_val;
-				path[next].clear();
-				path[next].push_back(now);
-				pq.push({ new_val, next });
+		if (val > dist[idx].first) continue;
+		for (int i = 0; i < graph[idx].size(); i++) {
+			if (dist[graph[idx][i].first].first > graph[idx][i].second + dist[idx].first) {
+				dist[graph[idx][i].first] = { graph[idx][i].second + dist[idx].first , idx };
+				pq.push({ graph[idx][i].first , dist[graph[idx][i].first].first });
 			}
-			else if (dist[next] == new_val) path[next].push_back(now);
 		}
 	}
-}
-
-void Find_Path(int node) {
-	ans.push_front(node);
-	if (node == S) return;
-	Find_Path(path[node][0]);
-	return;
 }
