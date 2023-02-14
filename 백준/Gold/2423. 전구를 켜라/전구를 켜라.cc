@@ -1,19 +1,21 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <vector>
 using namespace std;
-typedef pair<int, pair<int, int>> pii;
-const int INF = 0x3f3f3f3f;
+
+const int INF = 1234567890;
 
 struct cmp {
-	bool operator() (pii A, pii B) {
+	bool operator() (pair<int, pair<int, int>> A, pair<int, pair<int, int>> B) {
 		return A.first > B.first;
 	}
 };
 
 int N, M;
-vector <pii> graph[505][505];
+vector <pair<pair<int, int>, int>> graph[505][505];
 int dist[505][505];
 
-void Dijkstra(int start_x, int start_y);
+void Dijkstra(int x, int y);
 
 int main(void) {
 	ios::sync_with_stdio(false);
@@ -24,16 +26,16 @@ int main(void) {
 		cin >> s;
 		for (int j = 0; j < M; j++) {
 			if (s[j] == '/') {
-				graph[i][j + 1].push_back({ 0,{j,i + 1} });
-				graph[i + 1][j].push_back({ 0,{j + 1,i} });
-				graph[i][j].push_back({ 1,{j + 1, i + 1} });
-				graph[i + 1][j + 1].push_back({ 1,{j,i} });
+				graph[i][j + 1].push_back({ {j, i + 1}, 0 });
+				graph[i + 1][j].push_back({ {j + 1, i}, 0 });
+				graph[i][j].push_back({ {j + 1,i + 1}, 1 });
+				graph[i + 1][j + 1].push_back({ {j,i}, 1 });
 			}
 			else {
-				graph[i][j].push_back({ 0,{j + 1, i + 1} });
-				graph[i + 1][j + 1].push_back({ 0,{j,i} });
-				graph[i][j + 1].push_back({ 1,{j,i + 1} });
-				graph[i + 1][j].push_back({ 1,{j + 1,i} });
+				graph[i][j + 1].push_back({ {j, i + 1}, 1 });
+				graph[i + 1][j].push_back({ {j + 1, i}, 1 });
+				graph[i][j].push_back({ {j + 1,i + 1}, 0 });
+				graph[i + 1][j + 1].push_back({ {j,i}, 0 });
 			}
 		}
 	}
@@ -43,27 +45,28 @@ int main(void) {
 	return 0;
 }
 
-void Dijkstra(int start_x, int start_y) {
+void Dijkstra(int x, int y) {
 	for (int i = 0; i <= N; i++) {
 		for (int j = 0; j <= M; j++) dist[i][j] = INF;
 	}
-	priority_queue <pii, vector<pii>, cmp> pq;
-	dist[start_y][start_x] = 0;
-	pq.push({ 0, {start_x, start_y} });
+	priority_queue < pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, cmp> pq;
+	pq.push({ 0,{x,y} });
+	dist[y][x] = 0;
 	while (pq.size()) {
-		int x = pq.top().second.first;
-		int y = pq.top().second.second;
-		int val = pq.top().first;
+		pair<int, pair<int, int>> t = pq.top();
 		pq.pop();
-		if (dist[y][x] < val) continue;
-		for (int i = 0; i < graph[y][x].size(); i++) {
-			int nx = graph[y][x][i].second.first;
-			int ny = graph[y][x][i].second.second;
-			int new_val = val + graph[y][x][i].first;
-			if (dist[ny][nx] > new_val) {
-				dist[ny][nx] = new_val;
-				pq.push({ new_val, {nx,ny} });
+		int now_x = t.second.first;
+		int now_y = t.second.second;
+		int now_val = t.first;
+		if (dist[now_y][now_x] < now_val) continue;
+		for (int i = 0; i < graph[now_y][now_x].size(); i++) {
+			int new_x = graph[now_y][now_x][i].first.first;
+			int new_y = graph[now_y][now_x][i].first.second;
+			int new_val = dist[now_y][now_x] + graph[now_y][now_x][i].second;
+			if (dist[new_y][new_x] > new_val) {
+				dist[new_y][new_x] = new_val;
+				pq.push({ new_val, {new_x,new_y} });
 			}
 		}
-	}
+	}	
 }
