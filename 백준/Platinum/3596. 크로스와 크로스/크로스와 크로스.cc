@@ -12,16 +12,13 @@ void solve() {
 	table[4] = 2;
 	table[5] = 2;
 	for (int i = 6; i <= N; i++) {
-		set <int> s;
-		s.insert(table[i - 5]);
-		s.insert(table[i - 4]);
-		s.insert(table[i - 3]);
-		for (int j = 1; j < i - 5; j++) s.insert(table[j] ^ table[i - 5 - j]);
+		vector <int> mex(i + 1);
+		mex[table[i - 5]]++;
+		mex[table[i - 4]]++;
+		mex[table[i - 3]]++;
+		for (int j = 1; j < i - 5; j++) mex[table[j] ^ table[i - 5 - j]]++;
 		int now = 0;
-		for (auto j = s.begin(); j != s.end(); j++) {
-			if (*j != now) break;
-			else now++;
-		}
+		while (mex[now]) now++;
 		table[i] = now;
 	}
 	if (table[N]) cout << 1;
