@@ -1,42 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
 int N, M;
 int parent[1000001];
 
-int Find(int node);
-void Union(int A, int B);
+int Find(int a);
+void Union(int a, int b);
 
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+void solve() {
 	cin >> N >> M;
-	for (int i = 0; i <= N; i++) parent[i] = i;
+	for (int i = 1; i <= N; i++) parent[i] = i;
 	for (int i = 0; i < M; i++) {
-		int A, B, C;
-		cin >> A >> B >> C;
-		if (A == 0) Union(B, C);
-		else {
-			if (Find(B) == Find(C)) cout << "YES\n";
+		int a, b, c;
+		cin >> a >> b >> c;
+		if (a) {
+			if (Find(b) == Find(c)) cout << "YES\n";
 			else cout << "NO\n";
 		}
+		else Union(b, c);
 	}
+	return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-int Find(int node) {
-	if (parent[node] == node) return node;
-	else {
-		parent[node] = Find(parent[node]);
-		return parent[node];
-	}
+int Find(int a) {
+	if (a == parent[a]) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
 
-void Union(int A, int B) {
-	A = Find(A);
-	B = Find(B);
-	if (A == B) return;
-	if (A > B) parent[A] = B;
-	else parent[B] = A;
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;
 	return;
 }
