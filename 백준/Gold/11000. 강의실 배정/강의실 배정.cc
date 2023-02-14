@@ -1,41 +1,37 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, cnt;
-vector <pair <int, int>> classes;
+int N, ans;
+pii arr[200001];
+priority_queue <int, vector<int>, greater<>> pq;
 
-bool cmp(pair <int, int> A, pair <int, int> B) {
-	if (A.first == B.first) return A.second < B.second;
-	return A.first < B.first;
+void solve() {
+	cin >> N;
+	for (int i = 0; i < N; i++) cin >> arr[i].first >> arr[i].second;
+	sort(arr, arr + N);
+	for (int i = 0; i < N; i++) {
+		while (pq.size()) {
+			int t = pq.top();
+			if (arr[i].first >= t) pq.pop();
+			else break;
+		}
+		pq.push(arr[i].second);
+		ans = max(ans, (int)pq.size());
+	}
+	cout << ans;
+	return;
 }
 
-struct lower {
-	bool operator() (int A, int B) {
-		return A > B;
-	}
-};
-
 int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	priority_queue <int, vector <int>, lower> pq;
-	cin >> N;
-	for (int i = 0; i < N; i++) {
-		int S, T;
-		cin >> S >> T;
-		classes.push_back({ S,T });
-	}
-	sort(classes.begin(), classes.end(), cmp);
-	for (int i = 0; i < N; i++) {
-		if (pq.size() == 0) pq.push(classes[i].second);
-		else {
-			if (classes[i].first >= pq.top()) pq.pop();
-			pq.push(classes[i].second);
-		}
-	}
-	cout << pq.size();
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
