@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 16396 KB, 시간: 104 ms
+메모리: 13324 KB, 시간: 100 ms
 
 ### 분류
 
@@ -12,22 +12,21 @@
 
 ### 문제 설명
 
-<p>
-	때는 2040년, 이민혁은 우주에 자신만의 왕국을 만들었다. 왕국은 N개의 행성으로 이루어져 있다. 민혁이는 이 행성을 효율적으로 지배하기 위해서 행성을 연결하는 터널을 만들려고 한다.</p>
+<p>Fourth Great and Bountiful Human Empire is developing a transconduit tunnel network connecting all it's planets. The Empire consists of N planets, represented as points in the 3D space. The cost of forming a transconduit tunnel between planets A and B is:</p>
 
-<p>
-	행성은 3차원 좌표위의 한 점으로 생각하면 된다. 두 행성 A(x<sub>A</sub>, y<sub>A</sub>, z<sub>A</sub>)와 B(x<sub>B</sub>, y<sub>B</sub>, z<sub>B</sub>)를 터널로 연결할 때 드는 비용은 min(|x<sub>A</sub>-x<sub>B</sub>|, |y<sub>A</sub>-y<sub>B</sub>|, |z<sub>A</sub>-z<sub>B</sub>|)이다.</p>
+<p>TunnelCost[A,B] = min{ |xA-xB|, |yA-yB|, |zA-zB| }</p>
 
-<p>
-	민혁이는 터널을 총 N-1개 건설해서 모든 행성이 서로 연결되게 하려고 한다. 이때, 모든 행성을 터널로 연결하는데 필요한 최소 비용을 구하는 프로그램을 작성하시오.</p>
+<p>where (xA, yA, zA) are 3D coordinates of planet A, and (xB, yB, zB) are coordinates of planet B. The Empire needs to build exactly N - 1 tunnels in order to fully connect all planets, either by direct links or by chain of links. You need to come up with the lowest possible cost of successfully completing this project.</p>
 
 ### 입력 
 
- <p>
-	첫째 줄에 행성의 개수 N이 주어진다. (1 ≤ N ≤ 100,000) 다음 N개 줄에는 각 행성의 x, y, z좌표가 주어진다. 좌표는 -10<sup>9</sup>보다 크거나 같고, 10<sup>9</sup>보다 작거나 같은 정수이다. 한 위치에 행성이 두 개 이상 있는 경우는 없다. </p>
+ <p>The first line of input contains one integer N (1 ≤ N ≤ 100 000), number of planets.</p>
+
+<p>Next N lines contain exactly 3 integers each. All integers are between -10<sup>9</sup> and 10<sup>9</sup> inclusive. Each line contains the x, y, and z coordinate of one planet (in order).</p>
+
+<p>No two planets will occupy the exact same point in space.</p>
 
 ### 출력 
 
- <p>
-	첫째 줄에 모든 행성을 터널로 연결하는데 필요한 최소 비용을 출력한다.</p>
+ <p>The first and only line of output should contain the minimal cost of forming the network of tunnels.</p>
 

@@ -1,80 +1,83 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<long long, pair<int, int>> plii;
-typedef pair<pair<int, int>, pair<int, int>> piiii;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, cnt;
-long long ans;
+int N;
+pair<pii, pii> arr[100001];
+vector <pair<int, pii>> graph;
 int parent[100001];
-piiii planet[100001];
-vector <plii> graph;
 
-bool cmp_x(piiii A, piiii B) {
-	return A.first.first > B.first.first;
-}
+bool cmpx(pair<pii, pii> a, pair<pii, pii> b);
+bool cmpy(pair<pii, pii> a, pair<pii, pii> b);
+bool cmpz(pair<pii, pii> a, pair<pii, pii> b);
+int Find(int a);
+void Union(int a, int b);
 
-bool cmp_y(piiii A, piiii B) {
-	return A.first.second > B.first.second;
-}
-
-bool cmp_z(piiii A, piiii B) {
-	return A.second.first > B.second.first;
-}
-
-int absol(int A) {
-	if (A >= 0) return A;
-	else return -1 * A;
-}
-
-int Find(int node);
-void Union(int A, int B);
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+void solve() {
 	cin >> N;
-	for (int i = 0; i <= N; i++) parent[i] = i;
+	for (int i = 1; i <= N; i++) parent[i] = i;
 	for (int i = 0; i < N; i++) {
-		int x, y, z;
-		cin >> x >> y >> z;		
-		planet[i] = { {x,y},{z,i} };
+		cin >> arr[i].first.first >> arr[i].first.second >> arr[i].second.first;
+		arr[i].second.second = i;
 	}
-	sort(planet, planet + N, cmp_x);
-	for (int i = 1; i < N; i++) {
-		graph.push_back({ absol(planet[i].first.first - planet[i - 1].first.first), {planet[i].second.second, planet[i - 1].second.second} });
-	}
-	sort(planet, planet + N, cmp_y);
-	for (int i = 1; i < N; i++) {
-		graph.push_back({ absol(planet[i].first.second - planet[i - 1].first.second), {planet[i].second.second, planet[i - 1].second.second} });
-	}
-	sort(planet, planet + N, cmp_z);
-	for (int i = 1; i < N; i++) {
-		graph.push_back({ absol(planet[i].second.first - planet[i - 1].second.first), {planet[i].second.second, planet[i - 1].second.second} });
-	}
+	sort(arr, arr + N, cmpx);
+	for (int i = 1; i < N; i++) graph.push_back({ arr[i].first.first - arr[i - 1].first.first, { arr[i].second.second,arr[i - 1].second.second} });
+	sort(arr, arr + N, cmpy);
+	for (int i = 1; i < N; i++) graph.push_back({ arr[i].first.second - arr[i - 1].first.second, { arr[i].second.second,arr[i - 1].second.second} });
+	sort(arr, arr + N, cmpz);
+	for (int i = 1; i < N; i++) graph.push_back({ arr[i].second.first - arr[i - 1].second.first, { arr[i].second.second,arr[i - 1].second.second} });
 	sort(graph.begin(), graph.end());
+	int cnt = 0;
+	ll ans = 0;
 	for (int i = 0; i < graph.size(); i++) {
 		if (cnt == N - 1) break;
-		int A = Find(graph[i].second.first);
-		int B = Find(graph[i].second.second);
-		if (A == B) continue;
-		Union(A, B);
-		ans += graph[i].first;
+		int a = graph[i].second.first;
+		int b = graph[i].second.second;
+		int c = graph[i].first;
+		if (Find(a) == Find(b)) continue;
 		cnt++;
+		ans += c;
+		Union(a, b);
 	}
 	cout << ans;
+	return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-int Find(int node) {
-	if (parent[node] == node) return parent[node];
-	else return parent[node] = Find(parent[node]);
+bool cmpx(pair<pii, pii> a, pair<pii, pii> b) {
+	return a.first.first < b.first.first;
 }
 
-void Union(int A, int B) {
-	A = Find(A);
-	B = Find(B);
-	if (A == B) return;
-	if (A > B) parent[A] = B;
-	else parent[B] = A;
+bool cmpy(pair<pii, pii> a, pair<pii, pii> b) {
+	return a.first.second < b.first.second;
+}
+
+bool cmpz(pair<pii, pii> a, pair<pii, pii> b) {
+	return a.second.first < b.second.first;
+}
+
+int Find(int a) {
+	if (a == parent[a]) return parent[a];
+	else return parent[a] = Find(parent[a]);
+}
+
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;
 	return;
 }
