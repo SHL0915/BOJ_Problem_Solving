@@ -1,119 +1,78 @@
-#include<iostream>
-#include<vector>
-#include<cmath>
-#include<algorithm>
-
-#define endl "\n"
-#define MAX 1010
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
 int N, M;
-int Parent[MAX];
-double Answer;
-vector<pair<int, int>> Coord;
-vector<pair<int, int>> Connect;
-vector<pair<double, pair<int, int>>> Edge;
+pii arr[1001];
+int parent[1001];
+vector <pair<double, pii>> graph;
 
-void Input()
-{
-    cin >> N >> M;
-    for (int i = 1; i <= N; i++) Parent[i] = i;
-    for (int i = 0; i < N; i++)
-    {
-        int a, b; cin >> a >> b;
-        Coord.push_back(make_pair(a, b));
-    }
-    for (int i = 0; i < M; i++)
-    {
-        int a, b; cin >> a >> b;
-        Connect.push_back(make_pair(a, b));
-    }
+double dist(pii a, pii b);
+int Find(int a);
+void Union(int a, int b);
+
+void solve() {
+	cin >> N >> M;
+	for (int i = 1; i <= N; i++) parent[i] = i;
+	for (int i = 1; i <= N; i++) cin >> arr[i].first >> arr[i].second;
+	for (int i = 1; i <= N; i++) {
+		for (int j = i + 1; j <= N; j++) graph.push_back({ dist(arr[i],arr[j]), {i,j} });
+	}
+	sort(graph.begin(), graph.end());
+	int cnt = 0;
+	for (int i = 0; i < M; i++) {
+		int a, b;
+		cin >> a >> b;
+		if (Find(a) == Find(b)) continue;
+		Union(a, b);
+		cnt++;
+	}
+	double ans = 0;
+	for (int i = 0; i < graph.size(); i++) {
+		if (cnt == N - 1) break;
+		int a = graph[i].second.first;
+		int b = graph[i].second.second;
+		double c = graph[i].first;
+		if (Find(a) == Find(b)) continue;
+		Union(a, b);
+		ans += c;
+		cnt++;
+	}
+	cout << ans;
+	return;
 }
 
-int Find_Parent(int A)
-{
-    if (A == Parent[A]) return A;
-    return Parent[A] = Find_Parent(Parent[A]);
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout << fixed;
+	cout.precision(2);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
+	return 0;
 }
 
-bool Same_Parent(int A, int B)
-{
-    A = Find_Parent(A);
-    B = Find_Parent(B);
-    if (A == B) return true;
-    return false;
+double dist(pii a, pii b) {
+	double dx = a.first - b.first;
+	double dy = a.second - b.second;
+	return sqrt(dx * dx + dy * dy);
 }
 
-void Union(int A, int B)
-{
-    A = Find_Parent(A);
-    B = Find_Parent(B);
-    Parent[B] = A;
+int Find(int a) {
+	if (a == parent[a]) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
 
-double Find_Distance(int x, int y, int xx, int yy)
-{
-    double dx = pow(x - xx, 2);
-    double dy = pow(y - yy, 2);
-    double Dist = sqrt(dx + dy);
-
-    return Dist;
-}
-
-void Solution()
-{
-    for (int i = 0; i < M; i++)
-    {
-        int N1 = Connect[i].first;
-        int N2 = Connect[i].second;
-
-        if (Same_Parent(N1, N2) == false) Union(N1, N2);
-    }
-    for (int i = 0; i < N - 1; i++)
-    {
-        int x = Coord[i].first;
-        int y = Coord[i].second;
-        for (int j = i + 1; j < N; j++)
-        {
-            int xx = Coord[j].first;
-            int yy = Coord[j].second;
-
-            double Dist = Find_Distance(x, y, xx, yy);
-            Edge.push_back(make_pair(Dist, make_pair(i + 1, j + 1)));
-        }
-    }
-    sort(Edge.begin(), Edge.end());
-    for (int i = 0; i < Edge.size(); i++)
-    {
-        int N1 = Edge[i].second.first;
-        int N2 = Edge[i].second.second;
-        double Dist = Edge[i].first;
-
-        if (Same_Parent(N1, N2) == false)
-        {
-            Union(N1, N2);
-            Answer = Answer + Dist;
-        }
-    }
-    cout << Answer << endl;
-}
-
-void Solve()
-{
-    Input();
-    Solution();
-}
-
-int main(void)
-{
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    cout << fixed;
-    cout.precision(2);
-
-    //freopen("Input.txt", "r", stdin);
-    Solve();
-
-    return 0;
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;
+	return;
 }
