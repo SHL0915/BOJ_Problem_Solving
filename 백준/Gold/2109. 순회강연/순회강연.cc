@@ -1,47 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int N, ans;
-pair<int, int> arr[10000];
+int N;
+pii arr[10001];
 int parent[10001];
 
-bool cmp(pair<int, int> A, pair<int, int > B) {
-	return A.second > B.second;
-}
+int Find(int a);
+void Union(int a, int b);
 
-int Find(int node);
-void Union(int A, int B);
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+void solve() {
 	cin >> N;
-	for (int i = 0; i < N; i++) {
-		int D, P;
-		cin >> P >> D;
-		arr[i] = { D,P };
-	}
-	for (int i = 0; i <= 10000; i++) parent[i] = i;
-	sort(arr, arr + N, cmp);
-	for (int i = 0; i < N; i++) {
-		if (Find(arr[i].first) == 0) continue;
-		ans += arr[i].second;
-		Union(Find(arr[i].first), Find(arr[i].first) - 1);
+	int ans = 0;
+	for (int i = 1; i <= N; i++) cin >> arr[i].first >> arr[i].second;
+	for (int i = 1; i <= 10000; i++) parent[i] = i;
+	sort(arr + 1, arr + N + 1);
+	for (int i = N; i >= 1; i--) {
+		int p = arr[i].first, d = arr[i].second;
+		d = Find(d);
+		if (d == 0) continue;
+		ans += p;
+		Union(d, d - 1);
 	}
 	cout << ans;
+	return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-int Find(int node) {
-	if (parent[node] == node) return parent[node];
-	else return parent[node] = Find(parent[node]);
+int Find(int a) {
+	if (a == parent[a]) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
 
-void Union(int A, int B) {
-	A = Find(A);
-	B = Find(B);
-	if (A == B) return;
-	if (A > B) parent[A] = B;
-	else parent[B] = A;
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;
 	return;
 }
