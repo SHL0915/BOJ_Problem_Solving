@@ -1,59 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int T, F;
-set <string> names;
-map <string, string> parent;
-map <string, int> cnt;
+int M;
+map <string, int> convert;
+int parent[200001];
+int sz[200001];
 
-string Find(string name);
-void Union(string A, string B);
+int Find(int a);
+void Union(int a, int b);
+
+void solve() {
+	convert.clear();
+	cin >> M;
+	int id = 1;
+	for (int i = 1; i <= 200001; i++) {
+		parent[i] = i;
+		sz[i] = 1;
+	}
+	for (int i = 0; i < M; i++) {
+		string a, b;
+		cin >> a >> b;
+		if (convert[a] == 0) convert[a] = id++;
+		if (convert[b] == 0) convert[b] = id++;
+		Union(convert[a], convert[b]);
+		cout << sz[Find(convert[a])] << '\n';
+	}
+	return;
+}
 
 int main(void) {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> T;
-	while (T--) {
-		names.clear();
-		parent.clear();
-		cnt.clear();
-		cin >> F;
-		for (int i = 0; i < F; i++) {
-			string A, B;
-			cin >> A >> B;
-			if (names.count(A) == 0) {
-				names.insert(A);
-				parent[A] = A;
-				cnt[A] = 1;
-			}
-			if (names.count(B) == 0) {
-				names.insert(B);
-				parent[B] = B;
-				cnt[B] = 1;
-			}
-			Union(A, B);
-			cout << cnt[Find(A)] << '\n';
-		}
-	}
+	int t = 1;
+	cin >> t;
+	while (t--) solve();
 	return 0;
 }
 
-string Find(string name) {
-	if (parent[name] == name) return name;
-	else return parent[name] = Find(parent[name]);
+int Find(int a) {
+	if (a == parent[a]) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
 
-void Union(string A, string B) {
-	A = Find(A);
-	B = Find(B);
-	if (A == B) return;
-	if (A > B) {
-		parent[A] = B;
-		cnt[B] += cnt[A];
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) {
+		parent[a] = b;
+		sz[b] += sz[a];
 	}
 	else {
-		parent[B] = A;
-		cnt[A] += cnt[B];
+		parent[b] = a;
+		sz[a] += sz[b];
 	}
 	return;
 }
