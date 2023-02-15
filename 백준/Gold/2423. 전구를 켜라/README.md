@@ -16,7 +16,7 @@
 
 <p>A power source is connected to the top left corner of the plate. A lamp is connected to the bottom right corner of the plate. The lamp is on only if there is a path of wires connecting power source to lamp. In order to switch the lamp on, any number of tiles can be turned by 90° (in both directions).</p>
 
-<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/46c9ed9e-27e3-4e32-a144-0962b813347e/-/preview/" style="width: 289px; height: 195px;"></p>
+<p style="text-align: center;"><img alt="" src="" style="width: 289px; height: 195px;"></p>
 
 <p>In the picture above the lamp is off. If any one of the tiles in the second column from the right is turned by 90°, power source and lamp get connected, and the lamp is on.</p>
 
