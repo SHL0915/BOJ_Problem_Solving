@@ -2,22 +2,21 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const ll INF = 0x3f3f3f3f;
+const int INF = 0x3f3f3f3f;
 int dx[4] = { 1,-1,0,0 };
 int dy[4] = { 0,0,1,-1 };
 
-struct edge { ll dist, cap, rev; };
+struct edge { int dist, cap, rev; };
 
 int N, M, S, E;
-pii K = { -1, -1 }, H = { -1, -1 };
+pii K, H;
 int arr[101][101];
-vector <edge> graph[20005];
-int parent[20005], pe[20005];
+vector <edge> graph[20001];
 
 int in(int x, int y);
 int out(int x, int y);
 void add_edge(int u, int v, int c);
-ll find_Max(int s, int e);
+int find_Max(int s, int e);
 
 void solve() {
 	cin >> N >> M;
@@ -27,26 +26,23 @@ void solve() {
 		for (int j = 0; j < M; j++) {
 			if (s[j] == '#') arr[i][j] = 1;
 			else {
+				add_edge(in(j, i), out(j, i), 1);
 				if (s[j] == 'K') K = { j,i };
 				else if (s[j] == 'H') H = { j,i };
 			}
 		}
 	}
-	if (K.first == -1 || H.first == -1) {
-		cout << -1;
-		return;
-	}
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
-			add_edge(in(j, i), out(j, i), 1);
-			if (arr[i][j] == 1) continue;
-			for (int k = 0; k < 4; k++) {
-				int nx = j + dx[k];
-				int ny = i + dy[k];
-				if (nx < 0 || nx >= M || ny < 0 || ny >= N) continue;
-				if (arr[ny][nx] == 1) continue;
-				add_edge(out(j, i), in(nx, ny), INF);
-				add_edge(out(nx, ny), in(j, i), INF);
+			if (arr[i][j] == 0) {
+				for (int k = 0; k < 4; k++) {
+					int nx = j + dx[k];
+					int ny = i + dy[k];
+					if (nx < 0 || nx >= M || ny < 0 || ny >= N) continue;
+					if (arr[ny][nx] == 1) continue;
+					add_edge(out(j, i), in(nx, ny), INF);
+					add_edge(out(nx, ny), in(j, i), INF);
+				}
 			}
 		}
 	}
@@ -76,11 +72,11 @@ void add_edge(int u, int v, int c) {
 	return;
 }
 
-ll find_Max(int s, int e) {
-	ll ret = 0;
+int find_Max(int s, int e) {
+	int ret = 0;
 	while (1) {
+		int parent[20001], pe[20001];
 		memset(parent, -1, sizeof(parent));
-		memset(pe, 0, sizeof(pe));
 		queue <int> q;
 		q.push(s);
 		while (q.size()) {
@@ -97,7 +93,7 @@ ll find_Max(int s, int e) {
 			}
 		}
 		if (parent[e] == -1) break;
-		ll val = 0x3f3f3f3f3f3f3f3fLL;
+		int val = 0x3f3f3f3f;
 		for (int i = e; i != s; i = parent[i]) val = min(val, graph[parent[i]][pe[i]].cap);
 		for (int i = e; i != s; i = parent[i]) {
 			int rev = graph[parent[i]][pe[i]].rev;
