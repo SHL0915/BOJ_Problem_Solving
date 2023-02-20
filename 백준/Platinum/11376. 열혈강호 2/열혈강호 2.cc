@@ -3,9 +3,9 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M;
-int A[2001], B[2001], mark[2001];
-vector <int> graph[2001];
+int N, M, K;
+vector <int> graph[1001];
+int A[1001], B[1001], mark[1001];
 
 int DFS(int node);
 
@@ -15,20 +15,21 @@ void solve() {
 		int k; cin >> k;
 		for (int j = 0; j < k; j++) {
 			int a; cin >> a;
-			graph[i * 2 - 1].push_back(a);
-			graph[i * 2].push_back(a);
+			graph[i].push_back(a);
 		}
 	}
 	memset(A, -1, sizeof(A));
 	memset(B, -1, sizeof(B));
-	int ans = 0;
-	for (int i = 1; i <= 2 * N; i++) {
+	int cnt = 0;
+	for (int i = 1; i <= N; i++) {
 		if (A[i] == -1) {
 			memset(mark, 0, sizeof(mark));
-			ans += DFS(i);
+			cnt += DFS(i);
+			memset(mark, 0, sizeof(mark));
+			cnt += DFS(i);
 		}
 	}
-	cout << ans;
+	cout << cnt;
 	return;
 }
 
