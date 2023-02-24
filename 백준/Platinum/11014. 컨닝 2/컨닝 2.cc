@@ -8,14 +8,13 @@ int dy[6] = { -1,0,1,-1,0,1 };
 int N, M;
 int arr[81][81];
 vector <int> graph[7000];
-int A[7000], B[7000], mark[7000];
+int B[7000], mark[7000];
 
 int convert(int x, int y);
 int DFS(int node);
 
 void solve() {
 	memset(arr, 0, sizeof(arr));
-	memset(A, -1, sizeof(A));
 	memset(B, -1, sizeof(B));
 	int cnt = 0;
 	for (int i = 0; i < 7000; i++) graph[i].clear();
@@ -48,7 +47,7 @@ void solve() {
 	int ans = 0;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
-			if (j % 2 && arr[i][j] == 0 && A[convert(j, i)] == -1) {
+			if (j % 2 && arr[i][j] == 0) {
 				memset(mark, 0, sizeof(mark));
 				ans += DFS(convert(j, i));
 			}
@@ -81,7 +80,6 @@ int DFS(int node) {
 		int now = graph[node][i];
 		if (B[now] == -1 || mark[B[now]] == 0 && DFS(B[now])) {
 			B[now] = node;
-			A[node] = now;
 			return 1;
 		}
 	}
