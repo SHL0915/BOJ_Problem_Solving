@@ -14,9 +14,23 @@
 
 		sort(arr, arr + N);
 
-		ll ans = BinarySearch(0, 1000000005L);
+		ll left = 0, right = 1000000005LL, mid;
 
-		cout << ans;
+		while (left <= right) {
+			mid = (left + right) / 2;
+			int cnt = 1, prev = arr[0];
+			for (int i = 0; i < N; i++) {
+				if (arr[i] > prev + 2 * mid) {
+					cnt++;
+					prev = arr[i];
+				}
+			}
+
+			if (cnt > K) left = mid + 1;
+			else right = mid - 1;
+		}
+
+		cout << left;
 		return;
 	}
 
@@ -30,22 +44,4 @@
 		//cin >> t;
 		while (t--) solve();
 		return 0;
-	}
-
-	ll BinarySearch(ll left, ll right) {
-		if (left <= right) {
-			ll mid = (left + right) / 2;
-			int cnt = 1, prev = arr[0];
-
-			for (int i = 0; i < N; i++) {
-				if (arr[i] > prev + 2 * mid) {
-					cnt++;
-					prev = arr[i];
-				}
-			}
-
-			if (cnt > K) return BinarySearch(mid + 1, right);
-			else return BinarySearch(left, mid - 1);
-		}
-		else return left;
 	}
