@@ -3,6 +3,7 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 const int SZ = 100001;
+//const int SZ = 10;
 
 int N, M, cnt;
 vector <pii> tree[SZ];
@@ -14,13 +15,13 @@ pii id[SZ], edge[SZ];
 void Find_Child(int node);
 void DFS(int node, int lv);
 void ETT(int node);
-void update(int node, int start, int end, int idx, int val);
+void update(int pos, int val);
 int query(int a, int b);
-int seg_query(int node, int start, int end, int left, int right);
+int seg_query(int l, int r);
 
 void solve() {
 	cin >> N;
-	seg.resize(4 * N);
+	seg.resize(2 * N + 5);
 
 	for (int i = 1; i <= N - 1; i++) {
 		int a, b, c;
@@ -44,7 +45,7 @@ void solve() {
 			int idx;
 			if (level[edge[b].first] > level[edge[b].second]) idx = edge[b].first;
 			else idx = edge[b].second;
-			update(1, 1, N, id[idx].first, c);
+			update(id[idx].first, c);
 		}
 		else cout << query(b, c) << '\n';
 	}
@@ -96,7 +97,7 @@ void ETT(int node) {
 		if (i == 0) head[next] = head[node];
 		else head[next] = next;
 		ETT(next);
-		update(1, 1, N, id[next].first, graph[node][i].second);
+		update(id[next].first, graph[node][i].second);
 	}
 	id[node].second = cnt;
 	return;
@@ -107,30 +108,24 @@ int query(int a, int b) {
 	while (head[a] != head[b]) {
 		if (level[head[a]] < level[head[b]]) swap(a, b);
 		int st = head[a];
-		ret = max(ret, seg_query(1, 1, N, id[st].first, id[a].first));
+		ret = max(ret, seg_query(id[st].first, id[a].first + 1));
 		a = parent[st];
 	}
 	if (level[a] > level[b]) swap(a, b);
-	ret = max(ret, seg_query(1, 1, N, id[a].first + 1, id[b].first));
+	ret = max(ret, seg_query(id[a].first + 1, id[b].first + 1));
 	return ret;
 }
 
-void update(int node, int start, int end, int idx, int val) {
-	if (idx > end || idx < start) return;
-	if (start == end) {
-		seg[node] = val;
-		return;
-	}
-	int mid = (start + end) / 2;
-	update(node * 2, start, mid, idx, val);
-	update(node * 2 + 1, mid + 1, end, idx, val);
-	seg[node] = max(seg[node * 2], seg[node * 2 + 1]);
+void update(int pos, int val) {
+	for (seg[pos += N] = val; pos > 0; pos >>= 1) seg[pos >> 1] = max(seg[pos], seg[pos ^ 1]);
 	return;
 }
 
-int seg_query(int node, int start, int end, int left, int right) {
-	if (left > end || right < start) return 0;
-	if (left <= start && end <= right) return seg[node];
-	int mid = (start + end) / 2;
-	return max(seg_query(node * 2, start, mid, left, right), seg_query(node * 2 + 1, mid + 1, end, left, right));
+int seg_query(int l, int r) {
+	int ret = 0;
+	for (l += N, r += N; l < r; l >>= 1, r >>= 1) {
+		if (l & 1) ret = max(ret, seg[l++]);
+		if (r & 1) ret = max(ret, seg[--r]);
+	}
+	return ret;
 }
