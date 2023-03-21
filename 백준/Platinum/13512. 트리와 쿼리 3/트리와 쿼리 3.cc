@@ -6,7 +6,7 @@ const int SZ = 100001;
 const int INF = 0x3f3f3f3f;
 
 int N, M, cnt;
-int color[SZ], mark[SZ], level[SZ], parent[SZ], sz[SZ], id[SZ], head[SZ], rev[SZ];
+int color[SZ], mark[SZ], level[SZ], parent[SZ], sz[SZ], id[SZ], head[SZ];
 vector <int> tree[SZ], graph[SZ];
 pii seg[SZ * 2 + 5];
 
@@ -32,23 +32,19 @@ void solve() {
 	head[1] = 1;
 	ETT(1);
 
-	for (int i = 1; i <= N; i++) {
-		update(i, { INF,i });
-		rev[id[i]] = i;
-	}
+	for (int i = 1; i <= N; i++) update(i, { INF,i });	
 				
 	cin >> M;
 	for (int i = 0; i < M; i++) {
 		int a, b;
 		cin >> a >> b;
-		b = id[b];
 		if (a == 1) {
-			if (color[b]) update(b, { INF, rev[b]});
-			else update(b, { level[rev[b]], rev[b]});
+			if (color[b]) update(id[b], {INF, b});
+			else update(id[b], {level[b], b});
 			color[b] ^= 1;
 		}
 		else {
-			pii ans = query(1, rev[b]);
+			pii ans = query(1, b);
 			if (ans.first == INF) cout << -1 << '\n';
 			else cout << ans.second << '\n';
 		}
