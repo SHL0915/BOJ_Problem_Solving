@@ -18,9 +18,7 @@ void solve() {
 	ans += (N / A) * B;	
 	if (N % A) ans += B;
 
-	ll cmp = A / GCD(A, C);
-
-	for (ll i = 1; i < cmp; i++) {
+	for (ll i = 1; i <= 100000; i++) {
 		ll val = i * D;
 		ll num = i * C;
 		if (N > num) {
