@@ -5,8 +5,6 @@ using pii = pair<int, int>;
 
 ll N, A, B, C, D;
 
-ll GCD(ll a, ll b);
-
 void solve() {
 	cin >> N >> A >> B >> C >> D;
 	ll ans = 0;
@@ -18,7 +16,7 @@ void solve() {
 	ans += (N / A) * B;	
 	if (N % A) ans += B;
 
-	for (ll i = 1; i <= 100000; i++) {
+	for (ll i = 1; i <= N / C + 5; i++) {
 		ll val = i * D;
 		ll num = i * C;
 		if (N > num) {
@@ -42,15 +40,4 @@ int main(void) {
 	//cin >> t;
 	while (t--) solve();
 	return 0;
-}
-
-ll GCD(ll a, ll b) {
-	if (a > b) {
-		if (a % b) return GCD(a % b, b);
-		else return b;
-	}
-	else {
-		if (b % a) return GCD(b % a, a);
-		else return a;
-	}
 }
