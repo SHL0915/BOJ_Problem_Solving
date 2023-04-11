@@ -19,7 +19,7 @@ void solve() {
 		for (int j = 0; j < K; j++) {
 			ll next = now * arr[j];
 			if (next > (1LL << 31)) break;
-			if (ans.size() < N) ans.insert(next);
+			if (ans.size() <= N - i) ans.insert(next);
 			else {
 				if (next >= *(ans.rbegin())) break;
 				else {
@@ -29,7 +29,7 @@ void solve() {
 			}
 		}
 	}
-		
+
 	cout << *(ans.begin());
 	return;
 }
