@@ -49,9 +49,18 @@ int main(void) {
 
 int DFS(int node) {
 	mark[node] = 1;
+    for (int i = 0; i < graph[node].size(); i++) {
+		int now = graph[node][i];
+		if (B[now] == -1) {
+			B[now] = node;
+			A[node] = now;
+			return 1;
+		}
+	}
+    
 	for (int i = 0; i < graph[node].size(); i++) {
 		int now = graph[node][i];
-		if (B[now] == -1 || mark[B[now]] == 0 && DFS(B[now])) {
+		if (mark[B[now]] == 0 && DFS(B[now])) {
 			B[now] = node;
 			A[node] = now;
 			return 1;
