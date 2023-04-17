@@ -5,9 +5,9 @@ using pii = pair<ll, ll>;
 const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
 int N, M, K;
-vector <pii> graph[10005];
-ll dist[10005];
-vector <int> path[10005];
+vector <pii> graph[10001];
+ll dist[10001];
+vector <int> path[10001];
 
 void Dijkstra(int start);
 void DFS(int node);
