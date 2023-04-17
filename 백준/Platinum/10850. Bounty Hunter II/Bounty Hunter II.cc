@@ -4,7 +4,7 @@ using ll = long long;
 using pii = pair<int, int>;
 const int INF = 0x3f3f3f3f;
 
-int N, ans;
+int N, ans, cnt;
 vector <int> graph[1001];
 int mark[1001];
 int A[1001], B[1001];
@@ -23,12 +23,11 @@ void solve() {
 
 	memset(A, -1, sizeof(A));
 	memset(B, -1, sizeof(B));
-
+    
+    cnt = 1;
 	for (int i = 0; i < N; i++) {
-		if (A[i] == -1) {
-			memset(mark, 0, sizeof(mark));
-			ans += DFS(i);
-		}
+        cnt++;
+		ans += DFS(i);
 	}
 
 	cout << N - ans;
@@ -48,7 +47,7 @@ int main(void) {
 }
 
 int DFS(int node) {
-	mark[node] = 1;
+	mark[node] = cnt;
     for (int i = 0; i < graph[node].size(); i++) {
 		int now = graph[node][i];
 		if (B[now] == -1) {
@@ -60,7 +59,7 @@ int DFS(int node) {
     
 	for (int i = 0; i < graph[node].size(); i++) {
 		int now = graph[node][i];
-		if (mark[B[now]] == 0 && DFS(B[now])) {
+		if (mark[B[now]] != cnt && DFS(B[now])) {
 			B[now] = node;
 			A[node] = now;
 			return 1;
