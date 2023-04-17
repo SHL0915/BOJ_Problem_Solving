@@ -3,27 +3,25 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, Q, M, cnt;
+int N, Q, M, dummy;
 int arr[300001];
 int in_degree[300001];
 
 void solve() {
 	cin >> N >> Q;
-	cout << N << " " << Q << '\n';
+    cout << N << " " << Q << '\n';
 	for (int i = 1; i <= N; i++) {
 		cin >> arr[i];
-		if (arr[i] != i) cnt++;		
+		if (arr[i] == i) dummy = i;		
 		in_degree[arr[i]]++;
 	}
-
 	cin >> M;
 	for (int i = 0; i < M; i++) {
 		int a; cin >> a;
 		cout << 2 << " " << a << '\n';
 	}
 
-	for (int i = 0; i < Q - M - cnt; i++) cout << 1 << " " << 1 << " " << 1 << '\n';
-
+	int cnt = 0;
 	queue <int> q;
 	
 	for (int i = 1; i <= N; i++) {
@@ -32,10 +30,13 @@ void solve() {
 
 	while (q.size()) {
 		int f = q.front(); q.pop();
+		cnt++;
 		cout << 1 << " " << f << " " << arr[f] << '\n';
 		if (--in_degree[arr[f]] == 0) q.push(arr[f]);
 	}
-		
+
+	for (int i = 0; i < Q - M - cnt; i++) cout << 1 << " " << dummy << " " << dummy << '\n';
+	
 	return;
 }
 
