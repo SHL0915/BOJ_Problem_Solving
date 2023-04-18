@@ -8,7 +8,7 @@
 
 ### 분류
 
-조합론(combinatorics), 다이나믹 프로그래밍(dp), 포함 배제의 원리(inclusion_and_exclusion), 수학(math)
+조합론, 다이나믹 프로그래밍, 포함 배제의 원리, 수학
 
 ### 문제 설명
 

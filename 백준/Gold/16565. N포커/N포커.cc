@@ -3,16 +3,24 @@ using namespace std;
 
 const int mod = 10007;
 
-int N;
+int N, ans;
 int combination[53][53];
-int memo[53];
 
 int comb(int N, int K);
-int DP(int N);
 
 int main(void) {
 	cin >> N;	
-	cout << DP(N);		
+	for (int i = 1; i <= N / 4; i++) {
+		if (i % 2 == 1) {
+			ans += (comb(13, i) * comb(52 - i * 4, N - i * 4)) % mod;
+			ans = ans % mod;
+		}
+		else {
+			ans -= (comb(13, i) * comb(52 - i * 4, N - i * 4)) % mod;
+			ans = (ans + mod) % mod; // modular계에서 뺄셈을 진행할 때에는 음수가 되는 경우를 고려하여 mod를 더해준다.
+		}
+	}
+	cout << ans;		
 	return 0;
 }
 
@@ -21,23 +29,4 @@ int comb(int N, int K) {
 	else if (K == 0 || K == N) combination[N][K] = 1;
 	else combination[N][K] = (comb(N - 1, K - 1) + comb(N - 1, K)) % mod;
 	return combination[N][K];
-}
-
-int DP(int N) {
-	if (N < 4) return 0;
-	else if (memo[N] != 0) return memo[N];
-	else if (N == 4) memo[N] = 13;
-	else {
-		for (int i = 1; i <= N / 4; i++) {
-			if (i % 2 == 1) {
-				memo[N] += (comb(13, i) % mod * ((comb(52 - i * 4, N - i * 4) % mod) % mod)) % mod;
-				memo[N] = memo[N] % mod;
-			}
-			else {
-				memo[N] -= (comb(13, i) % mod * ((comb(52 - i * 4, N - i * 4) % mod) % mod)) % mod;
-				memo[N] = (memo[N] + mod) % mod;
-			}
-		}
-	}	
-	return memo[N];
 }
