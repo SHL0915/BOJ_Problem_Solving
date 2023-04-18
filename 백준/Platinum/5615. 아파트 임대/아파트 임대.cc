@@ -46,7 +46,6 @@ int main(void) {
 
 ll power(ll a, ll k, ll mod) {
 	ll ret = 1;
-	a %= mod;
 	while (k) {
 		if (k & 1) ret = (ret * a) % mod;
 		a = (a * a) % mod;
@@ -61,7 +60,9 @@ int miller(ll n, ll a) {
 	while (1) {
 		ll temp = power(a, k, n);
 		if (temp == n - 1) return 1;
-		if (k % 2) return (temp == 1 || temp == n - 1);
-		k /= 2;
+		else {
+			if (k % 2) return (temp == 1);
+			k /= 2;
+		}
 	}
 }
