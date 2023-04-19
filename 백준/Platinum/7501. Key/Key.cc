@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef __int128 lli;
 using ll = unsigned long long;
 using pii = pair<int, int>;
 
@@ -50,8 +49,8 @@ ll power(ll a, ll k, ll mod) {
 	ll ret = 1;
 	a %= mod;
 	while (k) {
-		if (k & 1) ret = ((lli)ret * (lli)a) % mod;
-		a = ((lli)a * (lli)a) % mod;
+		if (k & 1) ret = ((__int128)ret * (__int128)a) % mod;
+		a = ((__int128)a * (__int128)a) % mod;
 		k >>= 1;
 	}
 	return ret;
