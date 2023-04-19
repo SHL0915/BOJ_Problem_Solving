@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-using ull = unsigned long long;
 using pii = pair<int, int>;
 
-struct MillerRabin {
+struct millar_rabin {
+	using ull = unsigned long long;
 	ll Mul(ll x, ll y, ll MOD) {
 		ll ret = x * y - MOD * ull(1.L / MOD * x * y);
 		return ret + MOD * (ret < 0) - MOD * (ret >= (ll)MOD);
@@ -39,9 +39,9 @@ struct MillerRabin {
 		}
 		return 1;
 	}
-};
+} millar_rabin;
 
-struct PollardRho : public MillerRabin {
+struct pollard_rho : public millar_rabin {
 	void Rec(ll n, vector<ll>& v) {
 		if (n == 1) return;
 		if (~n & 1) { v.push_back(2); Rec(n >> 1, v); return; }
@@ -50,8 +50,8 @@ struct PollardRho : public MillerRabin {
 		auto f = [&](ll x) { return (c + Mul(x, x, n)) % n; };
 		do {
 			if (g == n) {
-				a = b = rand() + 2;
-				c = rand() + 1;
+				a = b = rand() % (n - 2) + 2;
+				c = rand() % 20 + 1;
 			}
 			a = f(a); b = f(f(b)); g = gcd(abs(a - b), n);
 		} while (g == 1);
@@ -62,7 +62,7 @@ struct PollardRho : public MillerRabin {
 		sort(ret.begin(), ret.end());
 		return ret;
 	}
-} P;
+} pollard_rho;
 
 ll N;
 map <ll, ll> m;
@@ -70,7 +70,7 @@ map <ll, ll> m;
 void solve() {
 	cin >> N;
 
-	vector <ll> ans = P.Factorize(N);
+	vector <ll> ans = pollard_rho.Factorize(N);
 	for (int i = 0; i < ans.size(); i++) m[ans[i]]++;
 
 	ll cnt = 1;
