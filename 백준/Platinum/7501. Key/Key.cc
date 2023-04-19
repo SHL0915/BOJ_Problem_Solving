@@ -1,26 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
+using ull = unsigned long long;
 using pii = pair<int, int>;
 
-ll A, B;
-int sieve[100];
-vector <ll> check;
+struct MillerRabin {
+	ll Mul(ll x, ll y, ll MOD) {
+		ll ret = x * y - MOD * ull(1.L / MOD * x * y);
+		return ret + MOD * (ret < 0) - MOD * (ret >= (ll)MOD);
+	}
+	ll _pow(ll x, ll n, ll MOD) {
+		ll ret = 1; x %= MOD;
+		for (; n; n >>= 1) {
+			if (n & 1) ret = Mul(ret, x, MOD);
+			x = Mul(x, x, MOD);
+		}
+		return ret;
+	}
+	bool Check(ll x, ll p) {
+		if (x % p == 0) return 0;
+		for (ll d = x - 1; ; d >>= 1) {
+			ll t = _pow(p, d, x);
+			if (d & 1) return t != 1 && t != x - 1;
+			if (t == x - 1) return 0;
+		}
+	}
+	bool IsPrime(ll x) {
+		if (x == 2 || x == 3 || x == 5 || x == 7) return 1;
+		if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return 0;
+		if (x < 121) return x > 1;
+		if (x < 1ULL << 32) for (auto& i : { 2, 7, 61 }) {
+			if (x == i) return 1;
+			if (x > i && Check(x, i)) return 0;
+		}
+		else for (auto& i : { 2, 325, 9375, 28178, 450775, 9780504, 1795265022 }) {
+			if (x == i) return 1;
+			if (x > i && Check(x, i)) return 0;
+		}
+		return 1;
+	}
+};
 
-ll power(ll a, ll k, ll mod);
-int miller(ll n, ll a);
+ll A, B;
 
 void solve() {
 	cin >> A >> B;
+	MillerRabin f;
 	for (ll i = A; i <= B; i++) {
-		if (i % 2 == 0) continue;
-
-		int flag = 0;
-		for (int j = 0; j < check.size(); j++) {
-			if (miller(i, check[j]) == 0) flag = 1;			
-		}
-
-		if (flag == 0 || i == 9) cout << i << " ";
+		if (f.IsPrime(i) || i == 9) cout << i << ' ';
 	}
 	return;
 }
@@ -31,40 +58,8 @@ int main(void) {
 #endif
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-
-	for (int i = 2; i <= 37; i++) {
-		if (sieve[i] == 0) {
-			check.push_back(i);
-			for (int j = i * i; j <= 37; j += i) sieve[j] = 1;
-		}
-	}
-
 	int t = 1;
 	//cin >> t;
 	while (t--) solve();
 	return 0;
-}
-
-ll power(ll a, ll k, ll mod) {
-	ll ret = 1;
-	a %= mod;
-	while (k) {
-		if (k & 1) ret = ((__int128)ret * (__int128)a) % mod;
-		a = ((__int128)a * (__int128)a) % mod;
-		k >>= 1;
-	}
-	return ret;
-}
-
-int miller(ll n, ll a) {
-	if (a % n == 0) return 1;
-	ll k = n - 1;
-	while (1) {
-		ll temp = power(a, k, n);
-		if (temp == n - 1) return 1;
-		else {
-			if (k % 2) return (temp == 1);
-			k >>= 1;
-		}
-	}
 }
