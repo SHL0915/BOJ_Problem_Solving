@@ -5,10 +5,10 @@ using pii = pair<int, int>;
 const int INF = 0x3f3f3f3f;
 
 int N, M;
-vector <int> graph[3005];
-int parent[3005];
-int org[3005][3005];
-int flow[3005][3005], cap[3005][3005];
+vector <int> graph[505];
+int in_degree[505], parent[505];
+int org[505][505];
+int flow[505][505], cap[505][505];
 
 int find_Max(int s, int e);
 
@@ -17,37 +17,38 @@ void solve() {
 	for (int i = 1; i <= M; i++) {
 		int a, b;
 		cin >> a >> b;
-		a += M; b += M;
-		graph[0].push_back(i);
-		graph[i].push_back(0);
-		org[0][i] = 1;
-
-		graph[i].push_back(a);
-		graph[a].push_back(i);
-		graph[i].push_back(b);
-		graph[b].push_back(i);
-		org[i][a] = 1;
-		org[i][b] = 1;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+		in_degree[b]++;
+		org[b][a] = 1;
 	}
 
 	for (int i = 1; i <= N; i++) {
-		graph[i + M].push_back(3003);
-		graph[3003].push_back(i + M);
+		graph[0].push_back(i);
+		graph[i].push_back(0);
+		graph[i].push_back(504);
+		graph[504].push_back(i);
 	}
 
 	int l = 0, r = M;
 	while (l < r) {
 		int mid = (l + r) / 2;
 		memset(flow, 0, sizeof(flow));
-		for (int i = 0; i < 3005; i++) {
-			for (int j = 0; j < 3005; j++) cap[i][j] = org[i][j];
+		for (int i = 0; i < 505; i++) {
+			for (int j = 0; j < 505; j++) cap[i][j] = org[i][j];
 		}
 
-		for (int i = 1; i <= N; i++) cap[i + M][3003] = mid;
+		int sum = 0;
 
-		int m = find_Max(0, 3003);
+		for (int i = 1; i <= N; i++) {
+			cap[0][i] = max(0, in_degree[i] - mid);
+			cap[i][504] = max(0, mid - in_degree[i]);
+			sum += cap[0][i];
+		}
 
-		if (m == M) r = mid;
+		int m = find_Max(0, 504);
+
+		if (m == sum) r = mid;
 		else l = mid + 1;
 	}
 
