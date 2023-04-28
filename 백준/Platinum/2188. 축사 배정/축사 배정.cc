@@ -3,77 +3,55 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-struct edge { int dist, cap, rev; };
-vector <edge> graph[405];
-
 int N, M;
+int A[201], B[201], mark[201];
+vector <int> graph[201];
 
-void add_edge(int v, int u);
-int find_max(int s, int e);
+int DFS(int node);
 
 void solve() {
 	cin >> N >> M;
-	for (int i = 1; i <= N; i++) add_edge(0, i);
-	for (int i = 1; i <= M; i++) add_edge(i + N, N + M + 1);
 	for (int i = 1; i <= N; i++) {
 		int k; cin >> k;
 		for (int j = 0; j < k; j++) {
 			int a; cin >> a;
-			add_edge(i, a + N);
+			graph[i].push_back(a);
 		}
 	}
-	cout << find_max(0, N + M + 1);
+	int ans = 0;
+	memset(A, -1, sizeof(A));
+	memset(B, -1, sizeof(B));
+	for (int i = 1; i <= N; i++) {
+		if (A[i] == -1) {
+			memset(mark, 0, sizeof(mark));
+			ans += DFS(i);
+		}
+	}
+	cout << ans;
 	return;
 }
 
 int main(void) {
 #ifndef ONLINE_JUDGE
-		freopen("input.txt", "r", stdin);
-	#endif
-		ios::sync_with_stdio(false);
-		cin.tie(0);
-		int t = 1;
-		//cin >> t;
-		while (t--) solve();
-		return 0;
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int t = 1;
+	//cin >> t;
+	while (t--) solve();
+	return 0;
 }
 
-void add_edge(int v, int u) {
-	edge x;
-	x.dist = u; x.cap = 1; x.rev = graph[u].size();
-	graph[v].push_back(x);
-	x.dist = v; x.cap = 0; x.rev = graph[v].size() - 1;
-	graph[u].push_back(x);
-}
-
-int find_max(int s, int e) {
-	int ret = 0;
-	while (1) {
-		queue <int> q;
-		int v[405] = {}, pa[405] = {}, pe[405] = {};
-		q.push(s);
-		v[s] = 1;
-		while (q.size()) {
-			int f = q.front(); q.pop();
-			if (f == e) break;
-			for (int i = 0; i < graph[f].size(); i++) {
-				int now = graph[f][i].dist;
-				int cap = graph[f][i].cap;
-				if (v[now] == 0 && cap > 0) {
-					q.push(now);
-					pa[now] = f;
-					pe[now] = i;
-					v[now] = 1;
-				}
-			}
-		}
-		if (v[e] == 0) break;
-		ret++;
-		for (int i = e; i != s; i = pa[i]) {
-			int rev = graph[pa[i]][pe[i]].rev;
-			graph[pa[i]][pe[i]].cap--;
-			graph[i][rev].cap++;
+int DFS(int node) {
+	mark[node] = 1;
+	for (int i = 0; i < graph[node].size(); i++) {
+		int now = graph[node][i];
+		if (B[now] == -1 || (!mark[B[now]] && DFS(B[now]))) {
+			A[node] = now;
+			B[now] = node;
+			return 1;
 		}
 	}
-	return ret;
+	return 0;
 }
