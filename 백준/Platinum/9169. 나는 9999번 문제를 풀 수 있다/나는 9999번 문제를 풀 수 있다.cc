@@ -2,14 +2,17 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
+const int INF = 0x3f3f3f3f;
 
 int N, M;
 vector <int> graph[305];
 int arr[305];
 int cap[305][305], flow[305][305];
-int par[305];
+int mark[305], level[305];
 
-int find_Max(int s, int e);
+int Dinic(int S, int E);
+int DFS(int S, int E, int f);
+int BFS(int S, int E);
 
 void solve() {
 	cin >> N >> M;
@@ -41,7 +44,7 @@ void solve() {
 		cap[b][a] = 1;
 	}
 
-	cout << find_Max(0, N + 1) << '\n';
+	cout << Dinic(0, N + 1) << '\n';
 	return;
 }
 
@@ -57,31 +60,56 @@ int main(void) {
 	return 0;
 }
 
-int find_Max(int s, int e) {
+int Dinic(int S, int E) {
 	int ret = 0;
-	while (1) {
-		memset(par, -1, sizeof(par));
-		queue <int> q;
-		q.push(s);
-		while (q.size()) {
-			int f = q.front(); q.pop();
-			if (f == e) break;
-			for (int i = 0; i < graph[f].size(); i++) {
-				int now = graph[f][i];
-				if (par[now] == -1 && cap[f][now] - flow[f][now] > 0) {
-					par[now] = f;
-					q.push(now);
-				}
+
+	while (BFS(S, E)) {
+		memset(mark, 0, sizeof(mark));
+		while(1){
+            int f = DFS(S, E, INF);
+		    if (f) ret += f;
+		    else break;
+        }
+	}
+
+	return ret;
+}
+
+int DFS(int S, int E, int f) {
+	if (S == E) return f;
+	
+	for (int& i = mark[S]; i < graph[S].size(); i++) {
+		int next = graph[S][i];
+		if (level[next] == level[S] + 1 && cap[S][next] - flow[S][next] > 0) {
+			int ret = DFS(next, E, min(f, cap[S][next] - flow[S][next]));
+			if (ret) {
+				flow[S][next] += ret;
+				flow[next][S] -= ret;
+				return ret;
 			}
 		}
-		if (par[e] == -1) break;
-		int val = 0x3f3f3f3f;
-		for (int i = e; i != s; i = par[i]) val = min(val, cap[par[i]][i] - flow[par[i]][i]);
-		for (int i = e; i != s; i = par[i]) {
-			flow[par[i]][i] += val;
-			flow[i][par[i]] -= val;
-		}
-		ret += val;
 	}
-	return ret;
+
+	return 0;
+}
+
+int BFS(int S, int E) {
+	memset(level, -1, sizeof(level));
+	level[S] = 0;
+	
+	queue <int> q;
+	q.push(S);
+
+	while (q.size()) {
+		int f = q.front(); q.pop();
+		for (int i = 0; i < graph[f].size(); i++) {
+			int next = graph[f][i];
+			if (level[next] == -1 && cap[f][next] - flow[f][next] > 0) {
+				level[next] = level[f] + 1;
+				q.push(next);
+			}
+		}
+	}
+
+	return level[E] != -1;
 }
