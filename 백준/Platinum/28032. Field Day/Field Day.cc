@@ -6,7 +6,6 @@ using pii = pair<int, int>;
 int N, C;
 string arr[100005];
 string rvs[100005];
-vector <int> graph[(1<<20)];
 int mark[(1 << 20)];
 queue <pii> q;
 
