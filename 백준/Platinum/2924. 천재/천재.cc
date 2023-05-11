@@ -4,7 +4,7 @@ using ll = long long;
 using pii = pair<int, int>;
 
 ll N, A, B, C, D;
-ll parent[500005], mark[500005], sz[500005];
+int parent[500005], mark[500005], sz[500005];
 vector <int> graph[500005];
 
 void Union(int a, int b);
@@ -33,10 +33,7 @@ void solve() {
 	ll lcm = 0;
 	for (int i = C + 1; i <= N - D; i++) {
 		if (lcm == 0) lcm = sz[Find(i)];
-		else {
-			if (lcm % sz[Find(i)]) lcm = LCM(lcm, sz[Find(i)]);
-			else continue;
-		}	
+		else lcm = LCM(lcm, sz[Find(i)]);		
 	}
 
 	ll ans = (A == 0);
@@ -84,7 +81,6 @@ void DFS(int a) {
 	for (int i = 0; i < graph[a].size(); i++) {
 		int next = graph[a][i];
 		Union(a, next);
-		if (mark[next]) continue;
 		DFS(next);
 	}
 	return;
