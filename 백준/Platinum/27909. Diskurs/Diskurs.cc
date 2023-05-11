@@ -5,7 +5,6 @@ using pii = pair<int, int>;
 
 int N, M;
 int arr[(1 << 21)];
-vector <int> graph[(1 << 21)];
 int mark[(1 << 21)];
 queue <pii> q;
 
