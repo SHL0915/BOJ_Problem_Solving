@@ -5,15 +5,13 @@ using pii = pair<int, int>;
 
 int N;
 string M;
-vector <int> graph[200005];
 int arr[200005];
-int parent[200005], sz[200005], mark[200005];
+int parent[200005], sz[200005];
 int table[200005][21];
 int modTable[200005];
 
 void Union(int a, int b);
 int Find(int a);
-void DFS(int node);
 void cal(int mod);
 int f(int node, int k);
 
@@ -26,11 +24,9 @@ void solve() {
 	}
 	for (int i = 1; i <= N; i++) {
 		cin >> arr[i];
-		graph[i].push_back(arr[i]);
+        Union(i, arr[i]);
 		table[i][0] = arr[i];
 	}
-
-	for (int i = 1; i <= N; i++) if (mark[i] == 0) DFS(i);
 
 	for (int i = 1; i <= 20; i++) {
 		for (int j = 1; j <= N; j++) table[j][i] = table[table[j][i - 1]][i - 1];
@@ -76,18 +72,6 @@ void Union(int a, int b) {
 int Find(int a) {
 	if (a == parent[a]) return parent[a];
 	else return parent[a] = Find(parent[a]);
-}
-
-void DFS(int node) {
-	if (mark[node]) return;
-	mark[node] = 1;
-
-	for (int i = 0; i < graph[node].size(); i++) {
-		int next = graph[node][i];
-		Union(node, next);
-		DFS(next);
-	}
-	return;
 }
 
 void cal(int mod) {
