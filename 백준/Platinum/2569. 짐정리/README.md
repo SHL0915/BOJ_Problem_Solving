@@ -4,11 +4,11 @@
 
 ### 성능 요약
 
-메모리: 2064 KB, 시간: 0 ms
+메모리: 2060 KB, 시간: 0 ms
 
 ### 분류
 
-그리디 알고리즘(greedy), 순열 사이클 분할(permutation_cycle_decomposition)
+그리디 알고리즘, 순열 사이클 분할
 
 ### 문제 설명
 
