@@ -9,7 +9,6 @@ pii arr[4];
 ll ccw(pii a, pii b, pii c);
 pii sub(pii a, pii b);
 int line_intersect(pii a, pii b, pii c, pii d);
-int in_rec(pii a);
 
 void solve() {
 	cin >> A.first >> A.second >> B.first >> B.second;
@@ -66,18 +65,4 @@ ll ccw(pii a, pii b, pii c) {
 
 pii sub(pii a, pii b) {
 	return { a.first - b.first, a.second - b.second };
-}
-
-int in_rec(pii a) {
-	int now = -1;
-
-	for (int i = 0; i < 4; i++) {
-		ll res = ccw(arr[i], arr[(i + 1) % 4], a);
-		if (now == -1) now = res;
-		else {
-			if (now != res) return 0;
-		}
-	}
-
-	return 1;
 }
