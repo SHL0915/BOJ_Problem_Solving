@@ -6,7 +6,6 @@ using pii = pair<ll, ll>;
 int N;
 int parent[10005];
 pair<pii, pii> arr[10005];
-int mark[10005];
 
 void Union(int a, int b);
 int Find(int a);
@@ -21,19 +20,26 @@ void solve() {
 	for (int i = 1; i <= N; i++) {
 		double a, b, c, d;
 		cin >> a >> b >> c >> d;
-		arr[i].first.first = (ll)(a * 100 + 0.5);
-		arr[i].first.second = (ll)(b * 100 + 0.5);
-		arr[i].second.first = (ll)(c * 100 + 0.5);
-		arr[i].second.second = (ll)(d * 100 + 0.5);
+		arr[i].first.first = round(a * 100);
+		arr[i].first.second = round(b * 100);
+		arr[i].second.first = round(c * 100);
+		arr[i].second.second = round(d * 100);
 		if (arr[i].first > arr[i].second) swap(arr[i].first, arr[i].second);
-		for (int j = 1; j < i; j++) {
-			if (Find(j) != i) Union(j, i);
+	}
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = i + 1; j <= N; j++) {
+			if (Find(i) == Find(j)) continue;
+			int a = Find(i), b = Find(j);
+			if (check(arr[a].first, arr[a].second, arr[b].first, arr[b].second)) {
+				Union(a, b);
+				arr[Find(a)] = { min(arr[a].first, arr[b].first), max(arr[a].second, arr[b].second) };
+			}
 		}
 	}
 
 	int cnt = 0;
-	for (int i = 1; i <= N; i++) mark[Find(i)] = 1;
-	for (int i = 1; i <= N; i++) cnt += mark[i];
+	for (int i = 1; i <= N; i++) if (Find(i) == i) cnt++;
 
 	cout << cnt;
 	return;
@@ -52,10 +58,11 @@ int main(void) {
 }
 
 void Union(int a, int b) {
-	if (check(arr[a].first, arr[a].second, arr[b].first, arr[b].second)) {
-		arr[b] = { min(arr[a].first, arr[b].first), max(arr[a].second, arr[b].second) };
-		parent[a] = b;
-	}
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;	
 	return;
 }
 
@@ -65,9 +72,15 @@ int Find(int a) {
 }
 
 ll ccw(pii a, pii b, pii c) {
-	ll res = (a.first * b.second - a.second * b.first) + (b.first * c.second - b.second * c.first) + (c.first * a.second - c.second * a.first);
+	pii u = sub(b, a);
+	pii v = sub(c, b);
+	ll res = u.first * v.second - u.second * v.first;
 	if (res) res /= abs(res);
 	return res;
+}
+
+pii sub(pii a, pii b) {
+	return { a.first - b.first, a.second - b.second };
 }
 
 int check(pii a, pii b, pii c, pii d) {
