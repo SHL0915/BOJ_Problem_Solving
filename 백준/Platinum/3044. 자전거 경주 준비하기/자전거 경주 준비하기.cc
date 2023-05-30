@@ -4,17 +4,14 @@ using ll = long long;
 using pii = pair<int, int>;
 const ll mod = 1000000000LL;
 
-int N, M, cnt, id_cnt;
+int N, M, cnt;
 vector <int> graph[10005];
 vector <int> topograph[10005];
-int in_degree[10005], par[10005], id[10005], mark[10005];
+int in_degree[10005], mark[10005];
 ll table[10005];
 vector <pii> edge;
-stack <int> st;
 
-int DFS(int node);
 int DP(int node);
-void chk(int node);
 void Topology();
 
 void solve() {
@@ -26,17 +23,12 @@ void solve() {
 		edge.push_back({ a,b });
 	}
 
-	chk(1);
-	if (mark[2] == 0) {
+	memset(mark, -1, sizeof(mark));
+
+	if (DP(1) == 0) {
 		cout << 0;
 		return;
 	}
-
-	memset(mark, -1, sizeof(mark));
-
-	for (int i = 1; i <= N; i++) if (par[i] == 0) DFS(i);
-	
-	DP(1);
 
 	for (int i = 0; i < M; i++) {
 		int a = edge[i].first, b = edge[i].second;
@@ -84,41 +76,12 @@ int main(void) {
 	return 0;
 }
 
-void chk(int node) {
-	if (mark[node]) return;
-	mark[node] = 1;
-	for (int next : graph[node]) chk(next);
-	return;
-}
-
 int DP(int node) {
 	int& ret = mark[node];
 	if (node == 2) return ret = 1;
 	if (ret != -1) return ret;
 	ret = 0;
 	for (int next : graph[node]) ret |= DP(next);
-	return ret;
-}
-
-int DFS(int node) {
-	par[node] = ++cnt;
-	int ret = cnt;
-	st.push(node);
-
-	for (int next : graph[node]) {
-		if (par[next] == 0) ret = min(ret, DFS(next));
-		else if (id[next] == 0) ret = min(ret, par[next]);
-	}
-
-	if (ret == par[node]) {
-		id_cnt++;
-		while (st.size()) {
-			int t = st.top(); st.pop();
-			id[t] = id_cnt;
-			if (t == node) break;
-		}
-	}
-
 	return ret;
 }
 
