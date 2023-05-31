@@ -33,7 +33,7 @@ void solve() {
 	}
 
 	cout << Dinic(0, N + 1) << '\n';
-	for (int i = 1; i <= N; i++) if (arr[i] == 1) check(i);
+    check(0);
 
 	for (int i = 1; i <= N; i++) if (ans[i]) cout << i << " ";
 	cout << '\n';
