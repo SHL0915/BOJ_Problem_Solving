@@ -20,7 +20,7 @@ void solve() {
 	cin >> N >> R >> M;
 	for (int i = 0; i < M; i++) cin >> arr[i].t >> arr[i].p >> arr[i].d;
 
-	double l = 0, r = 1000000000000000;
+	double l = 0, r = 250000000;
 	while (r - l > 1e-7) {
 		double mid = (r + l) / 2;
 		int res = check(mid);
