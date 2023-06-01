@@ -17,13 +17,7 @@ void solve() {
 	for (int i = 0; i < N; i++) a = max(a, F(arr[i].second, arr[i].first, make_pair(-R, 0)));
 	for (int i = 0; i < N; i++) b = max(b, F(arr[i].second, arr[i].first, make_pair(R, 0)));
 
-	if (a == b) {
-		cout << -R << " " << 0 << " " << R << " " << 0;
-		return;
-	}
-
-	double l = -R, r = R;
-
+    double l = -R, r = R;
 	while (r - l > 2e-7) {
 		double mid = (l + r) / 2;
 		pair <double, double> now = find_pair(mid);
