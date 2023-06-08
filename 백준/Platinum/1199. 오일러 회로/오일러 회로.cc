@@ -5,19 +5,18 @@ using pii = pair<int, int>;
 
 int N;
 int degree[1005];
-pii seg[1005][2005];
+vector <int> graph[1005];
+int adj[1005][1005];
 
 void DFS(int node);
-void update(int idx, int pos, pii val);
-pii query(int idx, int l, int r);
 
 void solve() {
 	cin >> N;
 	for (int i = 1; i <= N; i++) {
 		for (int j = 1; j <= N; j++) {
-			int a; cin >> a;
-			degree[i] += a;
-			update(i, j, { a, j });
+			cin >> adj[i][j];
+			degree[i] += adj[i][j];
+			if (adj[i][j]) graph[i].push_back(j);
 		}
 	}
 
@@ -46,27 +45,17 @@ int main(void) {
 }
 
 void DFS(int node) {
-	while (1) {
-		pii now = query(node, 1, N + 1);
-		if (now.first == 0) break;
-		update(node, now.second, { now.first - 1, now.second });
-		update(now.second, node, { now.first - 1, node });
-		DFS(now.second);
+	while (graph[node].size()) {
+		int next = graph[node].back();
+		if (adj[node][next] == 0) {
+			graph[node].pop_back();
+			continue;
+		}
+		adj[node][next]--;
+		adj[next][node]--;
+		DFS(next);
 	}
+	
 	cout << node << " ";
 	return;
-}
-
-void update(int idx, int pos, pii val) {
-	for (seg[idx][pos += N] = val; pos > 0; pos >>= 1) seg[idx][pos >> 1] = max(seg[idx][pos], seg[idx][pos ^ 1]);
-	return;
-}
-
-pii query(int idx, int l, int r) {
-	pii ret = { 0, 0 };
-	for (l += N, r += N; l < r; l >>= 1, r >>= 1) {
-		if (l & 1) ret = max(ret, seg[idx][l++]);
-		if (r & 1) ret = max(ret, seg[idx][--r]);
-	}
-	return ret;
 }
