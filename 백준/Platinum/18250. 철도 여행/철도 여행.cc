@@ -3,33 +3,36 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M, cnt;
-vector <int> graph[200005];
-int degree[200005], mark[200005];
+int N, M;
+int degree[200005], parent[200005], mark[200005];
+int cnt[200005];
 
-void DFS(int node);
+void Union(int a, int b);
+int Find(int a);
 
 void solve() {
 	cin >> N >> M;
+	for (int i = 1; i <= N; i++) parent[i] = i;
+
 	for (int i = 0; i < M; i++) {
 		int a, b;
 		cin >> a >> b;
-		graph[a].push_back(b);
-		graph[b].push_back(a);
 		degree[a]++;
 		degree[b]++;
+		Union(a, b);
 	}
 
 	int ans = 0;
 
 	for (int i = 1; i <= N; i++) {
-		if (degree[i] == 0) continue;
-		if (mark[i] == 0) {
-			ans++;
-			cnt = 0;
-			DFS(i);
-			if (cnt > 2) ans += (cnt - 2) / 2;
-		}
+		if (degree[i] % 2) cnt[Find(i)]++;
+	}
+
+	for (int i = 1; i <= N; i++) {
+		if (!degree[i] || mark[Find(i)]) continue;
+		mark[Find(i)] = 1;
+		ans++;
+		ans += max(0, (cnt[Find(i)] - 2) / 2);
 	}
 
 	cout << ans;
@@ -48,13 +51,16 @@ int main(void) {
 	return 0;
 }
 
-void DFS(int node) {
-	if (mark[node]) return;
-	mark[node] = 1;
-
-	if (degree[node] % 2) cnt++;
-
-	for (int next : graph[node]) DFS(next);
-	
+void Union(int a, int b) {
+	a = Find(a);
+	b = Find(b);
+	if (a == b) return;
+	if (a > b) parent[a] = b;
+	else parent[b] = a;
 	return;
+}
+
+int Find(int a) {
+	if (parent[a] == a) return parent[a];
+	else return parent[a] = Find(parent[a]);
 }
