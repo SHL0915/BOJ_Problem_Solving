@@ -3,11 +3,9 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M;
+int N, M, cnt;
 vector <int> graph[200005];
-set <int> s[200005];
-int degree[200005];
-int mark[200005];
+int degree[200005], mark[200005];
 
 void DFS(int node);
 
@@ -18,8 +16,6 @@ void solve() {
 		cin >> a >> b;
 		graph[a].push_back(b);
 		graph[b].push_back(a);
-		s[a].insert(b);
-		s[b].insert(a);
 		degree[a]++;
 		degree[b]++;
 	}
@@ -27,16 +23,12 @@ void solve() {
 	int ans = 0;
 
 	for (int i = 1; i <= N; i++) {
-		if (degree[i] % 2 == 0) continue;
-		ans++;
-		DFS(i);
-	}
-
-	for (int i = 1; i <= N; i++) {
 		if (degree[i] == 0) continue;
-		if (degree[i] % 2 == 0 && mark[i] == 0) {
+		if (mark[i] == 0) {
 			ans++;
+			cnt = 0;
 			DFS(i);
+			if (cnt > 2) ans += (cnt - 2) / 2;
 		}
 	}
 
@@ -57,18 +49,12 @@ int main(void) {
 }
 
 void DFS(int node) {
+	if (mark[node]) return;
 	mark[node] = 1;
 
-	while (graph[node].size()) {
-		int next = graph[node].back(); graph[node].pop_back();
-		if (s[node].count(next) == 0) continue;
-		degree[node]--;
-		degree[next]++;
-		s[node].erase(next);
-		s[next].erase(node);
-		DFS(next);
-		break;
-	}
+	if (degree[node] % 2) cnt++;
+
+	for (int next : graph[node]) DFS(next);
 	
 	return;
 }
