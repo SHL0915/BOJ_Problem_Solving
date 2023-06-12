@@ -26,17 +26,6 @@ void solve() {
 		cout << -1;
 		return;
 	}
-	
-	if (idx == N) {
-		ll temp = 0;
-		for (int i = 1; i <= N; i++) temp = max(temp, B[i]);
-
-
-		if (M >= psumB[N] + N * temp) {
-			cout << -1;
-			return;
-		}
-	}
 
 	set <pii> s;
 	for (int i = 1; i <= idx; i++) s.insert({ B[i], i });
