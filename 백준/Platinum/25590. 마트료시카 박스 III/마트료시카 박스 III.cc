@@ -3,15 +3,13 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M, K, S;
+int N, M, K, S, cnt;
 vector <int> org[300005];
 vector <int> tree[600005];
-int in_degree[600005];
-int parent[600005], level[600005];
-int par[600005][21];
+int in_degree[600005], parent[600005];
+pii id[600005];
 
-void DFS(int node, int p, int lv);
-int LCA(int a, int b);
+void DFS(int node);
 
 void solve() {
 	cin >> N >> M >> K >> S;
@@ -48,12 +46,13 @@ void solve() {
 		if (in_degree[i] == 0) root = i;
 	}
 
-	DFS(root, root, 0);
+	DFS(root);
 
 	for (int i = 1; i <= N; i++) {
 		if (parent[i] == 0) continue;
-		int lca = LCA(i, parent[i]);
-		if (lca == parent[i]) continue;
+		int a = i, b = parent[i];
+
+		if (id[b].first <= id[a].first && id[b].second >= id[a].second) continue;
 		else {
 			cout << 0;
 			return;
@@ -76,34 +75,9 @@ int main(void) {
 	return 0;
 }
 
-void DFS(int node, int p, int lv) {
-	par[node][0] = p;
-	level[node] = lv;
-	for (int i = 1; i <= 20; i++) par[node][i] = par[par[node][i - 1]][i - 1];
-
-	for (int next : tree[node]) DFS(next, node, lv + 1);
-
+void DFS(int node) {
+	id[node].first = ++cnt;
+	for (int next : tree[node]) DFS(next);
+	id[node].second = cnt;
 	return;
-}
-
-int LCA(int a, int b) {
-	if (level[a] < level[b]) swap(a, b);
-	if (level[a] != level[b]) {
-		for (int i = 20; i >= 0; i--) {
-			if (level[par[a][i]] >= level[b]) a = par[a][i];
-		}
-	}
-
-	int ret = a;
-	if (a != b) {
-		for (int i = 20; i >= 0; i--) {
-			if (par[a][i] != par[b][i]) {
-				a = par[a][i];
-				b = par[b][i];
-			}
-			ret = par[a][i];
-		}
-	}
-
-	return ret;
 }
