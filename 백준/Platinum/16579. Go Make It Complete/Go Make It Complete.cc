@@ -22,7 +22,7 @@ void solve() {
 	for (int i = 1; i <= N; i++) {
 		for (int j = i + 1; j <= N; j++) {
 			if (adj[i][j]) continue;
-			q[degree[i] + degree[j]].push({ i,j });
+			q[degree[i] + degree[j]].emplace( i,j );
 			cnt++;
 		}
 	}
@@ -39,12 +39,12 @@ void solve() {
 
 			for (int j = 1; j <= N; j++) {
 				if (j == a || adj[a][j]) continue;
-				q[degree[j] + degree[a]].push({ j, a });
+				if(degree[j] + degree[a] <= i) q[degree[j] + degree[a]].emplace( j, a );
 			}
 
 			for (int j = 1; j <= N; j++) {
 				if (j == b || adj[b][j]) continue;
-				q[degree[j] + degree[b]].push({ j, b });
+				if(degree[j] + degree[b] <= i) q[degree[j] + degree[b]].emplace( j, b );
 			}
 		}
 
