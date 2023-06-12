@@ -3,101 +3,57 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M;
+int N, M, cnt;
+int adj[505][505];
 int degree[505];
-int arr[505];
-set <int> org[505];
-queue <pii> cand;
+queue <pii> q[1005];
 
 void solve() {
 	cin >> N >> M;
-
-	for (int i = 1; i <= N; i++) {
-		for (int j = 1; j <= N; j++) {
-			if (i == j) continue;
-			org[i].insert(j);
-		}
-	}
-
 	for (int i = 0; i < M; i++) {
 		int a, b;
 		cin >> a >> b;
 		degree[a]++;
 		degree[b]++;
-		org[min(a, b)].erase(max(a, b));
-		org[max(a, b)].erase(min(a, b));
+		adj[a][b] = 1;
+		adj[b][a] = 1;
 	}
 
-	int l = 0, r = N * N;
-	int ans = 0;
-	while (l <= r) {
-		int mid = (l + r) / 2;
-		
-		set <int> s[505];	
-
-		for (int i = 1; i <= N; i++) {
-			arr[i] = degree[i];
-			for (auto j : org[i]) s[i].insert(j);
-		}		
-
-		set <pii> cand;
-		for (int i = 1; i <= N; i++) {
-			vector <int> v;
-			for (auto j : s[i]) {
-				if (arr[i] + arr[j] >= mid) {
-					cand.insert({ i,j });
-					v.push_back(j);
-				}
-			}
-			for (int j : v) {
-				s[i].erase(j);
-				s[j].erase(i);
-			}
+	for (int i = 1; i <= N; i++) {
+		for (int j = i + 1; j <= N; j++) {
+			if (adj[i][j]) continue;
+			q[degree[i] + degree[j]].push({ i,j });
+			cnt++;
 		}
-
-		while (cand.size() > 0) {
-			pii now = *cand.begin();
-			cand.erase(now);
-			int a = now.first, b = now.second;
-			arr[a]++; arr[b]++;
-
-			vector <int> v, w;
-			for (auto i : s[a]) {
-				if (arr[a] + arr[i] >= mid) {					
-					cand.insert({ a,i });
-					v.push_back(i);
-				}
-			}
-
-			for (int j : v) {
-				s[a].erase(j);
-				s[j].erase(a);
-			}
-
-			for (auto i : s[b]) {
-				if (arr[b] + arr[i] >= mid) {					
-					cand.insert({ b,i });
-					w.push_back(i);
-				}
-			}
-
-			for (int j : w) {
-				s[b].erase(j);
-				s[j].erase(b);
-			}
-		}
-
-		int flag = 0;
-		for (int i = 1; i <= N; i++) if (arr[i] != N - 1) flag = 1;
-
-		if (flag == 0) {
-			ans = mid;
-			l = mid + 1;
-		}
-		else r = mid - 1;
 	}
 
-	cout << ans;
+	for (int i = 2 * N; i >= 0; i--) {
+		while (q[i].size()) {
+			pii f = q[i].front(); q[i].pop();
+			int a = f.first, b = f.second;
+			if (adj[a][b] == 1) continue;
+
+			adj[a][b] = 1; adj[b][a] = 1;
+			degree[a]++; degree[b]++;
+			cnt--;
+
+			for (int j = 1; j <= N; j++) {
+				if (j == a || adj[a][j]) continue;
+				q[degree[j] + degree[a]].push({ j, a });
+			}
+
+			for (int j = 1; j <= N; j++) {
+				if (j == b || adj[b][j]) continue;
+				q[degree[j] + degree[b]].push({ j, b });
+			}
+		}
+
+		if (cnt == 0) {
+			cout << i;
+			break;
+		}
+	}
+
 	return;
 }
 
