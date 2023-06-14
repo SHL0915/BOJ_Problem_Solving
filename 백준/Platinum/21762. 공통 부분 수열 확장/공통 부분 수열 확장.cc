@@ -54,13 +54,25 @@ void solve() {
 		}
 	}
 
-	for (int i = 0; i < W.length(); i++) {
-		memset(cnt, 0, sizeof(cnt));
-		memset(chk, 0, sizeof(chk));
-		
-		for (int j = Af[i] + 1; j < Ab[i + 1]; j++) cnt[X[j] - 'a']++;
-		for (int j = Bf[i] + 1; j < Bb[i + 1]; j++) chk[Y[j] - 'a']++;
+	memset(cnt, 0, sizeof(cnt));
+	memset(chk, 0, sizeof(chk));
 
+	for (int i = Af[0] + 1; i < Ab[1]; i++) cnt[X[i] - 'a']++;
+	for (int i = Bf[0] + 1; i < Bb[1]; i++) chk[Y[i] - 'a']++;
+	for (int i = 0; i < 26; i++) {
+		if (cnt[i] != 0 && chk[i] != 0) {
+			cout << 1 << '\n';
+			return;
+		}
+	}
+
+	for (int i = 1; i < W.length(); i++) {
+		for (int j = Af[i - 1] + 1; j <= min(Af[i], Ab[i] - 1); j++) cnt[X[j] - 'a']--;
+		for (int j = max(Ab[i], Af[i] + 1); j < Ab[i + 1]; j++) cnt[X[j] - 'a']++;
+
+		for (int j = Bf[i - 1] + 1; j <= min(Bf[i], Bb[i] - 1); j++) chk[Y[j] - 'a']--;
+		for (int j = max(Bb[i], Bf[i] + 1); j < Bb[i + 1]; j++) chk[Y[j] - 'a']++;
+		
 		for (int j = 0; j < 26; j++) {
 			if (cnt[j] != 0 && chk[j] != 0) {
 				cout << 1 << '\n';
