@@ -5,7 +5,7 @@ using pii = pair<int, int>;
 
 int N, M;
 int adj[1005][1005];
-int table[1005][1005];
+pii table[1005];
 set <int> cand;
 vector <int> A, B, Acand, Bcand;
 vector <pii> arr;
@@ -71,19 +71,19 @@ void solve() {
 		arr.push_back({ A.size(), B.size() });
 	}
 
-	table[0][0] = 1;
-	
+	table[0] = { 1,0 };
+
 	for (int i = 1; i <= arr.size(); i++) {
-		for (int j = 0; j <= N; j++) {
-			if (table[i - 1][j] == 0) continue;
-			table[i][j + arr[i - 1].first] = 1;
-			table[i][j + arr[i - 1].second] = 1;
+		for (int j = N; j >= 0; j--) {
+			if (table[j].first != 1 || table[j].second != i - 1) continue;
+			table[j + arr[i - 1].first] = { 1, i };
+			table[j + arr[i - 1].second] = { 1,i };
 		}
 	}
 
 	int ans = 0x3f3f3f3f;
 	for (int i = 0; i <= N; i++) {
-		if (table[arr.size()][i] == 1) ans = min(ans, abs(i - (N - i)));
+		if (table[i].second == arr.size()) ans = min(ans, abs(i - (N - i)));
 	}
 
 	cout << ans;
