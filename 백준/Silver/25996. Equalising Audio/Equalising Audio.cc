@@ -21,7 +21,7 @@ void solve() {
     }
     
     double l = 0, r = 1000000;
-    int k = 1000;
+    int k = 80;
     while (k--) {
         double mid = (l + r) / 2;
         double res = sqrSum / (mid * mid * N);
