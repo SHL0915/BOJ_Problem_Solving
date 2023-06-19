@@ -15,7 +15,7 @@ int query(int l, int r, int k);
 void solve() {
     cin >> N;
     for (int i = 1; i <= N; i++) cin >> arr[i];
-    sqrtN = sqrt(N);
+    sqrtN = 2 * sqrt(N);
     
     for (int i = 1; i <= N; i++) bucket[i / sqrtN][arr[i]]++;
     for (int i = 0; i <= N / sqrtN; i++) {
