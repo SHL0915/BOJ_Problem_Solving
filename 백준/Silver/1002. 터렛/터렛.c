@@ -28,7 +28,10 @@ int main(void)
 		dis = Dis(x1, y1, x2, y2);
 		if (r1 == r2)
 		{
-			if ((x1 == x2) & (y1 == y2)) printf("%d\n", -1);
+			if ((x1 == x2) & (y1 == y2)) {
+                if(r1 == 0) printf("%d\n", 1);
+                else printf("%d\n", -1);
+            }
 			else if (r1 + r2 > dis) printf("%d\n", 2);
 			else if (r1 + r2 == dis) printf("%d\n", 1);
 			else printf("%d\n", 0);
