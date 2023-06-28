@@ -4,23 +4,23 @@
 
 ### 성능 요약
 
-메모리: 330088 KB, 시간: 11060 ms
+메모리: 330028 KB, 시간: 3092 ms
 
 ### 분류
 
-이분 탐색(binary_search), 중간에서 만나기(mitm), 정렬(sorting), 두 포인터(two_pointer)
+이분 탐색, 중간에서 만나기, 정렬, 두 포인터
 
 ### 문제 설명
 
-<p>정수로 이루어진 크기가 같은 배열 A, B, C, D가 있다.</p>
-
-<p>A[a], B[b], C[c], D[d]의 합이 0인 (a, b, c, d) 쌍의 개수를 구하는 프로그램을 작성하시오.</p>
+<p>The SUM problem can be formulated as follows: given four lists A, B, C, D of integer values, compute how many quadruplet (a, b, c, d ) ∈ A x B x C x D are such that a + b + c + d = 0 . In the following, we assume that all lists have the same size n.</p>
 
 ### 입력 
 
- <p>첫째 줄에 배열의 크기 n (1 ≤ n ≤ 4000)이 주어진다. 다음 n개 줄에는 A, B, C, D에 포함되는 정수가 공백으로 구분되어져서 주어진다. 배열에 들어있는 정수의 절댓값은 최대 2<sup>28</sup>이다.</p>
+ <p>The first line of the input contains the size of the lists n (this value can be as large as 4000). We then have n lines containing four integer values (with absolute value as large as 2<sup>28</sup>) that belong respectively to A, B, C and D .</p>
 
 ### 출력 
 
- <p>합이 0이 되는 쌍의 개수를 출력한다.</p>
+ <p>For each input, your program has to write the number quadruplets whose sum is zero.</p>
+
+<p> </p>
 
