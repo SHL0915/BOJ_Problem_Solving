@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
+using ll = unsigned long long;
 using pii = pair<int, int>;
 
 int flag = 0;
@@ -47,13 +47,13 @@ void BackTracking(int idx, string s) {
 
     for (int i = 0; i < 10; i++) {
         string next = (char) ('0' + i) + s;
-        __int128 Inext = StoI(next);
+        ll Inext = StoI(next);
 
         __int128 res = Inext;
-        res *= (__int128)Inext;
-        res %= (__int128)pow_10[idx + 1];
-        res *= (__int128)Inext;
-        res %= (__int128)pow_10[idx + 1];
+        res *= Inext;
+        res %= pow_10[idx + 1];
+        res *= Inext;
+        res %= pow_10[idx + 1];
 
         string convert = ItoS(res, next.length());
         int a = 0;
