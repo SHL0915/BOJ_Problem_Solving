@@ -15,7 +15,7 @@ void solve() {
     cin >> N >> K >> M;
 
     edge.clear();
-    memset(mark, -1, sizeof(mark));
+    for(int i = 1; i <= N; i++) mark[i] = 0;
 
     for (int i = 0; i < M; i++) {
         int a, b;
@@ -52,14 +52,14 @@ void BackTracking(int idx, int cnt) {
     }
 
     int a = edge[idx].first, b = edge[idx].second;
-    if (mark[a] == -1 && mark[b] == -1) {
+    if ((mark[a] | mark[b]) == 0) {
         mark[a] = 1;
         BackTracking(idx + 1, cnt + 1);
-        mark[a] = -1;
+        mark[a] = 0;
 
         mark[b] = 1;
         BackTracking(idx + 1, cnt + 1);
-        mark[b] = -1;
+        mark[b] = 0;
     }
     else BackTracking(idx + 1, cnt);
 }
