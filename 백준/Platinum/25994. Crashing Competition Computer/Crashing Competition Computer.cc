@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const double INF = 1e100;
+const double INF = 1e18;
 
 ll N, T, R;
 double P;
