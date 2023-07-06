@@ -63,18 +63,10 @@ void clearMark() {
 
 int DFS(int node) {
     mark[node] = 1;
-    for (int i = 0; i < graph[node].size(); i++) {
-        int next = graph[node][i];
-        if (B[next] == -1) {
-            A[node] = next;
-            B[next] = node;
-            return 1;
-        }
-    }
 
     for (int i = 0; i < graph[node].size(); i++) {
         int next = graph[node][i];
-        if (mark[B[next]] == 0 && DFS(B[next])) {
+        if (B[next] == -1 || mark[B[next]] == 0 && DFS(B[next])) {
             A[node] = next;
             B[next] = node;
             return 1;
