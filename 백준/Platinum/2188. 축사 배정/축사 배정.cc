@@ -47,7 +47,7 @@ int DFS(int node) {
 	mark[node] = 1;
 	for (int i = 0; i < graph[node].size(); i++) {
 		int now = graph[node][i];
-		if (B[now] == -1 || (!mark[B[now]] && DFS(B[now]))) {
+		if (B[now] == -1 || !mark[B[now]] && DFS(B[now])) {
 			A[node] = now;
 			B[now] = node;
 			return 1;
