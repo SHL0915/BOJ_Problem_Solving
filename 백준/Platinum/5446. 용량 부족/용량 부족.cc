@@ -79,8 +79,7 @@ void solve() {
 
     root->psum();
 
-    int ans = root->query();
-    ans += root->a;
+    int ans = root->query() + root->a;
 
     cout << ans << '\n';
 
