@@ -14,42 +14,42 @@ struct Trie {
     }
 
     ~Trie() {
-        for (auto i = ch.begin(); i != ch.end(); i++) delete (*i).second;
+        for (auto i: ch) delete i.second;
     }
 
     void insert(const char *s, int type) {
         if (!*s) {
-            if (type == 0) acnt++;
-            else bcnt++;
+            if (type) bcnt++;
+            else acnt++;
         } else {
-            char next = *s;
-            if (ch.count(next) == 0) ch[next] = new Trie;
-            ch[next]->insert(s + 1, type);
+            char nxt = *s;
+            if (ch.count(nxt) == 0) ch[nxt] = new Trie;
+            ch[nxt]->insert(s + 1, type);
         }
+        return;
     }
 
     void psum() {
         a = acnt;
         b = bcnt;
-        for (auto i = ch.begin(); i != ch.end(); i++) {
-            (*i).second->psum();
-            a += (*i).second->a;
-            b += (*i).second->b;
+        for (auto i: ch) {
+            i.second->psum();
+            a += i.second->a;
+            b += i.second->b;
         }
         return;
     }
 
     int query() {
-        int ret = 0;
-        if (a != 0 && b == 0) {
+        if (a && !b) {
             a = 0;
             return 1;
         }
-
+        int ret = 0;
         a = acnt;
-        for (auto i = ch.begin(); i != ch.end(); i++) {
-            ret += (*i).second->query();
-            a += (*i).second->a;
+        for (auto i: ch) {
+            ret += i.second->query();
+            a += i.second->a;
         }
 
         return ret;
