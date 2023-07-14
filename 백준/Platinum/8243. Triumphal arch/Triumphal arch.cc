@@ -9,6 +9,7 @@ vector<int> tree[300005];
 int arr[300005];
 
 void dp(int node, int par, int k) {
+    arr[node] = 0;
     int cnt = 0;
     for (int next: tree[node]) {
         if (next == par) continue;
@@ -17,14 +18,13 @@ void dp(int node, int par, int k) {
         arr[node] += arr[next];
     }
 
-    arr[node] += k - cnt;
+    if (cnt) arr[node] += k - cnt;
     arr[node] = min(arr[node], 0);
 
     return;
 }
 
 int chk(int k) {
-    memset(arr, 0, sizeof(arr));
     dp(1, 1, k);
     return arr[1] < 0;
 }
