@@ -8,7 +8,7 @@ struct line {
     mutable ll a, b, x;
 
     bool operator<(const line &cmp) const {
-        return a < cmp.a;
+        return a > cmp.a;
     }
 
     bool operator<(const ll cmp) const {
@@ -25,7 +25,7 @@ struct LineContainer : multiset<line, less<>> {
 
     bool intersect(iterator x, iterator y) {
         if (y == end()) return x->x = INF, 0;
-        if (x->a == y->a) x->x = x->b > y->b ? INF : -INF;
+        if (x->a == y->a) x->x = x->b < y->b ? INF : -INF;
         else x->x = div(y->b - x->b, x->a - y->a);
         return x->x >= y->x;
     }
@@ -69,11 +69,11 @@ void solve() {
     for (int i = 0; i < N; i++) cin >> pre[i] >> pace[i];
 
     dp[0] = 0;
-    L.add(-slope(0), -intercept(0));
+    L.add(slope(0), intercept(0));
 
     for (int i = 1; i < N; i++) {
-        dp[i] = -L.query(psum[i]);
-        L.add(-slope(i), -intercept(i));
+        dp[i] = L.query(psum[i]);
+        L.add(slope(i), intercept(i));
     }
 
     cout << dp[N - 1];
