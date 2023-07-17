@@ -43,44 +43,35 @@ struct LineContainer : multiset<line, less<>> { // basic은 기울기가 큰 애
     }
 };
 
-ll N;
+int N;
 ll dp[100005];
 vector<pii> arr;
 
-ll slope(int i) {
-    return -2 * (arr[i + 1].first - arr[i + 1].second);
-}
-
-ll intercept(int i) {
-    return (arr[i + 1].first - arr[i + 1].second) * (arr[i + 1].first - arr[i + 1].second) + dp[i];
-}
-
-ll f(int i) {
-    return (arr[i].first + arr[i].second) * (arr[i].first + arr[i].second);
-}
-
 void solve() {
     cin >> N;
-
     arr.clear();
-
     for (int i = 0; i < N; i++) {
         ll x, y;
         cin >> x >> y;
-        while (arr.size() && arr.back().second - arr.back().first <= y - x) arr.pop_back();
-        if (arr.empty() || arr.back().first + arr.back().second < x + y) arr.push_back({x, y});
+        while (arr.size() && arr.back().second <= y - (x - arr.back().first)) arr.pop_back();
+        if (arr.size() == 0 || y > arr.back().second - (x - arr.back().first)) arr.push_back({x, y});
     }
+
+    N = arr.size();
+    arr.push_back({0, 0});
 
     LineContainer L;
 
     L.add(-2 * (arr[0].first - arr[0].second), (arr[0].first - arr[0].second) * (arr[0].first - arr[0].second));
 
-    for (int i = 0; i < arr.size(); i++) {
-        dp[i] = L.query(arr[i].first + arr[i].second) + f(i);
-        if (i != arr.size() - 1) L.add(slope(i), intercept(i));
+    for (int i = 0; i < N; i++) {
+        ll a = arr[i].first + arr[i].second;
+        ll b = arr[i + 1].first - arr[i + 1].second;
+        dp[i] = L.query(a) + a * a;
+        L.add(-2 * b, b * b + dp[i]);
     }
 
-    ll ans = dp[arr.size() - 1];
+    ll ans = dp[N - 1];
 
     if (ans % 4 == 0) cout << ans / 4 << ".00\n";
     if (ans % 4 == 1) cout << ans / 4 << ".25\n";
