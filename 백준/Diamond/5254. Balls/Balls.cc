@@ -72,16 +72,15 @@ void solve() {
         L.add(slope(i), intercept(i));
     }
 
+    L.clear();
     reverse(arr + 1, arr + 1 + N);
 
     for (int i = 1; i <= N; i++) psum[i] = arr[i] + psum[i - 1];
-
-    LineContainer rev;
-
-    rev.add(slope(1), intercept(1));
+    
+    L.add(slope(1), intercept(1));
     for (int i = 2; i <= N; i++) {
-        A = max(A, rev.query(i) - psum[i]);
-        rev.add(slope(i), intercept(i));
+        A = max(A, L.query(i) - psum[i]);
+        L.add(slope(i), intercept(i));
     }
 
     cout << A << '\n' << B;
