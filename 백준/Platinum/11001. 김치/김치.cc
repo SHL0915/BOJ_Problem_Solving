@@ -4,8 +4,8 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, D;
-ll T[100005], V[100005], dp[100005], P[100005];
+int N, D, idx;
+ll T[100005], V[100005], dp[100005];
 
 ll C(int i, int j) {
     return (j - i) * T[j] + V[i];
@@ -18,12 +18,12 @@ void DNC(int s, int e, int l, int r) {
     for (int i = max(l, m); i <= min(r, m + D); i++) {
         if (dp[m] < C(m, i)) {
             dp[m] = C(m, i);
-            P[m] = i;
+            idx = i;
         }
     }
 
-    DNC(s, m - 1, l, P[m]);
-    DNC(m + 1, e, P[m], r);
+    DNC(s, m - 1, l, idx);
+    DNC(m + 1, e, idx, r);
 
     return;
 }
