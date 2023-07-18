@@ -47,8 +47,7 @@ int Q;
 
 void solve() {
     cin >> Q;
-    LineContainer A, B;
-    int acnt = 0, bcnt = 0;
+    LineContainer A;
 
     for (int i = 0; i < Q; i++) {
         int a;
@@ -56,19 +55,12 @@ void solve() {
         if (a == 1) {
             ll x, y;
             cin >> x >> y;
-            if (x >= 0) {
-                acnt++;
-                A.add(x, y);
-            } else {
-                bcnt++;
-                B.add(x, y);
-            }
+            A.add(x, y);
         } else {
             ll x;
             cin >> x;
             ll ans = -0x3f3f3f3f3f3f3f3fLL;
-            if (acnt) ans = max(ans, A.query(x));
-            if (bcnt) ans = max(ans, B.query(x));
+            ans = max(ans, A.query(x));
 
             cout << ans << '\n';
         }
