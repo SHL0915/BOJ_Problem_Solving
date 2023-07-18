@@ -17,7 +17,7 @@ struct line {
     }
 };
 
-struct LineContainer : multiset<line, less<>> { // basic은 기울기가 큰 애들 순으로 정렬, min값 구하기
+struct LineContainer : multiset<line, less<>> {
     const ll INF = 1e15;
 
     ll div(ll a, ll b) {
@@ -45,8 +45,7 @@ struct LineContainer : multiset<line, less<>> { // basic은 기울기가 큰 애
 };
 
 int N;
-ll arr[300005], dp[300005], psum[300005];
-ll rev[300005], rdp[300005], rpsum[300005];
+ll arr[300005], psum[300005];
 
 ll slope(int i) {
     return arr[i];
@@ -54,14 +53,6 @@ ll slope(int i) {
 
 ll intercept(int i) {
     return psum[i - 1] + arr[i] * (1 - i) + psum[N];
-}
-
-ll rslope(int i) {
-    return rev[i];
-}
-
-ll rintercept(int i) {
-    return rpsum[i - 1] + rev[i] * (1 - i) + rpsum[N];
 }
 
 void solve() {
@@ -75,32 +66,22 @@ void solve() {
 
     LineContainer L;
 
-    dp[1] = arr[1] + psum[N] - psum[1];
     L.add(slope(1), intercept(1));
-
-    for (int i = 1; i <= N; i++) {
-        dp[i] = L.query(i) - psum[i];
+    for (int i = 2; i <= N; i++) {
+        B = max(B, L.query(i) - psum[i]);
         L.add(slope(i), intercept(i));
     }
 
-    for (int i = 1; i <= N; i++) {
-        rev[i] = arr[N - i + 1];
-        rpsum[i] = rev[i] + rpsum[i - 1];
-    }
+    reverse(arr + 1, arr + 1 + N);
 
-    LineContainer RL;
+    for (int i = 1; i <= N; i++) psum[i] = arr[i] + psum[i - 1];
 
-    rdp[1] = rev[1] + rpsum[N] - rpsum[1];
-    RL.add(rslope(1), rintercept(1));
+    LineContainer rev;
 
+    rev.add(slope(1), intercept(1));
     for (int i = 2; i <= N; i++) {
-        rdp[i] = RL.query(i) - rpsum[i];
-        RL.add(rslope(i), rintercept(i));
-    }
-
-    for (int i = 2; i <= N; i++) {
-        A = max(A, rdp[i]);
-        B = max(B, dp[i]);
+        A = max(A, rev.query(i) - psum[i]);
+        rev.add(slope(i), intercept(i));
     }
 
     cout << A << '\n' << B;
