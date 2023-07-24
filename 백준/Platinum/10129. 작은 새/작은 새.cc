@@ -6,7 +6,6 @@ using pii = pair<int, int>;
 
 int N, Q;
 int arr[1000005];
-int dp[1000005];
 
 void solve() {
     cin >> N;
@@ -17,7 +16,8 @@ void solve() {
         int k;
         cin >> k;
         deque<pair<pii, int>> dq;
-        dp[0] = 0;
+
+        ll ans = 0;
         dq.push_front({{0, arr[0]}, 0});
 
         for (int i = 1; i < N; i++) {
@@ -26,19 +26,20 @@ void solve() {
                 if (b.second < i - k) dq.pop_back();
                 else break;
             }
+
             pair<pii, int> b = dq.back();
-            if (b.first.second > arr[i]) dp[i] = b.first.first;
-            else dp[i] = b.first.first + 1;
-            
+            ans = b.first.first;
+            if (b.first.second <= arr[i]) ans++;
+
             while (dq.size()) {
                 pair<pii, int> f = dq.front();
-                if (dp[i] > f.first.first || (dp[i] == f.first.first && arr[i] <= f.first.second)) break;
+                if (ans > f.first.first || (ans == f.first.first && arr[i] <= f.first.second)) break;
                 else dq.pop_front();
             }
-            dq.push_front({{dp[i], arr[i]}, i});
+            dq.push_front({{ans, arr[i]}, i});
         }
 
-        cout << dp[N - 1] << '\n';
+        cout << ans << '\n';
     }
 
     return;
