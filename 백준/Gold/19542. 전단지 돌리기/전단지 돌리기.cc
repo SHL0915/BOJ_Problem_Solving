@@ -6,27 +6,17 @@ using pii = pair<int, int>;
 
 int N, S, D, ans;
 vector<int> graph[100005];
-int dp[100005];
 
-void tree_dp(int node, int par) {
+int DFS(int node, int par) {
+    int ret = 0;
     for (int next: graph[node]) {
         if (next == par) continue;
-        tree_dp(next, node);
-        dp[node] = max(dp[node], dp[next] + 1);
-    }
-    return;
-}
-
-void DFS(int node, int par) {
-    for (int next: graph[node]) {
-        if (next == par) continue;
-        if (dp[next] >= D) {
-            ans += 2;
-            DFS(next, node);
-        }
+        int nxt = DFS(next, node);
+        if (nxt >= D) ans += 2;
+        ret = max(ret, nxt + 1);
     }
 
-    return;
+    return ret;
 }
 
 void solve() {
@@ -38,7 +28,6 @@ void solve() {
         graph[b].push_back(a);
     }
 
-    tree_dp(S, S);
     DFS(S, S);
 
     cout << ans;
