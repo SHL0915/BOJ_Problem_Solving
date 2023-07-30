@@ -106,11 +106,7 @@ void solve() {
     ll ans = 0;
     
     for (int i = 1; i <= N; i++) if (vst[i + M]) ans -= arr[i];
-    
-    for (int i = 0; i < edge.size(); i++) {
-        int a = edge[i].first.first, b = edge[i].first.second;
-        if (vst[M + a] == 1 && vst[M + b] == 1) ans += edge[i].second;
-    }
+    for (int i = 1; i <= M; i++) if (vst[i]) ans += edge[i - 1].second;
     
     cout << ans;
     return;
