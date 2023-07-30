@@ -91,6 +91,8 @@ void solve() {
         add_edge(M + i, M + N + 1, arr[i]);
     }
     
+    ll ans = 0;
+    
     for (int i = 1; i <= M; i++) {
         int a, b, c;
         cin >> a >> b >> c;
@@ -98,15 +100,10 @@ void solve() {
         add_edge(0, i, c);
         add_edge(i, M + a, INF);
         add_edge(i, M + b, INF);
+        ans += c;
     }
     
-    Dinic(0, M + N + 1);
-    chk(0);
-    
-    ll ans = 0;
-    
-    for (int i = 1; i <= N; i++) if (vst[i + M]) ans -= arr[i];
-    for (int i = 1; i <= M; i++) if (vst[i]) ans += edge[i - 1].second;
+    ans -= Dinic(0, M + N + 1);
     
     cout << ans;
     return;
