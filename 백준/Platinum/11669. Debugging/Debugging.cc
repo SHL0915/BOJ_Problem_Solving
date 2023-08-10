@@ -14,7 +14,7 @@ ll DP(int n) {
     if (ret != -1) return ret;
     ret = INF;
 
-    for (ll i = 1; i <= n; i++) {
+    for (ll i = 2; i <= n; i++) {
         if (n % i) ret = min(ret, R + DP(n / i + 1) + (i - 1) * P);
         else ret = min(ret, R + DP(n / i) + (i - 1) * P);
     }
