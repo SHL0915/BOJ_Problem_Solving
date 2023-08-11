@@ -6,16 +6,16 @@ using pii = pair<int, int>;
 
 int N;
 ll ans;
-ll arr[100005];
+int arr[100005];
 vector<int> tree[100005];
-ll cnt[100005], cnt2[100005];
+int cnt[100005], cnt2[100005];
 vector<int> factor[100005];
 
 void DFS(int node) {
     ans += cnt2[arr[node]];
 
     if (factor[arr[node]].size() == 0) {
-        for (ll i = 1; i * i <= arr[node]; i++) {
+        for (int i = 1; i * i <= arr[node]; i++) {
             if (arr[node] % i) continue;
             if (i * i == arr[node]) factor[arr[node]].push_back(i);
             else {
