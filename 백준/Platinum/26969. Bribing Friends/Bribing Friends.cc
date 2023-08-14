@@ -15,33 +15,41 @@ struct cow {
 
 int N, A, B;
 cow arr[2005];
-ll dp[2005][2005][2];
-
-ll DP(int idx, int a, int t) {
-    if (a < 0) return -INF;
-    if (idx == N) return 0;
-    ll &ret = dp[idx][a][t];
-    if (ret != -1) return ret;
-    ret = 0;
-
-    ret = max(ret, DP(idx + 1, a, t));
-
-    if (t == 0) {
-        int d = min(arr[idx].C, a / arr[idx].X);
-        if (d == arr[idx].C) ret = max(ret, arr[idx].P + DP(idx + 1, a - d * arr[idx].X, t));
-        else ret = max(ret, arr[idx].P + DP(idx + 1, A - (arr[idx].C - d), 1));
-    } else ret = max(ret, arr[idx].P + DP(idx + 1, a - arr[idx].C, t));
-
-    return ret;
-}
+ll dp[2005][2];
 
 void solve() {
     cin >> N >> A >> B;
-    for (int i = 0; i < N; i++) cin >> arr[i].P >> arr[i].C >> arr[i].X;
-    sort(arr, arr + N);
+    for (int i = 1; i <= N; i++) cin >> arr[i].P >> arr[i].C >> arr[i].X;
+    sort(arr + 1, arr + N + 1);
 
-    memset(dp, -1, sizeof(dp));
-    cout << DP(0, B, 0);
+    memset(dp, -INF, sizeof(dp));
+    dp[B][0] = 0;
+    dp[A][1] = 0;
+
+    ll ans = 0;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 0; j <= A; j++) {
+            if (j >= arr[i].C) {
+                dp[j - arr[i].C][1] = max(dp[j - arr[i].C][1], dp[j][1] + arr[i].P);
+                ans = max(ans, dp[j - arr[i].C][1]);
+            }
+        }
+        for (int j = 0; j <= B; j++) {
+            int d = min(arr[i].C, j / arr[i].X);
+            if (d == arr[i].C) {
+                dp[j - d * arr[i].X][0] = max(dp[j - d * arr[i].X][0], dp[j][0] + arr[i].P);
+                ans = max(ans, dp[j - d * arr[i].X][0]);
+            } else {
+                if (A >= (arr[i].C - d)) {
+                    dp[A - (arr[i].C - d)][1] = max(dp[A - (arr[i].C - d)][1], dp[j][0] + arr[i].P);
+                    ans = max(ans, dp[A - (arr[i].C - d)][1]);
+                }
+            }
+        }
+    }
+
+    cout << ans;
     return;
 }
 
