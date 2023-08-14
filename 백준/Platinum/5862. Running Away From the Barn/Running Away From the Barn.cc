@@ -7,12 +7,12 @@ const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
 ll N, L;
 vector<pii> tree[200005];
-set<pii> s[200005];
+priority_queue<ll> pq[200005];
 ll ans[200005];
 
 ll DFS(int node) {
     ll ret = 0;
-    s[node].insert({0, node});
+    pq[node].push(0);
     vector<ll> v;
 
     for (pii next: tree[node]) {
@@ -22,26 +22,30 @@ ll DFS(int node) {
 
     for (int i = 0; i < tree[node].size(); i++) {
         int next = tree[node][i].first;
-        if (s[node].size() < s[next].size()) {
-            swap(s[node], s[next]);
-            for (pii a: s[next]) s[node].insert({a.first + ret - v[i], a.second});
+        if (pq[node].size() < pq[next].size()) {
+            swap(pq[node], pq[next]);
+            while (pq[next].size()) {
+                ll t = pq[next].top();
+                pq[next].pop();
+                pq[node].push(t + ret - v[i]);
+            }
             ret = v[i];
         } else {
-            for (pii a: s[next]) s[node].insert({a.first + v[i] - ret, a.second});
+            while (pq[next].size()) {
+                ll t = pq[next].top();
+                pq[next].pop();
+                pq[node].push(t + v[i] - ret);
+            }
         }
     }
 
-    pii find = {L - ret, INF};
-
-    auto idx = s[node].rbegin();
-    while (1) {
-        pii now = *idx;
-        if (now < find) break;
-        s[node].erase(now);
-        idx = s[node].rbegin();
+    while (pq[node].size()) {
+        ll now = pq[node].top();
+        if (now <= L - ret) break;
+        pq[node].pop();
     }
 
-    ans[node] = s[node].size();
+    ans[node] = pq[node].size();
 
     return ret;
 }
