@@ -11,7 +11,7 @@ set<pii> s[200005];
 ll ans[200005];
 
 ll DFS(int node) {
-    ll ret = 0, pre = 0;
+    ll ret = 0;
     s[node].insert({0, node});
     vector<ll> v;
 
@@ -24,9 +24,8 @@ ll DFS(int node) {
         int next = tree[node][i].first;
         if (s[node].size() < s[next].size()) {
             swap(s[node], s[next]);
-            pre = ret;
+            for (pii a: s[next]) s[node].insert({a.first + ret - v[i], a.second});
             ret = v[i];
-            for (pii a: s[next]) s[node].insert({a.first + pre - ret, a.second});
         } else {
             for (pii a: s[next]) s[node].insert({a.first + v[i] - ret, a.second});
         }
