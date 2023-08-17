@@ -12,10 +12,7 @@ ll arr[20005];
 
 void solve() {
     cin >> N >> K;
-    for (int i = 0; i < N; i++) {
-        cin >> arr[i];
-        arr[i]++;
-    }
+    for (int i = 0; i < N; i++) cin >> arr[i];
 
     int l = 1, r = N;
     int ans = 0;
