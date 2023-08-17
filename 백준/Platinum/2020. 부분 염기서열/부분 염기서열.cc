@@ -45,20 +45,12 @@ void solve() {
 
             cnt[val]++;
 
-            if (cnt[val] == M) {
-                string now = "";
-                for (int j = 0; j < len; j++) now += S[j];
-                v.push_back(now);
-            }
+            if (cnt[val] == M) v.push_back(S.substr(0, len));
 
             for (int j = 1; j <= N - len; j++) {
                 val = (val * base + arr[j - 1] * a + arr[j + len - 1]) % mod;
                 cnt[val]++;
-                if (cnt[val] == M) {
-                    string now = "";
-                    for (int k = 0; k < len; k++) now += S[j + k];
-                    v.push_back(now);
-                }
+                if (cnt[val] == M) v.push_back(S.substr(j, len));
             }
 
             sort(v.begin(), v.end(), [&](string a, string b) {
