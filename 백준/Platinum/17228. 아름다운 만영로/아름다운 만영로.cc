@@ -2,42 +2,61 @@
 
 using namespace std;
 using ll = long long;
-using pii = pair<ll, ll>;
-const ll mod1 = 6643838879;
-const ll mod2 = 2147483647;
-const ll base = 236;
+using pii = pair<int, char>;
 
-ll N, ans, A, B;
-pii hash_val;
-string S;
-int arr[500005];
+ll N, cnt;
+set<int> ans;
+string S, T;
 vector<pii> tree[500005];
+int pi[500005];
+vector<int> idx;
 
-void DFS(int node, int len, pii val, deque<int> dq) {
-    if (len >= S.length() && hash_val == val) ans++;
+void makePi(string s) {
+    int n = s.length(), pos = 1, k = 0;
+    while (pos + k < n) {
+        if (s[pos + k] == s[k]) {
+            k++;
+            pi[pos + k - 1] = k;
+        } else {
+            if (k == 0) pos++;
+            else {
+                pos += (k - pi[k - 1]);
+                k = pi[k - 1];
+            }
+        }
+    }
+    return;
+}
+
+void kmp(string s, string cmp) {
+    int n = s.length(), m = cmp.length(), pos = 0, k = 0;
+    while (pos + m <= n) {
+        if (k < m && s[pos + k] == cmp[k]) {
+            k++;
+            if (k == m) ans.insert(idx[pos + m - 1]);
+        } else {
+            if (k == 0) pos++;
+            else {
+                pos += (k - pi[k - 1]);
+                k = pi[k - 1];
+            }
+        }
+    }
+    return;
+}
+
+void DFS(int node) {
+    cnt++;
+    if (tree[node].size() == 0) kmp(T, S);
 
     for (int i = 0; i < tree[node].size(); i++) {
         int next = tree[node][i].first;
-        int nval = tree[node][i].second;
-        ll val1 = val.first, val2 = val.second;
-
-        if (len < S.length()) {
-            val1 = (val1 * base + nval) % mod1;
-            val2 = (val2 * base + nval) % mod2;
-
-            dq.push_back(nval);
-            DFS(next, len + 1, {val1, val2}, dq);
-            dq.pop_back();
-        } else {
-            val1 = (val1 * base + A * dq[0] + nval) % mod1;
-            val2 = (val2 * base + B * dq[0] + nval) % mod2;
-            int f = dq[0];
-            dq.pop_front();
-            dq.push_back(nval);
-            DFS(next, len + 1, {val1, val2}, dq);
-            dq.push_front(f);
-            dq.pop_back();
-        }
+        char c = tree[node][i].second;
+        T += c;
+        idx.push_back(cnt);
+        DFS(next);
+        T.pop_back();
+        idx.pop_back();
     }
 
     return;
@@ -49,31 +68,14 @@ void solve() {
         int a, b;
         char c;
         cin >> a >> b >> c;
-        tree[a].push_back({b, c - 'a' + 1});
+        tree[a].push_back({b, c});
     }
     cin >> S;
+    makePi(S);
 
-    for (int i = 0; i < S.length(); i++) arr[i] = S[i] - 'a' + 1;
-    A = 1;
-    B = 1;
+    DFS(1);
 
-    ll val1 = 0;
-    ll val2 = 0;
-    for (int i = 0; i < S.length(); i++) {
-        val1 = (val1 * base + arr[i]) % mod1;
-        val2 = (val2 * base + arr[i]) % mod2;
-        A = (A * base) % mod1;
-        B = (B * base) % mod2;
-    }
-    A = (mod1 - A);
-    B = (mod2 - B);
-
-    hash_val = {val1, val2};
-
-    deque<int> dq;
-    DFS(1, 0, {0, 0}, dq);
-
-    cout << ans;
+    cout << ans.size();
     return;
 }
 
