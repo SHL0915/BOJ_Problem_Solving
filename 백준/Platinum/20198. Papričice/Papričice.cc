@@ -8,7 +8,7 @@ const int INF = 0x3f3f3f3f;
 int N, ans = INF;
 vector<int> tree[200005];
 int sz[200005];
-multiset<int> A, B;
+set<int> A, B;
 
 void tree_dp(int node, int par) {
     sz[node]++;
@@ -53,8 +53,7 @@ void DFS(int node, int par) {
         if (next == par) continue;
         DFS(next, node);
     }
-    A.erase(A.find(sz[node]));
-
+    A.erase(sz[node]);
     B.insert(sz[node]);
     return;
 }
