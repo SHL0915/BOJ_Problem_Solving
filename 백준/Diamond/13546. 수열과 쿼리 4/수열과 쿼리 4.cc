@@ -83,8 +83,8 @@ void solve() {
 
     while (B * B <= Q) B++;
     B--;
-
-    sz = sqrt(N) * 2;
+    
+    sz = sqrt(N);
 
     sort(q, q + Q, [&](pair<int, pii> a, pair<int, pii> b) {
         if (a.second.first / B == b.second.first / B) return a.second.second < b.second.second;
