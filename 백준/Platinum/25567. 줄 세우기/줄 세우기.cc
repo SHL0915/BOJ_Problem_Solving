@@ -6,11 +6,11 @@ using pii = pair<int, int>;
 
 int N, Q;
 int parent[200005];
-pair<int, pii> query[200005];
-ll ans[200005];
 vector<ll> psum[200005];
 pii pos[200005];
 deque<int> v[200005];
+pair<int, pii> query[200005];
+ll ans[200005];
 
 int find(int a) {
     if (a == parent[a]) return parent[a];
@@ -26,13 +26,10 @@ void solve() {
     cin >> N;
     for (int i = 1; i <= 200000; i++) parent[i] = i;
     for (int i = 1; i <= N; i++) {
-        int k;
-        cin >> k;
-        int f;
-        cin >> f;
+        int k, f, a;
+        cin >> k >> f;
         v[f].push_back(f);
         for (int j = 1; j < k; j++) {
-            int a;
             cin >> a;
             v[f].push_back(a);
             merge(f, a);
@@ -41,9 +38,8 @@ void solve() {
 
     cin >> Q;
     for (int i = 0; i < Q; i++) {
-        int a, b, c;
-        cin >> a >> b >> c;
-        query[i] = {a, {b, c}};
+        cin >> query[i].first >> query[i].second.first >> query[i].second.second;
+        int a = query[i].first, b = query[i].second.first, c = query[i].second.second;
         if (a == 1) {
             if (find(b) == find(c)) ans[i] = 1;
             else {
