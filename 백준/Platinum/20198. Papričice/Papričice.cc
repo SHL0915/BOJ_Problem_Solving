@@ -22,7 +22,7 @@ void tree_dp(int node, int par) {
 }
 
 void DFS(int node, int par) {
-    auto idx = A.lower_bound((N + sz[node]) / 2);
+    auto idx = A.upper_bound((N + sz[node]) / 2);
     if (idx != A.end()) {
         int a = max({sz[node], *idx - sz[node], N - *idx});
         int b = min({sz[node], *idx - sz[node], N - *idx});
@@ -35,7 +35,7 @@ void DFS(int node, int par) {
         ans = min(ans, a - b);
     }
 
-    idx = B.lower_bound((N + sz[node]) / 2);
+    idx = B.upper_bound((N + sz[node]) / 2);
     if (idx != B.end()) {
         int a = max({sz[node], *idx, N - *idx - sz[node]});
         int b = min({sz[node], *idx, N - *idx - sz[node]});
