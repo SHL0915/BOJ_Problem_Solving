@@ -8,13 +8,7 @@ const ll mod = 1000000007;
 int N, M;
 string S, T;
 vector<int> A, B;
-ll dp[2005][2005][2];
-
-void update(int a, int b, int k, ll v) {
-    dp[a][b][k] += v;
-    dp[a][b][k] %= mod;
-    return;
-}
+ll dp[2005][2005];
 
 void solve() {
     int len;
@@ -35,25 +29,24 @@ void solve() {
         else B.push_back(1);
     }
 
-    N = A.size(), M = B.size();
-
     memset(dp, 0, sizeof(dp));
-    dp[0][0][0] = 1;
-    //dp[0][0][1] = 1;
-    
-    for (int i = 0; i <= N; i++) {
-        for (int j = 0; j <= M; j++) {
-            for (int k = 0; k < 2; k++) {
-                update(i, j + 1, 1, dp[i][j][k]);
-                if (k == 0) update(i + 1, j, 0, dp[i][j][k]);
-                else {
-                    if (i < N && j > 0 && A[i] != B[j - 1]) update(i + 1, j, 0, dp[i][j][k]);
-                }
-            }
+
+    N = A.size(), M = B.size();
+    for (int i = 0; i <= N; i++) dp[i][0] = 1;
+    for (int i = 0; i <= M; i++) dp[0][i] = 1;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            dp[i][j] += dp[i - 1][j];
+            dp[i][j] %= mod;
+            dp[i][j] += dp[i][j - 1];
+            dp[i][j] %= mod;
+
+            if (A[i - 1] == B[j - 1]) dp[i][j] = (dp[i][j] - dp[i - 1][j - 1] + mod) % mod;
         }
     }
 
-    cout << (dp[N][M][0] + dp[N][M][1]) % mod << '\n';
+    cout << dp[N][M] << '\n';
     return;
 }
 
