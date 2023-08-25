@@ -14,6 +14,9 @@ int find(int a) {
 }
 
 void merge(int a, int b) {
+    a = find(a);
+    b = find(b);
+    if (a == b) return;
     parent[a] = b;
     return;
 }
@@ -30,65 +33,65 @@ void solve() {
     queue<int> q;
     for (int i = 1; i <= N; i++) {
         parent[i] = i;
-        if (graph[i].size() <= 1) q.push(i);
+        if (graph[i].size() == 0) q.push(i);
     }
 
     while (q.size()) {
         int now = q.front();
-        now = find(now);
         q.pop();
-        if (graph[now].size() == 0) {
-            for (int r: rev[now]) {
-                r = find(r);
-                graph[r].erase(now);
-                if (graph[r].size() <= 1) q.push(r);
-            }
-            rev[now].clear();
-        } else if (graph[now].size() == 1) {
-            int nxt = *graph[now].begin();
-            nxt = find(nxt);
-            if (now == nxt) continue;
-
-            graph[now].clear();
-            rev[nxt].erase(now);
-
-            if (graph[now].size() + rev[now].size() > graph[nxt].size() + rev[nxt].size()) swap(now, nxt);
-
-            for (int i: graph[now]) {
-                if (now == i) {
-                    graph[nxt].insert(nxt);
-                    continue;
-                }
-                rev[i].erase(now);
-                rev[i].insert(nxt);
-                graph[nxt].insert(i);
-            }
-
-            for (int i: rev[now]) {
-                if (now == i) {
-                    rev[nxt].insert(nxt);
-                    continue;
-                }
-                graph[i].erase(now);
-                graph[i].insert(nxt);
-                rev[nxt].insert(i);
-                if (graph[i].size() <= 1) q.push(i);
-            }
-            graph[now].clear();
-            rev[now].clear();
-
-            merge(now, nxt);
-            if (graph[nxt].size() == 1) q.push(nxt);
+        rmv[now] = 1;
+        for (int r: rev[now]) {
+            graph[r].erase(now);
+            if (graph[r].size() == 0) q.push(r);
         }
+        rev[now].clear();
+    }
+
+    queue<pii> q2;
+
+    for (int i = 1; i <= N; i++) {
+        if (graph[i].size() == 1) {
+            int nxt = *graph[i].begin();
+            q2.push({i, nxt});
+
+            graph[i].clear();
+            rev[nxt].erase(i);
+        }
+    }
+
+    while (q2.size()) {
+        pii now = q2.front();
+        q2.pop();
+
+        int x = now.first, y = now.second;
+        x = find(x), y = find(y);
+
+        if (x == y) continue;
+
+        if (rev[x].size() > rev[y].size()) swap(x, y);
+
+        merge(x, y);
+        for (int i: rev[x]) {
+            graph[i].erase(x);
+            graph[i].insert(y);
+            rev[y].insert(i);
+
+            if (graph[i].size() == 1) {
+                int nxt = *graph[i].begin();
+                q2.push({i, nxt});
+                graph[i].clear();
+                rev[nxt].erase(i);
+            }
+        }
+
+        rev[x].clear();
     }
 
     cin >> Q;
     while (Q--) {
         int a, b;
         cin >> a >> b;
-        a = find(a);
-        b = find(b);
-        if (graph[a].size() == 0 || graph[b].size() == 0 || a == b) cout << "B";
+        if (rmv[a] || rmv[b] || find(a) == find(b)) cout << "B";
         else cout << "H";
     }
 
