@@ -107,10 +107,10 @@ void solve() {
 
         int res = Dinic(0, N + 1);
         memset(mark, 0, sizeof(mark));
-        chk(0);
+        //chk(0);
 
         int a = edge[i].first.first, b = edge[i].first.second;
-        if (mark[a] != mark[b]) ans = max(ans, tot - res);
+        if (cap[a][b] - flow[a][b] == 0) ans = max(ans, tot - res);
     }
 
     cout << ans;
