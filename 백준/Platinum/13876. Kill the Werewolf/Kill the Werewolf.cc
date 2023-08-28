@@ -107,7 +107,7 @@ void solve() {
 
         int res = Dinic(0, 2 * N + 1);
 
-        if (cnt < 2 || res < ccnt) ans++;
+        if (res < ccnt) ans++;
     }
 
     cout << ans;
