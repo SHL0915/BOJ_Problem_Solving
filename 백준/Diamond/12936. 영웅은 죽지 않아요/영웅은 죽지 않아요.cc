@@ -5,84 +5,69 @@ using ll = long long;
 using pii = pair<int, int>;
 const int INF = 0x3f3f3f3;
 
+struct edge{
+    int to, cap, rev;
+};
+
 int N, M;
 int arr[5005];
-vector<pair<pii, int>> edge;
-vector<int> graph[55005];
-map<int, int> flow[55005], cap[55005];
-int level[55005], mark[55005], vst[55005];
+vector<edge> graph[55005];
+int level[55005], mark[55005];
 
-void add_edge(int s, int e, int c) {
-    graph[s].push_back(e);
-    graph[e].push_back(s);
-    
-    cap[s][e] += c;
-    
+void add_edge(int u, int v, int c) {
+    graph[u].push_back({v, c, (int) graph[v].size()});
+    graph[v].push_back({u, 0, (int) graph[u].size() - 1});
     return;
 }
 
-int DFS(int S, int E, int F) {
-    if (S == E) return F;
-    
-    for (int &i = mark[S]; i < graph[S].size(); i++) {
-        int next = graph[S][i];
-        if (level[next] == level[S] + 1 && cap[S][next] - flow[S][next] > 0) {
-            int ret = DFS(next, E, min(F, cap[S][next] - flow[S][next]));
+int DFS(int s, int e, int f) {
+    if (s == e) return f;
+    for (int &i = mark[s]; i < graph[s].size(); i++) {
+        edge &next = graph[s][i];
+        if (next.cap > 0 && level[next.to] == level[s] + 1) {
+            int ret = DFS(next.to, e, min(f, next.cap));
             if (ret) {
-                flow[S][next] += ret;
-                flow[next][S] -= ret;
+                next.cap -= ret;
+                graph[next.to][next.rev].cap += ret;
                 return ret;
             }
         }
     }
-    
     return 0;
 }
 
-int BFS(int S, int E) {
-    queue<int> q;
+bool BFS(int s, int e) {
     memset(level, -1, sizeof(level));
-    level[S] = 0;
-    q.push(S);
+    queue<int> q;
+    q.push(s);
+    level[s] = 0;
     while (q.size()) {
         int now = q.front();
         q.pop();
-        
-        for (int next: graph[now]) {
-            if (level[next] == -1 && cap[now][next] - flow[now][next] > 0) {
-                level[next] = level[now] + 1;
-                q.push(next);
+
+        for (auto next: graph[now]) {
+            if (level[next.to] == -1 && next.cap > 0) {
+                level[next.to] = level[now] + 1;
+                q.push(next.to);
             }
         }
     }
-    
-    return level[E] != -1;
+
+    return level[e] != -1;
 }
 
-int Dinic(int S, int E) {
+int Dinic(int s, int e) {
     int ret = 0;
-    while (BFS(S, E)) {
+    while (BFS(s, e)) {
         memset(mark, 0, sizeof(mark));
         while (1) {
-            int res = DFS(S, E, INF);
+            int res = DFS(s, e, 0x3f3f3f3f);
             if (res) ret += res;
             else break;
         }
     }
-    
     return ret;
 }
-
-void chk(int S) {
-    if (vst[S]) return;
-    vst[S] = 1;
-    for (int next: graph[S]) {
-        if (cap[S][next] - flow[S][next] > 0) chk(next);
-    }
-    
-    return;
-}
-
 
 void solve() {
     cin >> N >> M;
@@ -96,7 +81,6 @@ void solve() {
     for (int i = 1; i <= M; i++) {
         int a, b, c;
         cin >> a >> b >> c;
-        edge.push_back({{a, b}, c});
         add_edge(0, i, c);
         add_edge(i, M + a, INF);
         add_edge(i, M + b, INF);
