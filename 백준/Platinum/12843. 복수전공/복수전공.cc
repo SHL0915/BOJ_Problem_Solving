@@ -8,10 +8,10 @@ int N, M;
 vector<int> graph[2005];
 int type[2005], A[2005], B[2005], mark[2005];
 
-int DFS(int node) {
-    mark[node] = 1;
+int DFS(int node, int org) {
+    mark[node] = org;
     for (int next: graph[node]) {
-        if (B[next] == -1 || mark[B[next]] == 0 && DFS(B[next])) {
+        if (B[next] == -1 || mark[B[next]] != org && DFS(B[next], org)) {
             A[node] = next;
             B[next] = node;
             return 1;
@@ -44,10 +44,7 @@ void solve() {
     int ans = 0;
 
     for (int i = 1; i <= N; i++) {
-        if (A[i] == -1) {
-            memset(mark, 0, sizeof(mark));
-            ans += DFS(i);
-        }
+        if (A[i] == -1) ans += DFS(i, i);
     }
 
     cout << N - ans;
