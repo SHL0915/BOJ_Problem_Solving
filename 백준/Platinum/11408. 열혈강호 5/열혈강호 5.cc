@@ -21,10 +21,7 @@ void add_edge(int u, int v, int ca, int co) {
 pii MCMF(int s, int e) {
     int mf = 0, mc = 0;
     while (1) {
-        int par[805], dist[805], mark[805];
-        memset(par, -1, sizeof(par));
-        memset(dist, INF, sizeof(dist));
-        memset(mark, 0, sizeof(mark));
+        vector<int> par(805, -1), dist(805, INF), mark(805, 0);
         queue<int> q;
         q.push(s);
         dist[s] = 0;
