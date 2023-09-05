@@ -12,21 +12,15 @@ int sparse[400005][25];
 int find(int a) {
     ll s = arr[a].first;
 
-    int now = a, ret = a;
+    int now = a, ret = 0;
     for (int i = 20; i >= 0; i--) {
-        if (arr[sparse[now][i]].second < s + C) now = sparse[now][i];
-        ret = sparse[now][i];
-    }
-
-    int cnt = 0;
-    for (int i = 20; i >= 0; i--) {
-        if (sparse[a][i] < ret) {
-            cnt += (1 << i);
-            a = sparse[a][i];
+        if (arr[sparse[now][i]].second < s + C) {
+            now = sparse[now][i];
+            ret += (1 << i);
         }
     }
 
-    return cnt + 2;
+    return ret + 2;
 }
 
 void solve() {
