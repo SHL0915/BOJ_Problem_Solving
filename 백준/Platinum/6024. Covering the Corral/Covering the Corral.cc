@@ -33,8 +33,7 @@ void solve() {
     }
 
     sort(arr, arr + 2 * M, [&](pii a, pii b) {
-        if (a.first == b.first) return a.second > b.second;
-        else return a.first < b.first;
+       return a.first < b.first;
     });
 
     int right_most = 0, j = 0;
