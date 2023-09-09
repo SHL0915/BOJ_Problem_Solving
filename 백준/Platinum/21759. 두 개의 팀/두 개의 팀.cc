@@ -13,6 +13,7 @@ ll arr[200005], dp[200005][3];
 void DFS(int node) {
     dp[node][0] = arr[node];
     dp[node][1] = -INF;
+    dp[node][2] = -INF;
 
     priority_queue<ll> pq;
 
@@ -22,16 +23,16 @@ void DFS(int node) {
             dp[node][0] += dp[next][0];
             dp[node][1] = max(dp[node][1], dp[next][1]);
         } else dp[node][1] = max(dp[node][1], dp[next][2]);
+        dp[node][2] = max(dp[node][2], dp[next][2]);
         pq.push(dp[next][2]);
     }
 
-    dp[node][2] = dp[node][0];
+    dp[node][2] = max(dp[node][2], dp[node][0]);
     ans = max(ans, dp[node][0] + dp[node][1]);
 
     while (pq.size()) {
         ll t = pq.top();
         pq.pop();
-        dp[node][2] = max(dp[node][2], t);
         if (pq.size()) ans = max(ans, t + pq.top());
         return;
     }
