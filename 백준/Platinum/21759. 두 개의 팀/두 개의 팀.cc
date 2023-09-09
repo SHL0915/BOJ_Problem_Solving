@@ -3,44 +3,40 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
+const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
-int N, cnt;
-ll ans;
+int N;
+ll ans = -INF;
 vector<int> tree[200005];
-ll arr[200005], dp[200005][2];
+ll arr[200005], dp[200005][3];
 
-ll tree_dp(int node, int type) {
-    ll &ret = dp[node][type];
-    if (ret != -1) return ret;
-    ret = 0;
+void DFS(int node) {
+    dp[node][0] = arr[node];
+    dp[node][1] = -INF;
 
-    vector<ll> a, b, c;
-    ll add = -0x3f3f3f3f3f3f3f3fLL;
+    priority_queue<ll> pq;
+
     for (int next: tree[node]) {
-        ll f = tree_dp(next, 0), s = tree_dp(next, 1), m = max(f, s);
-        if (s <= 0) add = max(add, f);
-        b.push_back(f);
-        if (s > 0) c.push_back(s);
-        a.push_back(m);
+        DFS(next);
+        if (dp[next][0] > 0) {
+            dp[node][0] += dp[next][0];
+            dp[node][1] = max(dp[node][1], dp[next][1]);
+        } else dp[node][1] = max(dp[node][1], dp[next][2]);
+        pq.push(dp[next][2]);
     }
 
-    sort(a.begin(), a.end(), greater<>());
-    sort(b.begin(), b.end(), greater<>());
-    sort(c.begin(), c.end(), greater<>());
+    dp[node][2] = dp[node][0];
+    ans = max(ans, dp[node][0] + dp[node][1]);
 
-    if (type == 0) {
-        if (a.size()) {
-            ret = max(ret, a.front());
-            if (a.size() > 1) ans = max(ans, a[0] + a[1]);
-        }
-    } else {
-        ll sum = 0;
-        for (ll e: c) sum += e;
-        ret = sum + arr[node];
-        ans = max(ans, ret + add);
+    while (pq.size()) {
+        ll t = pq.top();
+        pq.pop();
+        dp[node][2] = max(dp[node][2], t);
+        if (pq.size()) ans = max(ans, t + pq.top());
+        return;
     }
 
-    return ret;
+    return;
 }
 
 void solve() {
@@ -52,9 +48,7 @@ void solve() {
         if (p != -1) tree[p].push_back(i);
     }
 
-    memset(dp, -1, sizeof(dp));
-    tree_dp(1, 0);
-    tree_dp(1, 1);
+    DFS(1);
 
     cout << ans;
     return;
