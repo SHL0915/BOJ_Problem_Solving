@@ -39,8 +39,7 @@ void solve() {
     cin >> S >> E;
 
     double l = 0, r = 1e15;
-    int cnt = 100;
-    while (cnt--) {
+    while (r - l >= 1e-5) {
         double mid = (l + r) / 2;
         if (check(mid)) r = mid;
         else l = mid;
