@@ -9,22 +9,21 @@ int arr[105];
 double dp[10005];
 
 bool check(double x) {
-    for (int i = 0; i <= S; i++) dp[i] = 0;
+    for (int i = 0; i <= S; i++) dp[i] = 1e18;
+    dp[0] = 0;
 
     for (int i = 1; i <= S; i++) {
-        double val = 1e18;
         for (int j = 0; j < D; j++) {
             int l = i - arr[j];
             if (l <= 0) {
-                double k = max(0, -(E - S) - l);
+                int k = max(0, -(E - S) - l);
                 double now = (dp[i - 1] + k * x) / arr[j] + 1;
-                val = min(val, now);
+                dp[i] = min(dp[i], now);
             } else {
                 double now = (dp[i - 1] - dp[i - arr[j] - 1]) / arr[j] + 1;
-                val = min(val, now);
+                dp[i] = min(dp[i], now);
             }
         }
-        dp[i] = val;
         dp[i] += dp[i - 1];
     }
 
@@ -43,7 +42,7 @@ void solve() {
     int cnt = 100;
     while (cnt--) {
         double mid = (l + r) / 2;
-        if(check(mid)) r = mid;
+        if (check(mid)) r = mid;
         else l = mid;
     }
 
