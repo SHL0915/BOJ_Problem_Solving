@@ -50,6 +50,8 @@ void BFS() {
     qnode f = q.front();
     q.pop();
 
+    if (mark[f.now][0] > ans / 2) return;
+
     for (int next: tree[f.now]) {
         if (mark[next][0] == -1) {
             mark[next][0] = mark[f.now][0] + 1;
@@ -85,7 +87,7 @@ void solve() {
 
     DFS(1, 1, 1);
     for (int i = 1; i <= N; i++) {
-        if (idx[i].size() <= 300) {
+        if (idx[i].size() <= 100) {
             for (int j = 0; j < idx[i].size(); j++) {
                 for (int k = j + 1; k < idx[i].size(); k++) {
                     int a = idx[i][j], b = idx[i][k];
