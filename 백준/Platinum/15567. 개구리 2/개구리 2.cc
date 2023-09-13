@@ -19,6 +19,21 @@ inline int convert(int a) {
     else return -a * 2;
 }
 
+void add_edge(int i, int j, int a, int b) {
+    int f = m[{i, a}], s = m[{j, b}];
+    if (a == b) {
+        graph[convert(f)].push_back(convert(-s));
+        graph[convert(s)].push_back(convert(-f));
+    }
+    if (adj[a][b] != 0) {
+        if (arr[i][adj[a][b]] != arr[j][adj[a][b]]) {
+            graph[convert(f)].push_back(convert(-s));
+            graph[convert(s)].push_back(convert(-f));
+        }
+    }
+    return;
+}
+
 int DFS(int node) {
     int ret = mark[node] = ++ccnt;
     st.push(node);
@@ -79,54 +94,10 @@ void solve() {
     for (int i = 1; i <= N; i++) {
         for (int j = i + 1; j <= N; j++) {
             int a = cand[i].first, b = cand[i].second, c = cand[j].first, d = cand[j].second;
-            if (a == c) {
-                graph[convert(m[{i, a}])].push_back(convert(-m[{j, c}]));
-                graph[convert(m[{j, c}])].push_back(convert(-m[{i, a}]));
-            } else {
-                if (adj[a][c]) {
-                    if (arr[i][adj[a][c]] != arr[j][adj[a][c]]) {
-                        graph[convert(m[{i, a}])].push_back(convert(-m[{j, c}]));
-                        graph[convert(m[{j, c}])].push_back(convert(-m[{i, a}]));
-                    }
-                }
-            }
-
-            if (a == d) {
-                graph[convert(m[{i, a}])].push_back(convert(-m[{j, d}]));
-                graph[convert(m[{j, d}])].push_back(convert(-m[{i, a}]));
-            } else {
-                if (adj[a][d]) {
-                    if (arr[i][adj[a][d]] != arr[j][adj[a][d]]) {
-                        graph[convert(m[{i, a}])].push_back(convert(-m[{j, d}]));
-                        graph[convert(m[{j, d}])].push_back(convert(-m[{i, a}]));
-                    }
-                }
-            }
-
-            if (b == c) {
-                graph[convert(m[{i, b}])].push_back(convert(-m[{j, c}]));
-                graph[convert(m[{j, c}])].push_back(convert(-m[{i, b}]));
-            } else {
-                if (adj[b][c]) {
-                    if (arr[i][adj[b][c]] != arr[j][adj[b][c]]) {
-                        graph[convert(m[{i, b}])].push_back(convert(-m[{j, c}]));
-                        graph[convert(m[{j, c}])].push_back(convert(-m[{i, b}]));
-                    }
-                }
-            }
-
-
-            if (b == d) {
-                graph[convert(m[{i, b}])].push_back(convert(-m[{j, d}]));
-                graph[convert(m[{j, d}])].push_back(convert(-m[{i, b}]));
-            } else {
-                if (adj[b][d]) {
-                    if (arr[i][adj[b][d]] != arr[j][adj[b][d]]) {
-                        graph[convert(m[{i, b}])].push_back(convert(-m[{j, d}]));
-                        graph[convert(m[{j, d}])].push_back(convert(-m[{i, b}]));
-                    }
-                }
-            }
+            add_edge(i, j, a, c);
+            add_edge(i, j, b, c);
+            add_edge(i, j, a, d);
+            add_edge(i, j, b, d);
         }
     }
 
@@ -140,11 +111,11 @@ void solve() {
             return;
         }
     }
+
     cout << "YES\n";
-
     reverse(SCC.begin(), SCC.end());
-
     memset(ans, -1, sizeof(ans));
+
     for (int i = 0; i < SCC.size(); i++) {
         for (int a: SCC[i]) {
             int now = (a + 1) / 2;
@@ -160,7 +131,10 @@ void solve() {
         }
     }
 
-    for (int i = 1; i <= N; i++) cout << out[i] << " ";
+    for (int i = 1; i <= N; i++) {
+        assert(out[i] != 0);
+        cout << out[i] << " ";
+    }
     return;
 }
 
