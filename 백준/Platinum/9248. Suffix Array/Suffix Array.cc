@@ -3,54 +3,51 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
+const int SZ = 500005;
 
 string S;
-int N, d;
-int sa[500005], lcp[500005], now[500005], nxt[500005], rev[500005], num[500005], se[500005];
-
-bool cmp(int a, int b) {
-    if (now[a] != now[b]) return now[a] < now[b];
-    else return now[min(a + d, N)] < now[min(b + d, N)];
-}
+int N, M, d, sa[SZ], lcp[SZ], temp[SZ], rev[SZ], now[SZ], se[SZ], cnt[SZ];
 
 void solve() {
     cin >> S;
     N = S.length();
-    for (int i = 0; i < N; i++) {
-        sa[i] = i;
-        now[i] = S[i];
-    }
+    M = max(256, N) + 1;
+    for (int i = 0; i < N; i++) sa[i] = i, now[i] = S[i];
+
+    auto cmp = [&](int a, int b) {
+        if (now[a] != now[b]) return now[a] < now[b];
+        else return now[min(a + d, N)] < now[min(b + d, N)];
+    };
 
     for (d = 1; d < N; d <<= 1) {
-        fill(num, num + 500000, 0);
-        num[0] = d;
-        for (int i = d; i < N; i++) num[now[i]]++;
-        for (int i = 1; i < 500000; i++) num[i] += num[i - 1];
-        for (int i = 0; i < N; i++) se[--num[now[min(i + d, N)]]] = i;
+        fill(cnt, cnt + M, 0);
+        cnt[0] = d;
+        for (int i = d; i < N; i++) cnt[now[i]]++;
+        for (int i = 1; i < M; i++) cnt[i] += cnt[i - 1];
+        for (int i = 0; i < N; i++) se[--cnt[now[min(i + d, N)]]] = i;
 
-        fill(num, num + 500000, 0);
-        for (int i = 0; i < N; i++) num[now[i]]++;
-        for (int i = 1; i < 500000; i++) num[i] += num[i - 1];
-        for (int i = N - 1; i >= 0; i--) sa[--num[now[se[i]]]] = se[i];
+        fill(cnt, cnt + M, 0);
+        for (int i = 0; i < N; i++) cnt[now[i]]++;
+        for (int i = 1; i < M; i++) cnt[i] += cnt[i - 1];
+        for (int i = N - 1; i >= 0; i--) sa[--cnt[now[se[i]]]] = se[i];
 
-        nxt[sa[0]] = 1;
-        for (int i = 1; i < N; i++) nxt[sa[i]] = nxt[sa[i - 1]] + cmp(sa[i - 1], sa[i]);
-        for (int i = 0; i < N; i++) now[i] = nxt[i];
+        temp[sa[0]] = 1;
+        for (int i = 1; i < N; i++) temp[sa[i]] = temp[sa[i - 1]] + cmp(sa[i - 1], sa[i]);
+        for (int i = 0; i < N; i++) now[i] = temp[i];
         if (now[sa[N - 1]] == N) break;
     }
 
     for (int i = 0; i < N; i++) rev[sa[i]] = i;
 
     int l = 0;
-    for (int i = 0; i < N; i++) {
-        l = max(l - 1, 0);
+    for (int i = 0; i < N; i++, l = max(l - 1, 0)) {
         if (rev[i] == 0) continue;
         for (int j = sa[rev[i] - 1]; S[i + l] == S[j + l]; l++);
         lcp[rev[i]] = l;
     }
 
     for (int i = 0; i < N; i++) cout << sa[i] + 1 << " ";
-    cout << '\n' << "x ";
+    cout << "\nx ";
     for (int i = 1; i < N; i++) cout << lcp[i] << " ";
     return;
 }
