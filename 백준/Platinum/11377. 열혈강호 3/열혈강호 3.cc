@@ -5,26 +5,29 @@ using ll = long long;
 using pii = pair<int, int>;
 const int INF = 0x3f3f3f3f;
 
+struct edge {
+    int to, cap, rev;
+};
+
 int N, M, K;
-vector<int> graph[2005];
-int cap[2005][2005], flow[2005][2005], mark[2005], level[2005];
+vector<edge> graph[2005];
+int mark[2005], level[2005];
 
 void add_edge(int u, int v, int c) {
-    graph[u].push_back(v);
-    graph[v].push_back(u);
-    cap[u][v] = c;
+    graph[u].push_back({v, c, (int) graph[v].size()});
+    graph[v].push_back({u, 0, (int) graph[u].size() - 1});
     return;
 }
 
 int DFS(int s, int e, int f) {
     if (s == e) return f;
     for (int &i = mark[s]; i < graph[s].size(); i++) {
-        int next = graph[s][i];
-        if (level[next] == level[s] + 1 && cap[s][next] - flow[s][next] > 0) {
-            int ret = DFS(next, e, min(f, cap[s][next] - flow[s][next]));
+        edge &next = graph[s][i];
+        if (level[next.to] == level[s] + 1 && next.cap > 0) {
+            int ret = DFS(next.to, e, min(f, next.cap));
             if (ret) {
-                flow[s][next] += ret;
-                flow[next][s] -= ret;
+                next.cap -= ret;
+                graph[next.to][next.rev].cap += ret;
                 return ret;
             }
         }
@@ -40,10 +43,10 @@ bool BFS(int s, int e) {
     while (q.size()) {
         int now = q.front();
         q.pop();
-        for (int next: graph[now]) {
-            if (level[next] == -1 && cap[now][next] - flow[now][next] > 0) {
-                level[next] = level[now] + 1;
-                q.push(next);
+        for (auto next: graph[now]) {
+            if (level[next.to] == -1 && next.cap) {
+                level[next.to] = level[now] + 1;
+                q.push(next.to);
             }
         }
     }
