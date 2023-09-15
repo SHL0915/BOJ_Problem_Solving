@@ -1,46 +1,54 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-string T, P;
-int tlen, plen;
-int pi[1000000];
-vector <int> ans;
+string A, B;
+int pi[1000005];
+vector<int> ans;
 
-void makePi();
-void kmp();
-
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(0);
-  getline(cin,T);
-  getline(cin,P);
-  tlen = T.length();
-  plen = P.length();
-  makePi();
-  kmp();
-  cout << ans.size() << '\n';
-  for(int i = 0; i < ans.size(); i++) cout << ans[i] << " ";  
-  return 0;
+bool check(int i, int j, string &S, string &T) {
+    return S[i] == T[j];
 }
 
-void makePi(){
-  int j = 0;
-  for(int i = 1; i < plen; i++){
-    while(j > 0 && P[i] != P[j]) j = pi[j-1];
-    if(P[i] == P[j]) pi[i] = ++j;
-  }
-}
-
-void kmp(){
-  int j = 0;
-  for(int i = 0; i < tlen; i++){
-    while(j > 0 && T[i] != P[j]) j = pi[j - 1];
-    if(T[i] == P[j]){
-      if(j == plen - 1){
-        ans.push_back(i - plen + 2);
-        j = pi[j];
-      }
-      else j++;
+void make_pi() {
+    for (int i = 1, j = 0; i < B.length(); i++) {
+        while (j && !check(i, j, B, B)) j = pi[j - 1];
+        if (check(i, j, B, B)) pi[i] = ++j;
     }
-  }
+    return;
+}
+
+void kmp() {
+    for (int i = 0, j = 0; i < A.length(); i++) {
+        while (j && !check(i, j, A, B)) j = pi[j - 1];
+        if (check(i, j, A, B)) {
+            if (j == B.length() - 1) ans.push_back(i - j + 1), j = pi[j];
+            else j++;
+        }
+    }
+    return;
+}
+
+void solve() {
+    getline(cin, A);
+    getline(cin, B);
+    make_pi();
+    kmp();
+    cout << ans.size() << '\n';
+    for (int a: ans) cout << a << " ";
+    return;
+}
+
+int main(void) {
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+#endif
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    //cin >> t;
+    while (t--) solve();
+    return 0;
 }
