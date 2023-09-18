@@ -23,18 +23,6 @@ pii cal(int a, int b) {
     return {cnt, sum + 2 - (a + b)};
 }
 
-int DP(int a, int b) {
-    if (a == 1 && b == 1) return 1;
-    int &ret = dp[a][b];
-    if (ret != -1) return ret;
-    ret = 0;
-
-    if (a > 1 && point[a - 1][b] > 0) ret |= DP(a - 1, b);
-    if (b > 1 && point[a][b - 1] > 0) ret |= DP(a, b - 1);
-
-    return ret;
-}
-
 void solve() {
     cin >> N;
     for (int i = 1; i <= N; i++) cin >> arr[i].s >> arr[i].i >> arr[i].p;
@@ -47,12 +35,21 @@ void solve() {
         }
     }
 
-    memset(dp, -1, sizeof(dp));
+    dp[1][1] = 1;
     int ans = 0;
 
     for (int i = 1; i <= 1000; i++) {
         for (int j = 1; j <= 1000; j++) {
-            if (DP(i, j)) ans = max(ans, clear[i][j]);
+            if (dp[i][j] && point[i][j] > 0) {
+                dp[i + 1][j] = 1;
+                dp[i][j + 1] = 1;
+            }
+        }
+    }
+
+    for (int i = 1; i <= 1000; i++) {
+        for (int j = 1; j <= 1000; j++) {
+            if (dp[i][j]) ans = max(ans, clear[i][j]);
         }
     }
 
