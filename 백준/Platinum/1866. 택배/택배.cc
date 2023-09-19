@@ -3,22 +3,22 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const ll INF = 0x3f3f3f3f3f3f3f3fLL;
+const int INF = 0x3f3f3f3f;
 
-ll N, A, B;
-ll arr[3005], psum[3005];
-ll dp[3005][3005];
+int N, A, B;
+int arr[3005], psum[3005];
+int dp[3005][3005];
 
-ll cost(int now, int pre) {
-    ll m = arr[pre] + (arr[now] - arr[pre]) / 2;
+int cost(int now, int pre) {
+    int m = arr[pre] + (arr[now] - arr[pre]) / 2;
     int idx = upper_bound(arr, arr + N + 1, m) - arr - 1;
-    ll tot = psum[idx] - psum[pre] - arr[pre] * (idx - pre) + arr[now] * (now - idx) - (psum[now] - psum[idx]);
+    int tot = psum[idx] - psum[pre] - arr[pre] * (idx - pre) + arr[now] * (now - idx) - (psum[now] - psum[idx]);
     return A * tot;
 }
 
-ll DP(int now, int pre) {
+int DP(int now, int pre) {
     if (now == N + 1) return A * (psum[N] - psum[pre] - arr[pre] * (N - pre));
-    ll &ret = dp[now][pre];
+    int &ret = dp[now][pre];
     if (ret != -1) return ret;
     ret = INF;
     ret = min(ret, DP(now + 1, pre));
