@@ -1,71 +1,87 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const int mod = 1000000007;
+const ll mod = 1000000007;
+
+struct node {
+    ll max = 0, cnt = 0;
+};
 
 int N;
-int arr[1000001];
-pii ans;
-vector <int> val;
-vector <pii> tree;
+pii arr[1000005];
+node seg[4000005];
+node temp[1000005];
 
-pii add(pii a, pii b);
-void update(int node, int start, int end, int idx, pii val);
-pii query(int node, int start, int end, int left, int right);
+node merge(node a, node b) {
+    if (a.max == b.max) return {a.max, (a.cnt + b.cnt) % mod};
+    else if (a.max > b.max) return a;
+    else return b;
+}
+
+void update(int n, int s, int e, int pos, node val) {
+    if (pos > e || pos < s) return;
+    if (s == e) {
+        seg[n] = val;
+        return;
+    }
+    int mid = (s + e) / 2;
+    update(n * 2, s, mid, pos, val);
+    update(n * 2 + 1, mid + 1, e, pos, val);
+    seg[n] = merge(seg[n * 2], seg[n * 2 + 1]);
+    return;
+}
+
+node query(int n, int s, int e, int l, int r) {
+    if (l > e || r < s) return {0, 0};
+    if (l <= s && e <= r) return seg[n];
+    int mid = (s + e) / 2;
+    return merge(query(n * 2, s, mid, l, r), query(n * 2 + 1, mid + 1, e, l, r));
+}
 
 void solve() {
-	cin >> N;
-	tree.resize(4 * N);
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		val.push_back(arr[i]);
-	}
-	sort(val.begin(), val.end());
-	val.erase(unique(val.begin(), val.end()), val.end());
-	for (int i = 0; i < N; i++) arr[i] = lower_bound(val.begin(), val.end(), arr[i]) - val.begin() + 1;
-	for (int i = 0; i < N; i++) {
-		pii q = query(1, 1, N, 1, arr[i] - 1);
-		q.first++;
-		q.second = max(q.second, 1);
-		update(1, 1, N, arr[i], q);
-	}
-	ans = query(1, 1, N, 1, N);
-	cout << ans.first << " " << ans.second;
-	return;
+    cin >> N;
+    for (int i = 1; i <= N; i++) {
+        cin >> arr[i].first;
+        arr[i].second = i;
+    }
+    
+    sort(arr + 1, arr + N + 1);
+    
+    int pre = 0;
+    for (int i = 2; i <= N; i++) {
+        if (arr[i].first == arr[i - 1].first) continue;
+        for (int j = pre + 1; j < i; j++) {
+            node res = query(1, 1, N, 1, arr[j].second - 1);
+            if (res.max == 0) temp[j] = {1, 1};
+            else temp[j] = {res.max + 1, res.cnt};
+        }
+        for (int j = pre + 1; j < i; j++) update(1, 1, N, arr[j].second, temp[j]);
+        pre = i - 1;
+    }
+    
+    for (int j = pre + 1; j <= N; j++) {
+        node res = query(1, 1, N, 1, arr[j].second - 1);
+        if (res.max == 0) temp[j] = {1, 1};
+        else temp[j] = {res.max + 1, res.cnt};
+    }
+    for (int j = pre + 1; j <= N; j++) update(1, 1, N, arr[j].second, temp[j]);
+    
+    node ans = query(1, 1, N, 1, N);
+    
+    cout << ans.max << " " << ans.cnt;
+    return;
 }
 
 int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	int t = 1;
-	//cin >> t;
-	while (t--) solve();
-	return 0;
-}
-
-pii add(pii a, pii b) {
-	if (a.first > b.first) return a;
-	else if (a.first == b.first) return { a.first, (a.second + b.second) % mod };
-	else return b;
-}
-
-void update(int node, int start, int end, int idx, pii val) {
-	if (idx > end || idx < start) return;
-	if (start == end) {
-		tree[node] = add(tree[node], val);
-		return;
-	}
-	int mid = (start + end) / 2;
-	update(node * 2, start, mid, idx, val);
-	update(node * 2 + 1, mid + 1, end, idx, val);
-	tree[node] = add(tree[node * 2], tree[node * 2 + 1]);
-	return;
-}
-
-pii query(int node, int start, int end, int left, int right) {
-	if (left > end || right < start) return { 0,0 };
-	if (left <= start && end <= right) return tree[node];
-	int mid = (start + end) / 2;
-	return add(query(node * 2, start, mid, left, right), query(node * 2 + 1, mid + 1, end, left, right));
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+#endif
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    //cin >> t;
+    while (t--) solve();
+    return 0;
 }
