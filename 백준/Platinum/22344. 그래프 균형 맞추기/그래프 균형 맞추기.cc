@@ -2,17 +2,17 @@
 
 using namespace std;
 using ll = long long;
-using pii = pair<int, int>;
-const int INF = 0x3f3f3f3f;
+using pii = pair<ll, ll>;
+const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
-int N, M, ans = INF;
+ll N, M, ans = INF;
 vector<pii> graph[100005];
 pii arr[100005];
-int vst[100005];
+ll vst[100005];
 
 void DFS(int node) {
     for (pii next: graph[node]) {
-        int nxt = next.first, val = next.second;
+        ll nxt = next.first, val = next.second;
         pii nval = {-arr[node].first, -(val + arr[node].second)};
         if (vst[nxt]) {
             if (arr[nxt] == nval) continue;
@@ -21,7 +21,7 @@ void DFS(int node) {
                     cout << "No";
                     exit(0);
                 } else {
-                    int nans = nval.second - arr[nxt].second;
+                    ll nans = nval.second - arr[nxt].second;
                     if (nval.first == -1) nans *= -1;
                     if (nans % 2) {
                         cout << "No";
@@ -48,7 +48,7 @@ void DFS(int node) {
 void solve() {
     cin >> N >> M;
     for (int i = 0; i < M; i++) {
-        int a, b, c;
+        ll a, b, c;
         cin >> a >> b >> c;
         graph[a].push_back({b, c});
         graph[b].push_back({a, c});
@@ -62,7 +62,7 @@ void solve() {
     if (ans != INF) {
         for (int i = 1; i <= N; i++) cout << ans * arr[i].first - arr[i].second << " ";
     } else {
-        vector<int> v;
+        vector<ll> v;
         for (int i = 1; i <= N; i++) v.push_back(arr[i].second * arr[i].first);
         sort(v.begin(), v.end());
 
