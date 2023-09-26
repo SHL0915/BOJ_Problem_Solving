@@ -24,11 +24,11 @@ void Dijkstra() {
         pii t = pq.top();
         pq.pop();
         int now = t.second;
+        ll val = t.first;
         if (vst[now]) continue;
         vst[now] = 1;
         for (auto &[next, cost]: graph[now]) {
-            if(vst[next]) continue;
-            ll nval = cost + dist[now][1];
+            ll nval = cost + val;
             if (dist[next][0] > nval) {
                 dist[next][1] = dist[next][0];
                 dist[next][0] = nval;
