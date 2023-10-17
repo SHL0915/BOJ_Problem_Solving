@@ -6,12 +6,13 @@ using pii = pair<int, int>;
 
 int N;
 
-void move(int now, int a, int b, int c) {
+void move(int now, int from, int to) {
     if (now < 1) return;
     else {
-        move(now - 1, a, c, b);
-        cout << a << " " << c << '\n';
-        move(now - 1, b, a, c);
+        int mid = 6 - (from + to);
+        move(now - 1, from, mid);
+        cout << from << " " << to << '\n';
+        move(now - 1, mid, to);
         return;
     }
 }
@@ -19,7 +20,7 @@ void move(int now, int a, int b, int c) {
 void solve() {
     cin >> N;
     cout << (1LL << N) - 1 << '\n';
-    move(N, 1, 2, 3);
+    move(N, 1, 3);
     return;
 }
 
