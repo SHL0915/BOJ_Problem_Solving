@@ -5,7 +5,7 @@ using ll = long long;
 using pii = pair<int, int>;
 
 int N;
-ll arr[25];
+ll arr[100005];
 ll dp[25][25][2][2];
 
 ll DP(int l, int r, int cur, int pre) {
@@ -45,11 +45,10 @@ ll DP(int l, int r, int cur, int pre) {
 void solve() {
     cin >> N;
     for (int i = 0; i < N; i++) cin >> arr[i];
-    if (N > 20) {
-        cout << 0 << '\n';
+    if (N > 23) {
+        for (int i = 0; i < N; i++) cout << "NO\n";
         return;
     }
-    sort(arr, arr + N);
     memset(dp, -1, sizeof(dp));
     for (int i = 0; i < N; i++) {
         if (DP(i, i, 0, 0) == 0) cout << "NO\n";
