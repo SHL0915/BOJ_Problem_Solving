@@ -1,92 +1,55 @@
 #include <bits/stdc++.h>
-
+#define FOR(i, x, y) for (int i = x; i < y; i++)
+typedef long long ll;
 using namespace std;
-using ll = long long;
-using pii = pair<ll, ll>;
-const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
-int N, M, K;
-ll adj[105][105];
-ll cost[105][105];
-pii arr[105][1005];
+// 실험 : https://usaco.guide/problems/apio-2017traveling-merchant/solution
 
-void solve() {
-	cin >> N >> M >> K;
-	for (int i = 1; i <= N; i++) {
-		for (int j = 0; j < K; j++) cin >> arr[i][j].first >> arr[i][j].second;
-	}
-	memset(adj, -1, sizeof(adj));
-	for (int i = 0; i < M; i++) {
-		ll a, b, c;
-		cin >> a >> b >> c;
-		adj[a][b] = c;
-	}
+const ll INF = LLONG_MAX / 2;
 
-	for (int k = 1; k <= N; k++) {
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
-				if (adj[i][k] == -1 || adj[k][j] == -1) continue;
-				if (adj[i][j] == -1) adj[i][j] = adj[i][k] + adj[k][j];
-				else adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
-			}
-		}
-	}
+int n, m, x;
+ll b[101][1001], s[101][1001];
+ll graph[101][101], profit[101][101], graph2[101][101];
 
-	for (int i = 1; i <= N; i++) {
-		for (int j = 1; j <= N; j++) {
-			for (int k = 0; k < K; k++) {
-				if (arr[i][k].first == -1 || arr[j][k].second == -1) continue;
-				cost[i][j] = max(cost[i][j], arr[j][k].second - arr[i][k].first);
-			}
-		}
-	}
-
-	ll l = 0, r = 1000000000005LL;
-	ll ans = 0;
-	while (l <= r) {
-		ll mid = (l + r) / 2;
-		ll dist[105][105];
-		memset(dist, INF, sizeof(dist));
-
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
-				if (adj[i][j] == -1) continue;
-				dist[i][j] = min(dist[i][j], mid * adj[i][j] - cost[i][j]);
-			}
-		}
-
-		for (int k = 1; k <= N; k++) {
-			for (int i = 1; i <= N; i++) {
-				for (int j = 1; j <= N; j++) {
-					dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-				}
-			}
-		}
-
-		int flag = 0;
-		for (int i = 1; i <= N; i++) {
-			if (dist[i][i] <= 0) flag = 1;
-		}
-
-		if (flag) {
-			ans = mid;
-			l = mid + 1;
-		}
-		else r = mid - 1;
-	}
-
-	cout << ans;
-	return;
+void floyd_warshall(ll adj[101][101]) {
+	FOR(i, 1, n + 1)
+	FOR(j, 1, n + 1)
+	FOR(k, 1, n + 1)
+	adj[j][k] = min(adj[j][k], adj[j][i] + adj[i][k]);
 }
 
-int main(void) {
-#ifndef ONLINE_JUDGE
-	freopen("input.txt", "r", stdin);
-#endif
-	ios::sync_with_stdio(false);
+int main() {
+	iostream::sync_with_stdio(false);
 	cin.tie(0);
-	int t = 1;
-	//cin >> t;
-	while (t--) solve();
+	cin >> n >> m >> x;
+	FOR(i, 1, n + 1) {
+		FOR(j, 1, n + 1) graph[i][j] = INF;
+		FOR(j, 1, x + 1) cin >> b[i][j] >> s[i][j];
+	}
+	FOR(i, 0, m) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		graph[u][v] = w;
+	}
+	floyd_warshall(graph);
+	FOR(i, 1, n + 1)
+	FOR(j, 1, n + 1)
+	FOR(k, 1, x + 1)
+	if (s[j][k] != -1 && b[i][k] != -1)
+		profit[i][j] = max(profit[i][j], s[j][k] - b[i][k]);
+
+	ll l = 1, r = 1e9;
+	while (l <= r) {
+		ll mid = (l + r) / 2;
+		FOR(i, 1, n + 1)
+		FOR(j, 1, n + 1)
+		graph2[i][j] = mid * min(graph[i][j], INF / mid) - profit[i][j];
+		floyd_warshall(graph2);
+		bool has_nonnegative_cycle = false;
+		FOR(i, 1, n + 1) if (graph2[i][i] <= 0) has_nonnegative_cycle = true;
+		if (has_nonnegative_cycle) l = mid + 1;
+		else r = mid - 1;
+	}
+	cout << r;
 	return 0;
 }
