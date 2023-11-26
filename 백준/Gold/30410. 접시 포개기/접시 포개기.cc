@@ -10,37 +10,23 @@ int arr[200005];
 void solve() {
     cin >> N;
     int cnt = 0;
-    int pre = 0, now = 0;
+    int one = 0, two = 0;
     for (int i = 0; i < N; i++) {
         cin >> arr[i];
         if (arr[i] == 2) {
-            if (now == 0) pre++;
-            else {
-                pre++;
-                if (now % 2 == 0) {
-                    pre += now / 2;
-                    now = 0;
-                } else {
-                    cnt = max(cnt, pre + now / 2);
-                    pre = now / 2 + 1;
-                    now = 0;
-                }
-            }
-        } else now++;
+            if (one) {
+                if (one % 2) {
+                    cnt = max(cnt, two + one / 2);
+                    two = one / 2 + 1;
+                    one = 0;
+                } else two += one / 2 + 1, one = 0;
+            } else two++;
+        } else one++;
     }
+    cnt = max(cnt, two + one / 2);
 
-    cnt = max(cnt, pre + now / 2);
-
-    if (cnt == 0) {
-        cout << 1;
-        return;
-    }
-
-    ll ans = 2;
-    while (cnt > 1) {
-        ans *= 2;
-        cnt /= 2;
-    }
+    ll ans = 1;
+    while (cnt) ans *= 2, cnt /= 2;
 
     cout << ans;
 
