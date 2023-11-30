@@ -10,7 +10,7 @@ void solve() {
     int l = 2100, r = 2399;
 
     int cnt = 0, ccnt = 0, flag = 0;
-    while (ccnt < 15) {
+    while (ccnt < 14) {
         int mid = (l + r + 1) / 2;
         cout << "? " << mid << endl;
         ccnt++;
@@ -22,7 +22,7 @@ void solve() {
             if (cnt >= 3 && !flag) {
                 int last = -1;
                 for (int i = 0; i < q.size(); i++) if (q[i].first == 1) last = i;
-                if (last != -1 && ccnt < 15) {
+                if (last != -1 && ccnt < 14) {
                     int ll = q[last].second.first, rr = q[last].second.second;
                     int mmid = (ll + rr + 1) / 2;
                     cout << "? " << mmid << endl;
