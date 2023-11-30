@@ -9,8 +9,8 @@ void solve() {
 
     int l = 2100, r = 2399;
 
-    int cnt = 0, ccnt = 0, flag = 0;
-    while (ccnt < 14) {
+    int cnt = -100, ccnt = 0, flag = 0;
+    while (ccnt < 13) {
         int mid = (l + r + 1) / 2;
         cout << "? " << mid << endl;
         ccnt++;
@@ -19,25 +19,23 @@ void solve() {
         if (a == 0) {
             cnt++;
             q.push_back({0, {l, r}});
-            if (cnt >= 3 && !flag) {
+            if (cnt == 2 && !flag) {
                 int last = -1;
                 for (int i = 0; i < q.size(); i++) if (q[i].first == 1) last = i;
-                if (last != -1 && ccnt < 14) {
-                    int ll = q[last].second.first, rr = q[last].second.second;
-                    int mmid = (ll + rr + 1) / 2;
-                    cout << "? " << mmid << endl;
-                    ccnt++;
-                    cin >> a;
-                    if (a == 1) r = mid - 1;
-                    else {
-                        flag = 1;
-                        l = ll, r = rr;
-                        r = mmid - 1;
-                        q.push_back({0, {l, r}});
-                    }
-                    cnt = -100;
+                assert(ccnt < 13);
+                int ll = q[last].second.first, rr = q[last].second.second;
+                int mmid = (ll + rr + 1) / 2;
+                cout << "? " << mmid << endl;
+                ccnt++;
+                cin >> a;
+                if (a == 1) r = mid - 1;
+                else {
+                    flag = 1;
+                    l = ll, r = rr;
+                    r = mmid - 1;
+                    q.push_back({0, {l, r}});
                 }
-                else r = mid - 1;
+                cnt = -100;
             } else r = mid - 1;
         } else {
             cnt = 0;
@@ -46,7 +44,7 @@ void solve() {
         }
     }
 
-    cout << "! " << l << endl;
+    cout << "! " << (l + r) / 2 << endl;
 
 
     return;
