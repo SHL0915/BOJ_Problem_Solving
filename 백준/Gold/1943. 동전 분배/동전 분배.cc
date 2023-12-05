@@ -11,19 +11,32 @@ void solve() {
     cin >> N;
     ll tot = 0;
     for (int i = 1; i <= N; i++) cin >> arr[i].first >> arr[i].second, tot += (arr[i].first * arr[i].second);
-    
-    bitset<100005> dp[105];
-    dp[0][0] = 1;
-    
+
+    if (tot % 2) {
+        cout << 0 << '\n';
+        return;
+    }
+
+    bitset<100005> dp;
+    dp[0] = true;
+
     for (int i = 1; i <= N; i++) {
-        for (int j = 0; j <= arr[i].second; j++) {
-            dp[i] |= (dp[i - 1] << arr[i].first * j);
+        for (int j = 100000; j >= 0; j--) {
+            if (!dp[j]) continue;
+            for (int k = 1; k <= arr[i].second; k++) {
+                if (j + arr[i].first * k > 100000) break;
+                dp[j + arr[i].first * k] = true;
+            }
+        }
+        if (dp[tot / 2]) {
+            cout << 1 << '\n';
+            return;
         }
     }
-    
-    if (tot % 2 || !dp[N][tot / 2]) cout << 0 << '\n';
+
+    if (!dp[tot / 2]) cout << 0 << '\n';
     else cout << 1 << '\n';
-    
+
     return;
 }
 
