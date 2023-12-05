@@ -17,15 +17,15 @@ void solve() {
         return;
     }
 
-    bitset<100005> dp;
-    dp[0] = true;
+    vector <int> dp(tot + 5, 0);
+    dp[0] = 1;
 
     for (int i = 1; i <= N; i++) {
-        for (int j = 100000; j >= 0; j--) {
+        for (int j = tot; j >= 0; j--) {
             if (!dp[j]) continue;
             for (int k = 1; k <= arr[i].second; k++) {
                 if (j + arr[i].first * k > 100000) break;
-                dp[j + arr[i].first * k] = true;
+                dp[j + arr[i].first * k] = 1;
             }
         }
         if (dp[tot / 2]) {
