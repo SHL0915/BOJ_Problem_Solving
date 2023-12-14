@@ -53,21 +53,11 @@ void solve() {
         ans[(vst[a] > vst[b])].push_back(i);
     }
     
-    if (ans[0].size() == 0) {
-        cout << 1 << '\n';
-        cout << M << " ";
-        for (int a: ans[1]) cout << a << " ";
-    } else if (ans[1].size() == 0) {
-        cout << 1 << '\n';
-        cout << M << " ";
-        for (int a: ans[0]) cout << a << " ";
-    } else {
-        cout << 2 << '\n';
-        for (int i = 0; i < 2; i++) {
-            cout << ans[i].size() << " ";
-            for (int a: ans[i]) cout << a << " ";
-            cout << '\n';
-        }
+    cout << 2 << '\n';
+    for (int i = 0; i < 2; i++) {
+        cout << ans[i].size() << " ";
+        for (int a: ans[i]) cout << a << " ";
+        cout << '\n';
     }
     
     return;
