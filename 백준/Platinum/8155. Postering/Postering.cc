@@ -5,40 +5,34 @@ using ll = long long;
 using pii = pair<int, int>;
 
 int N;
-int arr[250005];
+pii arr[250005];
 
 void solve() {
     cin >> N;
-    for (int i = 0; i < N; i++) {
-        int a, b;
-        cin >> a >> b;
-        arr[i] = b;
-    }
-
+    for (int i = 0; i < N; i++) cin >> arr[i].first >> arr[i].second;
     stack<int> st;
-
     int ans = 0;
     for (int i = 0; i < N; i++) {
-        int now = arr[i];
+        int now = arr[i].second;
         if (st.size() == 0) st.push(now);
         else {
             if (now > st.top()) st.push(now);
             else if (now == st.top()) continue;
             else {
                 while (st.size()) {
-                    int t = st.top();
-                    if (t > now) {
+                    if (st.top() > now) {
                         ans++;
                         st.pop();
-                    } else break;
+                    } else if (st.top() == now) st.pop();
+                    else break;
                 }
-                if (st.size() == 0 || st.top() < now) st.push(now);
+                st.push(now);
             }
         }
     }
-
     ans += st.size();
     cout << ans;
+    
     return;
 }
 
