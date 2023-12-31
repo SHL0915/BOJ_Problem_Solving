@@ -10,7 +10,7 @@ ll dp[1000005];
 
 void solve() {
     cin >> N >> S;
-    arr[0] = -0x3f3f3f3f3f3f3f3fLL;
+    arr[0] = -1;
     for (int i = 1; i <= N; i++) {
         cin >> arr[i];
         if (arr[i] <= arr[i - 1]) arr[i] = arr[i - 1] + 1;
