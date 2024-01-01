@@ -6,13 +6,12 @@ using pii = pair<int, int>;
 
 int N;
 vector<int> tree[300005];
-int ch[300005];
 
 int DFS(int node, int par, int k) {
-    int ret = k - ch[node];
+    int ret = k;
     for (int next: tree[node]) {
         if (next == par) continue;
-        ret += DFS(next, node, k);
+        ret += DFS(next, node, k) - 1;
     }
 
     return min(0, ret);
@@ -26,8 +25,6 @@ void solve() {
         tree[a].push_back(b);
         tree[b].push_back(a);
     }
-
-    for (int i = 1; i <= N; i++) ch[i] = tree[i].size() - (i != 1);
 
     int l = 0, r = N;
     int ans = -1;
