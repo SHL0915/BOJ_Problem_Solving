@@ -6,27 +6,16 @@ using pii = pair<int, int>;
 
 int N;
 vector<int> tree[300005];
-int arr[300005];
+int ch[300005];
 
-void dp(int node, int par, int k) {
-    arr[node] = 0;
-    int cnt = 0;
+int DFS(int node, int par, int k) {
+    int ret = k - ch[node];
     for (int next: tree[node]) {
         if (next == par) continue;
-        cnt++;
-        dp(next, node, k);
-        arr[node] += arr[next];
+        ret += DFS(next, node, k);
     }
 
-    if (cnt) arr[node] += k - cnt;
-    arr[node] = min(arr[node], 0);
-
-    return;
-}
-
-int chk(int k) {
-    dp(1, 1, k);
-    return arr[1] < 0;
+    return min(0, ret);
 }
 
 void solve() {
@@ -38,17 +27,20 @@ void solve() {
         tree[b].push_back(a);
     }
 
+    for (int i = 1; i <= N; i++) ch[i] = tree[i].size() - (i != 1);
+
     int l = 0, r = N;
     int ans = -1;
     while (l <= r) {
         int mid = (l + r) / 2;
-        if (chk(mid) == 0) {
+        if (DFS(1, 1, mid) >= 0) {
             ans = mid;
             r = mid - 1;
         } else l = mid + 1;
     }
 
     cout << ans;
+
     return;
 }
 
