@@ -4,86 +4,70 @@ using namespace std;
 using ll = long long;
 using pii = pair<ll, ll>;
 
+struct edge {
+    int u, v, idx, cost;
+};
+
 int N, M;
-vector<pair<pii, pii>> edge;
-set<pii> tree[2005];
-pii e[3005];
-int parent[2005], mark[3005];
-pii p[2005];
+edge arr[3005], org[3005];
+int mark[3005], par[3005];
 
-int Find(int a) {
-    if (a == parent[a]) return parent[a];
-    else return parent[a] = Find(parent[a]);
-}
-
-void Merge(int a, int b) {
-    a = Find(a);
-    b = Find(b);
-    if (a == b) return;
-    if (a > b) parent[a] = b;
-    else parent[b] = a;
+void init() {
+    for (int i = 1; i <= N; i++) par[i] = i;
     return;
 }
 
-void DFS(int node, int par, int id) {
-    p[node] = {par, id};
-    for (pii i: tree[node]) {
-        int next = i.first;
-        int idx = i.second;
-        if (next == par) continue;
-        DFS(next, node, idx);
-    }
+int find(int a) {
+    if (a == par[a]) return par[a];
+    else return par[a] = find(par[a]);
+}
+
+void merge(int a, int b) {
+    par[find(a)] = find(b);
     return;
 }
 
 void solve() {
     cin >> N >> M;
-    for (int i = 1; i <= N; i++) parent[i] = i;
-
     for (int i = 1; i <= M; i++) {
-        ll a, b, c;
-        cin >> a >> b >> c;
-        edge.push_back({{c, i},
-                        {a, b}});
-        e[i] = {a, b};
-
-        if (i <= N - 1) {
-            tree[a].insert({b, i});
-            tree[b].insert({a, i});
-        }
+        int u, v, w;
+        cin >> u >> v >> w;
+        arr[i] = {u, v, i, w};
+        org[i] = arr[i];
     }
 
-    sort(edge.begin(), edge.end());
+    sort(arr + 1, arr + M + 1, [&](edge a, edge b) {
+        if (a.cost == b.cost) return a.idx < b.idx;
+        else return a.cost < b.cost;
+    });
 
-    int cnt = 0;
-    for (int i = 0; i < edge.size(); i++) {
-        if (cnt == N - 1) break;
-        int a = edge[i].second.first, b = edge[i].second.second;
-        int idx = edge[i].first.second;
-        if (Find(a) == Find(b)) continue;
-        Merge(a, b);
+    vector<pair<pii, int>> mst;
+    init();
+    for (int i = 1; i <= M; i++) {
+        int u = arr[i].u, v = arr[i].v, idx = arr[i].idx, cost = arr[i].cost;
+        if (find(u) == find(v)) continue;
         mark[idx] = 1;
-        cnt++;
+        merge(u, v);
+        mst.push_back({{u, v}, idx});
     }
 
-    vector<pii> ans;
-    for (int i = N; i <= M; i++) {
-        if (mark[i] == 0) continue;
-        int a = e[i].first, b = e[i].second;
-        DFS(a, a, -1);
-        int now = b;
+    vector<pii> ans, temp;
 
-        while (now != a) {
-            pii next = p[now];
-            if (mark[next.second] == 0) {
-                ans.push_back({next.second, i});
-                tree[now].erase(next);
-                tree[next.first].erase({now, next.second});
-                tree[a].insert({b, i});
-                tree[b].insert({a, i});
+    for (int i = 1; i <= N - 1; i++) {
+        if (mark[i] == 1) {
+            temp.push_back({org[i].u, org[i].v});
+            continue;
+        }
+        init();
+        for (pii j: temp) merge(j.first, j.second);
+        for (int j = i + 1; j <= N - 1; j++) merge(org[j].u, org[j].v);
+
+        for (auto j: mst) {
+            if (find(j.first.first) != find(j.first.second)) {
+                ans.push_back({i, j.second});
+                temp.push_back(j.first);
                 break;
             }
-            now = next.first;
         }
     }
 

@@ -1,14 +1,18 @@
-# [Platinum V] Broken Minimum Spanning Tree - 28146 
+# [Platinum IV] Broken Minimum Spanning Tree - 28146 
 
 [문제 링크](https://www.acmicpc.net/problem/28146) 
 
 ### 성능 요약
 
-메모리: 2752 KB, 시간: 48 ms
+메모리: 2276 KB, 시간: 16 ms
 
 ### 분류
 
-그래프 이론, 그래프 탐색, 구현, 최소 스패닝 트리
+그래프 이론, 그래프 탐색, 그리디 알고리즘, 최소 스패닝 트리
+
+### 제출 일자
+
+2024년 1월 13일 15:08:52
 
 ### 문제 설명
 
