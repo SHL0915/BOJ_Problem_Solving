@@ -13,7 +13,7 @@ short dp[5005][5005];
 
 short DP(int now, int prev) {
     if (now == N + 1) return 0;
-    short &ret = dp[now][prev];
+    short ret = dp[now][prev];
     if (ret != -1) return ret;
     ret = -INF;
     int x = arr[now].second, y = arr[now].first;
