@@ -6,43 +6,14 @@ using pii = pair<int, int>;
 
 ll N, ans;
 vector<int> tree[5005];
-ll cnt[5005][5005];
+ll cnt[5005], ccnt[5005][2];
 
-void count(int node, int par) {
-    cnt[node][0]++;
+void count(int node, int par, int lv) {
+    cnt[lv]++;
     for (int next: tree[node]) {
         if (next == par) continue;
-        count(next, node);
-        for (int i = 0; i <= N; i++) cnt[node][i + 1] += cnt[next][i];
+        count(next, node, lv + 1);
     }
-    return;
-}
-
-void DFS(int node, int par, vector<ll> pcnt) {
-    for (int k = 1; k <= N; k++) {
-        ll ccnt[4] = {0};
-        ccnt[1] = pcnt[k];
-        for (int next: tree[node]) {
-            if (next == par) continue;
-            ccnt[3] += ccnt[2] * cnt[next][k - 1];
-            ccnt[2] += ccnt[1] * cnt[next][k - 1];
-            ccnt[1] += cnt[next][k - 1];
-        }
-        ans += ccnt[3];
-    }
-
-    vector<ll> nxt(N + 5, 0);
-    for (int k = 1; k <= N; k++) nxt[k] += pcnt[k - 1];
-    for (int k = 1; k <= N; k++) nxt[k] += cnt[node][k - 1];
-
-
-    for (int next: tree[node]) {
-        if (next == par) continue;
-        vector<ll> v = nxt;
-        for (int k = 2; k <= N; k++) v[k] -= cnt[next][k - 2];
-        DFS(next, node, v);
-    }
-
     return;
 }
 
@@ -55,10 +26,18 @@ void solve() {
         tree[b].push_back(a);
     }
 
-    count(1, 1);
-    vector<ll> v(N + 5, 0);
-
-    DFS(1, 1, v);
+    for (int i = 1; i <= N; i++) {
+        memset(ccnt, 0, sizeof(ccnt));
+        for (int next: tree[i]) {
+            memset(cnt, 0, sizeof(cnt));
+            count(next, i, 1);
+            for (int k = 1; k <= N; k++) {
+                ans += ccnt[k][1] * cnt[k];
+                ccnt[k][1] += ccnt[k][0] * cnt[k];
+                ccnt[k][0] += cnt[k];
+            }
+        }
+    }
 
     cout << ans;
 
