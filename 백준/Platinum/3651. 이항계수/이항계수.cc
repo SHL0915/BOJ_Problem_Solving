@@ -6,7 +6,7 @@ using pii = pair<ll, ll>;
 
 ll M;
 vector<pii> ans;
-vector<ll> nCr[40005];
+vector<ll> nCr[15005];
 
 void find_nC1() {
     ans.push_back({M, 1});
@@ -54,7 +54,7 @@ void solve() {
 
     nCr[1].push_back(1);
     nCr[1].push_back(1);
-    for (int i = 2; i <= 40000; i++) {
+    for (int i = 2; i <= 15000; i++) {
         nCr[i].push_back(1);
         for (int j = 1; j <= i; j++) {
             if (j == i) nCr[i].push_back(1);
@@ -62,7 +62,7 @@ void solve() {
                 if (j >= nCr[i - 1].size()) break;
                 else {
                     ll v = nCr[i - 1][j - 1] + nCr[i - 1][j];
-                    if (v > M) break;
+                    if (v > 1e18) break;
                     else nCr[i].push_back(v);
                 }
             }
@@ -70,7 +70,7 @@ void solve() {
     }
 
 
-    for (int i = 4; i <= 40000; i++) {
+    for (int i = 4; i <= 15000; i++) {
         ll l = 0, r = min(i / 2, (int) nCr[i].size() - 1);
         while (l <= r) {
             ll m = (l + r) / 2;
