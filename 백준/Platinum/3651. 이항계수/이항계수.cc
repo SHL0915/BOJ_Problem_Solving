@@ -62,7 +62,7 @@ void solve() {
                 if (j >= nCr[i - 1].size()) break;
                 else {
                     ll v = nCr[i - 1][j - 1] + nCr[i - 1][j];
-                    if (v > 1e18) break;
+                    if (v > M) break;
                     else nCr[i].push_back(v);
                 }
             }
