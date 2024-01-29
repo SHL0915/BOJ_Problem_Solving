@@ -6,7 +6,7 @@ using pii = pair<int, int>;
 
 ll N, ans;
 vector<int> tree[5005];
-ll cnt[5005], ccnt[5005][2];
+vector<ll> cnt, ccnt[2];
 
 void count(int node, int par, int lv) {
     cnt[lv]++;
@@ -26,15 +26,19 @@ void solve() {
         tree[b].push_back(a);
     }
 
+    cnt.resize(N + 1);
+    ccnt[0].resize(N + 1);
+    ccnt[1].resize(N + 1);
+
     for (int i = 1; i <= N; i++) {
-        memset(ccnt, 0, sizeof(ccnt));
+        for (int j = 0; j < 2; j++) fill(ccnt[0].begin(), ccnt[0].end(), 0), fill(ccnt[1].begin(), ccnt[1].end(), 0);
         for (int next: tree[i]) {
-            memset(cnt, 0, sizeof(cnt));
+            fill(cnt.begin(), cnt.end(), 0);
             count(next, i, 1);
             for (int k = 1; k <= N; k++) {
-                ans += ccnt[k][1] * cnt[k];
-                ccnt[k][1] += ccnt[k][0] * cnt[k];
-                ccnt[k][0] += cnt[k];
+                ans += ccnt[1][k] * cnt[k];
+                ccnt[1][k] += ccnt[0][k] * cnt[k];
+                ccnt[0][k] += cnt[k];
             }
         }
     }
