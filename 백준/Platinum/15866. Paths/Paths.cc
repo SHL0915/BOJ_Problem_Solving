@@ -5,9 +5,9 @@ using ll = long long;
 using pii = pair<int, int>;
 
 int N, M, K;
-int arr[100005];
-vector<int> graph[100005];
-ll dp[100005][(1 << 5)];
+int arr[300005];
+vector<int> graph[300005];
+ll dp[300005][(1 << 5)];
 
 ll DP(int now, int state, int cnt) {
     ll &ret = dp[now][state];
