@@ -1,30 +1,26 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 using namespace std;
-using ll = long long;
-using pii = pair<int, int>;
 
-int N, K;
-pii arr[100001];
-int table[100001];
-
-void solve() {
-	cin >> N >> K;
-	for (int i = 0; i < N; i++) cin >> arr[i].first >> arr[i].second;
-	for (int i = 0; i < N; i++) {
-		for (int j = K; j >= 0; j--) {
-			if (arr[i].first > j) continue;
-			table[j] = max(table[j], arr[i].second + table[j - arr[i].first]);
-		}
-	}
-	cout << table[K];
-	return;
-}
+int N, K, ans;
+int stuffs[100][2];
+int memo[100001];
+int mark[100];
 
 int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	int t = 1;
-	//cin >> t;
-	while (t--) solve();
+	cin >> N >> K;
+	for (int i = 0; i < N; i++) 
+		cin >> stuffs[i][0] >> stuffs[i][1];
+	for (int i = 0; i < N; i++) {
+		for (int j = K; j >= 0; j--) {
+			if (stuffs[i][0] > j)
+				continue;
+			else 
+				memo[j] = max(memo[j], stuffs[i][1] + memo[j - stuffs[i][0]]);			
+		}
+	}
+	for (int i = 1; i <= K; i++)
+		ans = max(ans, memo[i]);
+	cout << ans;
 	return 0;
 }
