@@ -4,8 +4,8 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, arr[100005];
-vector<int> tree[100005], node[1000005];
+int N, arr[100005], sieve[1000005];
+vector<int> tree[100005], node[1000005], prime;
 int vst[100005];
 
 int DFS(int now, int par, int v) {
@@ -20,17 +20,22 @@ int DFS(int now, int par, int v) {
 }
 
 void solve() {
+    for (ll i = 2; i <= 1000000; i++) {
+        if (!sieve[i]) {
+            prime.push_back(i);
+            for (ll j = i * i; j <= 1000000; j += i) sieve[j] = 1;
+        }
+    }
+
     cin >> N;
     for (int i = 1; i <= N; i++) {
         cin >> arr[i];
         ll now = arr[i];
-        for (ll j = 2; j * j <= now; j++) {
-            if (now % j) continue;
-            node[j].push_back(i);
-            while (1) {
-                if (now % j) break;
-                else now /= j;
-            }
+        for (ll p: prime) {
+            if (p * p > now) break;
+            if (now % p) continue;
+            node[p].push_back(i);
+            while (!(now % p)) now /= p;
         }
         if (now != 1) node[now].push_back(i);
     }
@@ -43,7 +48,7 @@ void solve() {
     }
 
     int ans = 0;
-    for (int i = 2; i <= 1000000; i++) {
+    for (int i: prime) {
         for (int now: node[i]) {
             if (vst[now] != i) ans = max(ans, DFS(now, now, i));
         }
