@@ -28,7 +28,7 @@ int query(int l, int r) {
 }
 
 int find_val(int idx) {
-    if (K >= 805) return query(idx, N) + arr[idx];
+    if (K >= 505) return query(idx, N) + arr[idx];
     else {
         int ret = -INF;
         for (int i = 0; i < K; i++) {
@@ -49,7 +49,7 @@ int find_val(int idx) {
 }
 
 void update_val(int idx) {
-    if (K >= 805) {
+    if (K >= 505) {
         int pos = idx, cnt = 0;
         while (pos <= idx + T[idx]) {
             int r = min(idx + T[idx], pos + K - 1);
