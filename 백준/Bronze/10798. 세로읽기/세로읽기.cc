@@ -4,8 +4,7 @@ using namespace std;
 
 int main()
 {   
-   char arr[5][15];
-   memset(arr, 0, sizeof(arr));
+   char arr[5][15] = {0};
    int i, j;
 
    for (i = 0; i < 5; i++) {
