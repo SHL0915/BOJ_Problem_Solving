@@ -2,7 +2,7 @@
 
 using namespace std;
 using ll = long long;
-using pii = pair<int, int>;
+using pii = pair<ll, ll>;
 
 ll T, K;
 ll arr[4][4];
@@ -22,10 +22,10 @@ void solve() {
         vector<pair<pii, pii>> v;
         
         for (int i = 0; i < 4; i++) {
-            int aa = 0, bb = 0, cc = 0;
+            ll aa = 0, bb = 0, cc = 0;
             for (int j = 0; j < 4; j++) {
                 if (i == j) continue;
-                int a = arr[i][j], b = arr[j][i];
+                ll a = arr[i][j], b = arr[j][i];
                 if (a == -1) a = m;
                 if (b == -1) b = m;
                 
