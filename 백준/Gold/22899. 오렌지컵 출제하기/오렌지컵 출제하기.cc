@@ -19,8 +19,7 @@ void solve() {
         pq[arr[i]].push(-A[i]);
     }
     
-    priority_queue<ll> pool;
-    priority_queue<ll> ans;
+    priority_queue<ll> pool, ans;
     
     ll tot = 0, cnt = 0;
     
@@ -28,7 +27,7 @@ void solve() {
         vector<int> v;
         for (int a: s) {
             ll t = pq[a].top();
-            if (pq[a].size() == 0) v.push_back(a);
+            if (pq[a].size() == 1) v.push_back(a);
             pq[a].pop();
             pool.push(t);
         }
