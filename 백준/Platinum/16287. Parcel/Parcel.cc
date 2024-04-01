@@ -7,16 +7,15 @@ using pii = pair<int, int>;
 int N, W;
 int arr[5005];
 int A[800008];
-set<int> s;
 
 void solve() {
     cin >> W >> N;
-    for (int i = 0; i < N; i++) cin >> arr[i], s.insert(arr[i]);
+    for (int i = 0; i < N; i++) cin >> arr[i];
     
     for (int i = 0; i < N; i++) {
         int now = arr[i];
-        s.erase(now);
-        for (int a: s) {
+        for (int j = i + 1; j < N; j++) {
+            int a = arr[j];
             if (now + a > W) continue;
             if (A[W - (now + a)]) {
                 cout << "YES";
