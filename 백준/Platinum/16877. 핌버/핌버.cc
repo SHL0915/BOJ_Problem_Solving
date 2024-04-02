@@ -6,39 +6,17 @@ using pii = pair<int, int>;
 
 int N;
 int arr[100005];
-int dp[3000005];
+int chk[3000005];
+int cnt[25];
 ll fibo[55];
-
-int DP(int k) {
-    if (k == 0) return 0;
-    int &ret = dp[k];
-    if (ret != -1) return ret;
-    
-    int cnt[25] = {0};
-    for (int i = 0; i <= 32; i++) {
-        if (fibo[i] > k) break;
-        cnt[DP(k - fibo[i])]++;
-    }
-    
-    int now = 0;
-    for (int i = 0; i < 25; i++) {
-        if (cnt[i]) now++;
-        else break;
-    }
-    
-    ret = now;
-    return ret;
-}
-
 
 void solve() {
     cin >> N;
     int ans = 0;
-    memset(dp, -1, sizeof(dp));
     
     for (int i = 0; i < N; i++) {
         cin >> arr[i];
-        ans ^= DP(arr[i]);
+        ans ^= chk[arr[i]];
     }
     
     if (ans) cout << "koosaga";
@@ -56,6 +34,21 @@ int main(void) {
     fibo[0] = 1;
     fibo[1] = 1;
     for (int i = 2; i <= 32; i++) fibo[i] = fibo[i - 1] + fibo[i - 2];
+    
+    for (int i = 0; i <= 3000000; i++) {
+        memset(cnt, 0, sizeof(cnt));
+        for (int j = 0; j <= 32; j++) {
+            if (fibo[j] > i) break;
+            cnt[chk[i - fibo[j]]]++;
+        }
+        for (int j = 0; j < 25; j++) {
+            if (!cnt[j]) {
+                chk[i] = j;
+                break;
+            }
+        }
+    }
+    
     //cin >> t;
     while (t--) solve();
     return 0;
