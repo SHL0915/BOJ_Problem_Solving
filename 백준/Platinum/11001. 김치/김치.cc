@@ -2,44 +2,37 @@
 
 using namespace std;
 using ll = long long;
-using pii = pair<int, int>;
+using pii = pair<ll, ll>;
 
-int N, D, idx;
-ll T[100005], V[100005], dp[100005];
+int N, D;
+ll T[100005], V[100005];
+ll ans[100005];
 
-ll C(int i, int j) {
-    return (j - i) * T[j] + V[i];
-}
-
-void DNC(int s, int e, int l, int r) {
-    if (s > e) return;
-    int m = (s + e) / 2;
-
-    for (int i = max(l, m); i <= min(r, m + D); i++) {
-        if (dp[m] < C(m, i)) {
-            dp[m] = C(m, i);
-            idx = i;
-        }
+void dnc(int l, int r, int optl, int optr) {
+    if (l > r) return;
+    int m = (l + r) / 2;
+    pii M = {-1, -1};
+    for (int i = max(optl, m - D); i <= min(m, optr); i++) {
+        M = max(M, {V[i] + (m - i) * T[m], i});
     }
 
-    DNC(s, m - 1, l, idx);
-    DNC(m + 1, e, idx, r);
-
+    ans[m] = M.first;
+    dnc(l, m - 1, optl, M.second);
+    dnc(m + 1, r, M.second, optr);
     return;
 }
-
 
 void solve() {
     cin >> N >> D;
     for (int i = 1; i <= N; i++) cin >> T[i];
     for (int i = 1; i <= N; i++) cin >> V[i];
 
-    DNC(1, N, 1, N);
+    dnc(1, N, 1, N);
 
-    ll ans = 0;
-    for (int i = 1; i <= N; i++) ans = max(ans, dp[i]);
+    ll aans = -1;
+    aans = *max_element(ans + 1, ans + N + 1);
 
-    cout << ans;
+    cout << aans;
     return;
 }
 
