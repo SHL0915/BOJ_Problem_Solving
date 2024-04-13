@@ -3,45 +3,43 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const ll INF = 0x3f3f3f3f3f3f3f3fLL;
 
 int L, G;
-ll arr[8005], psum[8005], dp[805][8005];
+ll C[8005];
+ll psum[8005];
+ll dp[805][8005];
 
-ll cal(int i, int j) {
-    return (psum[i] - psum[j]) * (i - j);
+ll cost(int l, int r) {
+    return (r - l + 1) * (psum[r] - psum[l - 1]);
 }
 
-void DNC(int t, int s, int e, int l, int r) {
+void dnc(int i, int s, int e, int l, int r) {
     if (s > e) return;
     int m = (s + e) / 2;
-    int idx;
-    for (int i = l; i <= min(m, r); i++) {
-        if (dp[t][m] > dp[t - 1][i] + cal(m, i)) {
-            dp[t][m] = dp[t - 1][i] + cal(m, i);
-            idx = i;
+    int idx = -1;
+
+    for (int k = l; k <= min(m, r); k++) {
+        //if (k + 1 > m) continue;
+        if (dp[i][m] > dp[i - 1][k] + cost(k + 1, m)) {
+            dp[i][m] = dp[i - 1][k] + cost(k + 1, m);
+            idx = k;
         }
     }
 
-    DNC(t, s, m - 1, l, idx);
-    DNC(t, m + 1, e, idx, r);
+    dnc(i, s, m - 1, l, idx);
+    dnc(i, m + 1, e, idx, r);
     return;
 }
 
 void solve() {
     cin >> L >> G;
-    for (int i = 1; i <= L; i++) {
-        cin >> arr[i];
-        psum[i] = arr[i] + psum[i - 1];
-    }
+    for (int i = 1; i <= L; i++) cin >> C[i], psum[i] = psum[i - 1] + C[i];
 
-    memset(dp, INF, sizeof(dp));
+    memset(dp, 0x3f, sizeof(dp));
+    for (int i = 1; i <= L; i++) dp[0][i] = cost(1, i);
+    for (int i = 1; i < G; i++) dnc(i, 1, L, 1, L);
 
-    for (int i = 1; i <= L; i++) dp[1][i] = psum[i] * i;
-    for (int i = 2; i <= G; i++) DNC(i, 1, L, 1, L);
-
-    cout << dp[G][L];
-
+    cout << dp[G - 1][L];
     return;
 }
 
