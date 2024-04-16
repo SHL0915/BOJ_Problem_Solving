@@ -6,17 +6,8 @@ using pii = pair<int, int>;
 
 int N, K;
 int arr[5005];
-int bit[5005][32], psum[5005][32];
 ll dp[2][5005];
 int cost[5005][5005];
-
-int C(int l, int r) {
-    int ret = 0;
-    for (int i = 0; i <= 30; i++) {
-        if (psum[r][i] - psum[l - 1][i] > 0) ret |= (1 << i);
-    }
-    return ret;
-}
 
 void dnc(int s, int e, int l, int r) {
     if (s > e) return;
@@ -40,14 +31,12 @@ void solve() {
     cin >> N >> K;
     for (int i = 1; i <= N; i++) {
         cin >> arr[i];
-        for (int j = 0; j <= 30; j++) {
-            if (arr[i] & (1 << j)) bit[i][j]++;
-        }
-        for (int j = 0; j <= 30; j++) psum[i][j] = bit[i][j] + psum[i - 1][j];
     }
     
     for (int i = 1; i <= N; i++) {
-        for (int j = i; j <= N; j++) cost[i][j] = C(i, j);
+        for (int j = i; j <= N; j++) {
+            cost[i][j] = cost[i][j - 1] | arr[j];
+        }
     }
     
     for (int i = 1; i <= N; i++) dp[0][i] = cost[1][i];
