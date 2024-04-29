@@ -5,7 +5,6 @@ using ll = long long;
 using pii = pair<ll, ll>;
 
 int N, M;
-map<pii, int> edge;
 vector<pair<int, pii>> graph[300005];
 ll ans[500005];
 ll dist[300005];
@@ -24,10 +23,7 @@ void Dijkstra(int start) {
             int next = graph[now][i].first, cost = graph[now][i].second.first, t = graph[now][i].second.second;
             if (dist[next] > v + cost) {
                 dist[next] = v + cost;
-                if (t) {
-                    int idx = edge[{now, next}];
-                    ans[idx] = 1;
-                }
+                if (t != -1) ans[t] = 1;
                 pq.push({v + cost, next});
             }
         }
@@ -40,9 +36,8 @@ void solve() {
     for (int i = 0; i < M; i++) {
         int a, b, c;
         cin >> a >> b >> c;
-        edge[{a, b}] = i;
-        graph[a].push_back({b, {c, 1}});
-        graph[b].push_back({a, {2 * c, 0}});
+        graph[a].push_back({b, {c, i}});
+        graph[b].push_back({a, {2 * c, -1}});
     }
     
     Dijkstra(1);
