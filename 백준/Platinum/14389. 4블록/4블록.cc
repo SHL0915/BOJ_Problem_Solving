@@ -6,7 +6,7 @@ using pii = pair<int, int>;
 
 int N, M;
 string arr[15];
-int dp[15][25][(1 << 15)];
+int dp[15][25][(1 << 11)];
 
 int DP(int y, int x, int state) {
     if (x == M) return 0;
