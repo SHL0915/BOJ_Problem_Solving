@@ -4,7 +4,7 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, M;
+ll N, M;
 vector<int> tree[250005];
 int dp[250005][2], vst[250005][2];
 
