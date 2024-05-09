@@ -7,6 +7,7 @@ const ll mod = 1e9 + 9;
 
 int N;
 ll arr[5005], v[5005][5005], dp[5005], fact[5005], ifact[5005];
+vector<int> vv;
 
 ll inv(ll a) {
     ll bit = 1, ret = 1;
@@ -21,8 +22,11 @@ ll inv(ll a) {
 
 void solve() {
     cin >> N;
-    for (int i = 1; i <= N; i++) cin >> arr[i];
+    for (int i = 1; i <= N; i++) cin >> arr[i], vv.push_back(arr[i]);
     sort(arr + 1, arr + N + 1);
+    sort(vv.begin(), vv.end());
+    vv.erase(unique(vv.begin(), vv.end()), vv.end());
+    for (int i = 1; i <= N; i++) arr[i] = lower_bound(vv.begin(), vv.end(), arr[i]) - vv.begin();
     
     fact[0] = 1;
     ifact[0] = inv(fact[0]);
@@ -33,7 +37,7 @@ void solve() {
     }
     
     for (int i = 1; i <= N; i++) {
-        map<int, int> cnt;
+        int cnt[5005] = {0};
         ll val = 1;
         for (int j = i; j <= N; j++) {
             val *= (fact[cnt[arr[j]]] * ifact[j - i]) % mod, val %= mod;
