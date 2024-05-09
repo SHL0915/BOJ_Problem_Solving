@@ -36,11 +36,9 @@ void solve() {
         map<int, int> cnt;
         ll val = 1;
         for (int j = i; j <= N; j++) {
-            val *= fact[cnt[arr[j]]], val %= mod;
-            val *= ifact[j - i], val %= mod;
+            val *= (fact[cnt[arr[j]]] * ifact[j - i]) % mod, val %= mod;
             cnt[arr[j]]++;
-            val *= ifact[cnt[arr[j]]], val %= mod;
-            val *= fact[j - i + 1], val %= mod;
+            val *= (ifact[cnt[arr[j]]] * fact[j - i + 1]) % mod, val %= mod;
             v[i][j] = val;
         }
     }
