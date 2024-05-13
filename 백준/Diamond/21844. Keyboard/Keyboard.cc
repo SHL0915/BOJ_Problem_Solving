@@ -7,7 +7,7 @@ using pii = pair<int, int>;
 int N, M;
 vector<int> graph[1000005];
 int vst[1000005];
-vector<pii> v;
+vector<int> v;
 pii cnt;
 
 void DFS(int node, int t) {
@@ -43,27 +43,34 @@ void solve() {
         }
     }
     
+    int add = 0;
+    int K = 0;
+    
     memset(vst, -1, sizeof(vst));
     for (int i = 1; i <= N; i++) {
         if (vst[i] == -1) {
             cnt = {0, 0};
             DFS(i, 0);
-            v.push_back(cnt);
+            int now = abs(cnt.first - cnt.second);
+            K += min(cnt.first, cnt.second);
+            if (now == 0) continue;
+            else if (now == 1) add++;
+            else v.push_back(now);
         }
     }
     
     bitset<1000005> bs;
     bs[0] = 1;
-    for (pii a: v) {
-        bs |= (bs << a.first) | (bs << a.second);
+    for (int a: v) {
+        bs |= bs << a;
     }
     
     int ans = N;
     for (int i = 0; i <= N; i++) {
-        if (bs[i]) ans = min(ans, abs(2 * i - N));
+        if (bs[i]) ans = min(ans, abs(2 * (K + i) - N));
     }
     
-    cout << ans;
+    cout << max(0, ans - add);
     
     return;
 }
