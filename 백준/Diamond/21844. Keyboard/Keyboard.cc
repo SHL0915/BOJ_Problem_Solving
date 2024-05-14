@@ -59,7 +59,7 @@ void solve() {
         }
     }
     
-    bitset<1000005> bs;
+    bitset<500005> bs;
     bs[0] = 1;
     for (int a: v) {
         bs |= bs << a;
@@ -67,10 +67,13 @@ void solve() {
     
     int ans = N;
     for (int i = 0; i <= N; i++) {
-        if (bs[i]) ans = min(ans, abs(2 * (K + i) - N));
+        int now = K + i;
+        if (now > N / 2) continue;
+        now = min(now + add, N / 2);
+        if (bs[i]) ans = min(ans, abs(2 * now - N));
     }
     
-    cout << max(0, ans - add);
+    cout << ans;
     
     return;
 }
