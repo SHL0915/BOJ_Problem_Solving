@@ -2,13 +2,29 @@
 
 using namespace std;
 using ll = long long;
-using pii = pair<int, int>;
+using pii = pair<ll, ll>;
 
 int N;
-pii arr[200005];
-ll tot;
+map<int, int> m;
+bitset<200005> bs;
 
-void f(map<int, int> &m, bitset<200005> &bs) {
+void solve() {
+    cin >> N;
+    
+    ll tot = 0;
+    
+    ll g = -1, cnt = 0;
+    
+    for (int i = 0; i < N; i++) {
+        ll a, b;
+        cin >> a >> b;
+        tot += a;
+        if (!a) cnt++;
+        else m[a]++;
+        if (g == -1) g = b;
+        else g = gcd(g, b);
+    }
+    
     vector<ll> v;
     for (auto a: m) {
         ll k = 1, cnt = a.second;
@@ -23,44 +39,11 @@ void f(map<int, int> &m, bitset<200005> &bs) {
     bs[0] = 1;
     for (ll a: v) bs |= (bs << a);
     
-    return;
-}
-
-void solve() {
-    cin >> N;
-    
-    map<int, int> m;
-    bitset<200005> bs;
-    
-    ll g = -1, cnt = 0;
-    
-    for (int i = 0; i < N; i++) {
-        cin >> arr[i].first >> arr[i].second;
-        m[arr[i].first]++;
-        tot += arr[i].first;
-        if (!arr[i].first) cnt++;
-        if (g == -1) g = arr[i].second;
-        else g = gcd(g, arr[i].second);
-    }
-    
-    if (!tot) {
-        cout << "Y";
-        return;
-    }
-    
-    f(m, bs);
-    
     int ans = 0;
-    if (cnt) {
-        for (int i = 0; i <= tot; i++) {
-            if (!bs[i]) continue;
-            if (abs(2 * i - tot) % g == 0) ans = 1;
-        }
-    } else {
-        for (int i = 1; i < tot; i++) {
-            if (!bs[i]) continue;
-            if (abs(2 * i - tot) % g == 0) ans = 1;
-        }
+    for (int i = 0; i <= tot; i++) {
+        if ((i == 0 || i == tot) && !cnt) continue;
+        if (!bs[i]) continue;
+        if (abs(2 * i - tot) % g == 0) ans = 1;
     }
     
     if (ans) cout << "Y";
