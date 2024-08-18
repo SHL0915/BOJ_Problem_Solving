@@ -4,110 +4,105 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-int N, K, Q, B, sz;
-int arr[100005];
-deque<int> cnt[100005];
-int ccnt[100505];
-int bucket[100505];
-pair<int, pii> q[100005];
-int ans[100005];
+int N, M, K, B, sqrtN;
+int arr[200005];
+pair<pii, int> q[200005];
+int ans[200005];
+deque<int> dq[200005];
+int sCnt[355], cnt[200005];
 
-void push(int a) {
-    int num = arr[a];
-    if (cnt[num].size() >= 2) {
-        int val = cnt[num].back() - cnt[num].front();
-        ccnt[val]--;
-        bucket[val / sz]--;
+void push(int idx) {
+    int now = arr[idx];
+
+    if (dq[now].size() >= 2) {
+        int v = dq[now].back() - dq[now].front();
+        sCnt[v / sqrtN]--;
+        cnt[v]--;
     }
 
-    if (cnt[num].size() == 0) cnt[num].push_back(a);
-    else if (a < cnt[num].front()) cnt[num].push_front(a);
-    else cnt[num].push_back(a);
-
-    if (cnt[num].size() >= 2) {
-        int val = cnt[num].back() - cnt[num].front();
-        ccnt[val]++;
-        bucket[val / sz]++;
-    }
-    return;
-}
-
-void pop(int a) {
-    int num = arr[a];
-    if (cnt[num].size() >= 2) {
-        int val = cnt[num].back() - cnt[num].front();
-        ccnt[val]--;
-        bucket[val / sz]--;
+    if (dq[now].empty()) dq[now].push_back(idx);
+    else {
+        if (idx < dq[now].front()) dq[now].push_front(idx);
+        else dq[now].push_back(idx);
     }
 
-    if (cnt[num].front() == a) cnt[num].pop_front();
-    else cnt[num].pop_back();
-
-    if (cnt[num].size() >= 2) {
-        int val = cnt[num].back() - cnt[num].front();
-        ccnt[val]++;
-        bucket[val / sz]++;
+    if (dq[now].size() >= 2) {
+        int v = dq[now].back() - dq[now].front();
+        sCnt[v / sqrtN]++;
+        cnt[v]++;
     }
 
     return;
 }
 
-int find_ans() {
-    int ret = 0;
-    int idx = N / sz + 5;
-    for (int i = idx; i >= 0; i--) {
-        if (bucket[i] > 0) {
-            int pos = (i + 1) * sz + 5;
-            for (int j = pos;; j--) {
-                if (ccnt[j] > 0) {
-                    ret = j;
-                    break;
-                }
+void pop(int idx) {
+    int now = arr[idx];
+    if (dq[now].size() >= 2) {
+        int v = dq[now].back() - dq[now].front();
+        sCnt[v / sqrtN]--;
+        cnt[v]--;
+    }
+
+    if (idx == dq[now].back()) dq[now].pop_back();
+    else dq[now].pop_front();
+
+    if (dq[now].size() >= 2) {
+        int v = dq[now].back() - dq[now].front();
+        sCnt[v / sqrtN]++;
+        cnt[v]++;
+    }
+
+    return;
+}
+
+int query() {
+    int now = N / sqrtN + 1;
+
+    for (int i = now; i >= 0; i--) {
+        if (sCnt[i]) {
+            for (int j = (i + 1) * sqrtN;; j--) {
+                if (cnt[j]) return j;
             }
-            break;
         }
     }
 
-    return ret;
+    return 0;
 }
 
 void solve() {
     cin >> N >> K;
     for (int i = 1; i <= N; i++) cin >> arr[i];
-    cin >> Q;
-    for (int i = 0; i < Q; i++) {
+
+    cin >> M;
+    for (int i = 0; i < M; i++) {
         int l, r;
         cin >> l >> r;
-        q[i] = {i, {l, r}};
+        q[i] = {{l, r}, i};
     }
 
-    while (B * B <= Q) B++;
+    while (B * B <= M) B++;
     B--;
-    
-    sz = sqrt(N);
+    sqrtN = sqrt(N);
 
-    sort(q, q + Q, [&](pair<int, pii> a, pair<int, pii> b) {
-        if (a.second.first / B == b.second.first / B) return a.second.second < b.second.second;
-        return a.second.first / B < b.second.first / B;
+    sort(q, q + M, [&](pair<pii, int> a, pair<pii, int> b) {
+        if (a.first.first / B == b.first.first / B) return a.first.second < b.first.second;
+        else return a.first.first / B < b.first.first / B;
     });
 
-    int l = q[0].second.first, r = q[0].second.second, id = q[0].first;
+    int l = q[0].first.first, r = q[0].first.second;
     for (int i = l; i <= r; i++) push(i);
-    ans[id] = find_ans();
+    ans[q[0].second] = query();
 
-    for (int i = 1; i < Q; i++) {
-        int nl = q[i].second.first, nr = q[i].second.second;
-        id = q[i].first;
-
+    for (int i = 1; i < M; i++) {
+        int nl = q[i].first.first, nr = q[i].first.second, id = q[i].second;
         while (l > nl) push(--l);
         while (r < nr) push(++r);
         while (l < nl) pop(l++);
         while (r > nr) pop(r--);
-
-        ans[id] = find_ans();
+        ans[id] = query();
     }
 
-    for (int i = 0; i < Q; i++) cout << ans[i] << '\n';
+    for (int i = 0; i < M; i++) cout << ans[i] << '\n';
 
     return;
 }
