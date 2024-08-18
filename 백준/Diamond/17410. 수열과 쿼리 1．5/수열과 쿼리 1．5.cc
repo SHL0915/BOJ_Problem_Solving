@@ -3,40 +3,63 @@
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
-const int SZ = 10000;
 
 int N, M, sqrtN;
 int arr[100005];
-int bucket[1005][10005];
+int cnt[355][10005];
 
-void update(int pos, int k);
-int query(int l, int r, int k);
+void update(int idx, int v) {
+    int p = arr[idx], bucket = idx / sqrtN;
+    if (p > v) {
+        for (int i = v; i < p; i++) cnt[bucket][i]++;
+    } else {
+        for (int i = p; i < v; i++) cnt[bucket][i]--;
+    }
+    arr[idx] = v;
+    return;
+}
+
+int query(int l, int r, int k) {
+    int ret = 0;
+    while (l % sqrtN && l <= r) {
+        if (arr[l++] > k) ret++;
+    }
+    while (l + sqrtN <= r) {
+        ret += cnt[l / sqrtN][10000] - cnt[l / sqrtN][k];
+        l += sqrtN;
+    }
+    while (l <= r) {
+        if (arr[l++] > k) ret++;
+    }
+    return ret;
+}
 
 void solve() {
     cin >> N;
-    for (int i = 1; i <= N; i++) cin >> arr[i];
-    sqrtN = 2 * sqrt(N);
-    
-    for (int i = 1; i <= N; i++) bucket[i / sqrtN][arr[i]]++;
-    for (int i = 0; i <= N / sqrtN; i++) {
-        for (int j = 1; j <= SZ; j++) bucket[i][j] += bucket[i][j - 1];
+    sqrtN = min(N, 355);
+
+    for (int i = 1; i <= N; i++) {
+        cin >> arr[i];
+        cnt[i / sqrtN][arr[i]]++;
     }
-    
+
+    for (int i = 0; i <= (N / sqrtN); i++) {
+        for (int j = 1; j <= 10000; j++) cnt[i][j] += cnt[i][j - 1];
+    }
+
     cin >> M;
-    for (int i = 0; i < M; i++) {
-        int q;
-        cin >> q;
-        if (q == 1) {
-            int pos, k;
-            cin >> pos >> k;
-            update(pos, k);
+    while (M--) {
+        int a, i, v, j, k;
+        cin >> a;
+        if (a == 1) {
+            cin >> i >> v;
+            update(i, v);
         } else {
-            int l, r, k;
-            cin >> l >> r >> k;
-            cout << query(l, r, k) << '\n';
+            cin >> i >> j >> k;
+            cout << query(i, j, k) << '\n';
         }
     }
-    
+
     return;
 }
 
@@ -50,33 +73,4 @@ int main(void) {
     //cin >> t;
     while (t--) solve();
     return 0;
-}
-
-void update(int pos, int k) {
-    int idx = pos / sqrtN;
-    int org = arr[pos];
-    
-    arr[pos] = k;
-    if (org > k) for (int i = k; i < org; i++) bucket[idx][i]++;
-    else for (int i = org; i < k; i++) bucket[idx][i]--;
-    
-    return;
-}
-
-int query(int l, int r, int k) {
-    int ret = 0;
-    while (l % sqrtN && l <= r) {
-        if (arr[l] > k) ret++;
-        l++;
-    }
-    while ((r + 1) % sqrtN && l <= r) {
-        if (arr[r] > k) ret++;
-        r--;
-    }
-    while (l <= r) {
-        ret += bucket[l / sqrtN][SZ] - bucket[l / sqrtN][k];
-        l += sqrtN;
-    }
-    
-    return ret;
 }
