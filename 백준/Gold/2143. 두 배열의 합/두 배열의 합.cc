@@ -1,39 +1,45 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+#include <bits/stdc++.h>
 
-long long T, N, M, ans;
-long long A[1000];
-long long B[1000];
-long long sumA[1000];
-long long sumB[1000];
-vector <long long> subA, subB;
+using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
+
+ll T;
+int N, M;
+int A[1005], B[1005];
+ll pA[1005], pB[1005];
+map<ll, int> m;
+
+void solve() {
+    cin >> T;
+    cin >> N;
+    for (int i = 1; i <= N; i++) cin >> A[i], pA[i] = pA[i - 1] + A[i];
+
+    cin >> M;
+    for (int i = 1; i <= M; i++) cin >> B[i], pB[i] = pB[i - 1] + B[i];
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = i; j <= N; j++) m[pA[j] - pA[i - 1]]++;
+    }
+
+    ll ans = 0;
+    for (int i = 1; i <= M; i++) {
+        for (int j = i; j <= M; j++) ans += m[T - (pB[j] - pB[i - 1])];
+    }
+
+    cout << ans;
+
+    return;
+}
 
 int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> T;
-	cin >> N;
-	for (int i = 0; i < N; i++) {
-		cin >> A[i];
-		if (i == 0) sumA[i] = A[i];
-		else sumA[i] = sumA[i - 1] + A[i];
-	}
-	cin >> M;
-	for (int i = 0; i < M; i++) {
-		cin >> B[i];
-		if (i == 0) sumB[i] = B[i];
-		else sumB[i] = sumB[i - 1] + B[i];
-	}
-	for (int i = 0; i < N; i++) {
-		for (int j = i; j < N; j++) subA.push_back(sumA[j] - sumA[i] + A[i]);		
-	}
-	for (int i = 0; i < M; i++) {
-		for (int j = i; j < M; j++) subB.push_back(sumB[j] - sumB[i] + B[i]);
-	}
-	sort(subB.begin(), subB.end());
-	for (int i = 0; i < subA.size(); i++) ans += (upper_bound(subB.begin(), subB.end(), T - subA[i]) - lower_bound(subB.begin(), subB.end(), T - subA[i]));
-	cout << ans;
-	return 0;
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+#endif
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    //cin >> t;
+    while (t--) solve();
+    return 0;
 }
