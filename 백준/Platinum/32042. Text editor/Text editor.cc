@@ -6,30 +6,87 @@ using pii = pair<ll, ll>;
 
 int N;
 pii S, E;
-int arr[1000005];
+ll arr[1000005];
 ll psum[1000005];
-map<pii, ll> dp;
+map<pii, ll> d;
 
 ll dist(pii a, pii b) {
     ll f = psum[a.first - 1] + a.second, s = psum[b.first - 1] + b.second;
     return abs(f - s);
 }
 
-ll DP(int y, int x) {
-    if (y == E.first && x == E.second) return 0;
-    if (dp.count({y, x})) return dp[{y, x}];
-    ll &ret = dp[{y, x}];
-    ret = 1e18;
+void Dijkstra(pii start) {
+    priority_queue<pair<ll, pii>> pq;
 
-    ret = dist({y, x}, E);
-    if (y > 1) ret = min(ret, 1 + DP(y - 1, min(x, arr[y - 1] + 1)));
-    if (y < N) ret = min(ret, 1 + DP(y + 1, min(x, arr[y + 1] + 1)));
-    if (x == 1 && y > 1) ret = min(ret, 1 + DP(y - 1, arr[y - 1] + 1));
-    if (x == arr[y] + 1 && y < N) ret = min(ret, 1 + DP(y + 1, 1));
-    ret = min(ret, dist({y, x}, {y, 1}) + DP(y, 1));
-    ret = min(ret, dist({y, x}, {y, arr[y] + 1}) + DP(y, arr[y] + 1));
+    pq.push({0, start});
+    d[start] = 0;
 
-    return ret;
+    while (pq.size()) {
+        auto t = pq.top();
+        pq.pop();
+
+        pii now = t.second;
+        ll v = -t.first;
+
+        if (now == E) break;
+        if (d[now] < v) continue;
+
+        if (now.first > 1) {
+            pii next = {now.first - 1, min(now.second, arr[now.first - 1] + 1)};
+            if (!d.count(next) || d[next] > v + 1) {
+                d[next] = v + 1;
+                pq.push({-(v + 1), next});
+            }
+
+            if (now.second == 1) {
+                pii next = {now.first - 1, arr[now.first - 1] + 1};
+                if (!d.count(next) || d[next] > v + 1) {
+                    d[next] = v + 1;
+                    pq.push({-(v + 1), next});
+                }
+            }
+        }
+
+        if (now.first < N) {
+            pii next = {now.first + 1, min(now.second, arr[now.first + 1] + 1)};
+            if (!d.count(next) || d[next] > v + 1) {
+                d[next] = v + 1;
+                pq.push({-(v + 1), next});
+            }
+
+            if (now.second == arr[now.first] + 1) {
+                pii next = {now.first + 1, 1};
+                if (!d.count(next) || d[next] > v + 1) {
+                    d[next] = v + 1;
+                    pq.push({-(v + 1), next});
+                }
+            }
+        }
+
+        if (now.second != 1) {
+            pii next = {now.first, 1};
+            if (!d.count(next) || d[next] > v + now.second - 1) {
+                d[next] = v + now.second - 1;
+                pq.push({-(v + now.second - 1), next});
+            }
+        }
+
+        if (now.second != arr[now.first] + 1) {
+            pii next = {now.first, arr[now.first] + 1};
+            if (!d.count(next) || d[next] > v + arr[now.first] + 1 - now.second) {
+                d[next] = v + arr[now.first] + 1 - now.second;
+                pq.push({-(v + arr[now.first] + 1 - now.second), next});
+            }
+        }
+
+        if (!d.count(E) || d[E] > v + dist(now, E)) {
+            d[E] = v + dist(now, E);
+            pq.push({-(v + dist(now, E)), E});
+        }
+    }
+
+
+    return;
 }
 
 void solve() {
@@ -42,7 +99,9 @@ void solve() {
         psum[i] = psum[i - 1] + arr[i] + 1;
     }
 
-    cout << DP(S.first, S.second);
+    Dijkstra(S);
+
+    cout << d[E];
 
     return;
 }
