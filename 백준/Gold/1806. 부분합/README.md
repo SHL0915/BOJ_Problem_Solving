@@ -8,17 +8,21 @@
 
 ### 분류
 
-누적 합(prefix_sum), 두 포인터(two_pointer)
+누적 합, 두 포인터
+
+### 제출 일자
+
+2024년 11월 3일 16:16:30
 
 ### 문제 설명
 
-<p>10,000 이하의 자연수로 이루어진 길이 N짜리 수열이 주어진다. 이 수열에서 연속된 수들의 부분합 중에 그 합이 S 이상이 되는 것 중, 가장 짧은 것의 길이를 구하는 프로그램을 작성하시오.</p>
+<p>A sequence of N positive integers (10 ≤ N < 100 000), each of them less than or equal 10000, and a positive integer S (S ≤ 100 000 000) are given. Write a program to find the minimal length of the subsequence of consecutive elements of the sequence, the sum of which is greater than or equal to S. </p>
 
 ### 입력 
 
- <p>첫째 줄에 N (10 ≤ N < 100,000)과 S (0 < S ≤ 100,000,000)가 주어진다. 둘째 줄에는 수열이 주어진다. 수열의 각 원소는 공백으로 구분되어져 있으며, 10,000이하의 자연수이다.</p>
+ <p>Many test cases will be given. For each test case the program has to read the numbers N and S, separated by an interval, from the first line. The numbers of the sequence are given in the second line of the test case, separated by intervals. The input will finish with the end of file.</p>
 
 ### 출력 
 
- <p>첫째 줄에 구하고자 하는 최소의 길이를 출력한다. 만일 그러한 합을 만드는 것이 불가능하다면 0을 출력하면 된다.</p>
+ <p>For each the case the program has to print the result on separate line of the output file. If it is impossible to make such a sum, print zero.</p>
 

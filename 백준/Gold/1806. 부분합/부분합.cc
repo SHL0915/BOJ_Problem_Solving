@@ -1,35 +1,38 @@
-#include <iostream>
-using namespace std;
+#include <bits/stdc++.h>
 
-int N, lptr, rptr, ans = 100001;
-long long arr[100000];
-long long psum[100000];
-long long S;
+using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
+
+ll N, S;
+ll arr[100005], psum[100005];
+
+void solve() {
+    cin >> N >> S;
+    for (int i = 1; i <= N; i++) cin >> arr[i], psum[i] = psum[i - 1] + arr[i];
+    
+    int ans = 1e9;
+    for (int i = 1; i <= N; i++) {
+        if (psum[i] >= S) {
+            int idx = upper_bound(psum, psum + i + 1, psum[i] - S) - psum;
+            ans = min(ans, i - idx + 1);
+        }
+    }
+    
+    if (ans == 1e9) cout << 0;
+    else cout << ans;
+    
+    return;
+}
 
 int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> N >> S;
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		if (arr[i] >= S) {
-			cout << 1;
-			return 0;
-		}
-		if (i == 0) psum[i] = arr[i];
-		else psum[i] = psum[i - 1] + arr[i];
-	}
-	lptr = N - 1;
-	for (rptr = N - 1; rptr >= 0; rptr--) {
-		if (lptr == 0 && psum[rptr] < S) break;
-		while (lptr >= 0) {
-			if (psum[rptr] - psum[lptr] + arr[lptr] >= S) break;
-			else lptr--;
-		}
-		if (psum[rptr] - psum[lptr] + arr[lptr] >= S) ans = min(ans, rptr - lptr + 1);
-		else break;
-	}
-	if (ans == 100001) cout << 0;
-	else cout << ans;
-	return 0;
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+#endif
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    //cin >> t;
+    while (t--) solve();
+    return 0;
 }
