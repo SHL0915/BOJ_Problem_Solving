@@ -7,7 +7,6 @@ const int sz = 405;
 int N;
 vector <pii> up, down;
 int dp[sz][sz][sz][2];
-int vst[sz][sz][sz][2];
 
 void solve() {
 	cin >> N;
