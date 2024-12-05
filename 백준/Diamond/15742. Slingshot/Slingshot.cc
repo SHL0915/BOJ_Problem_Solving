@@ -11,7 +11,6 @@ ll ans[100005];
 
 void update(int pos, pii v, vector<pii> &seg) {
     for (seg[pos += sz] = v; pos > 0; pos >>= 1) seg[pos >> 1] = min(seg[pos], seg[pos ^ 1]);
-    
 }
 
 pii query(int l, int r, vector<pii> &seg) {
@@ -73,8 +72,8 @@ void solve() {
         while (idx < N) {
             ll a = arr[idx].first.first, b = arr[idx].first.second, t = arr[idx].second;
             if (b <= y) {
-                update(a, {(1e17 - val[a]) + (1e17 - val[b]) + t, idx}, lseg);
-                update(a, {val[a] + (1e17 - val[b]) + t, idx}, rseg);
+                update(a, {-val[a] - val[b] + t, idx}, lseg);
+                update(a, {val[a] - val[b] + t, idx}, rseg);
                 idx++;
             } else break;
         }
@@ -101,7 +100,7 @@ void solve() {
         while (idx >= 0) {
             ll a = arr[idx].first.first, b = arr[idx].first.second, t = arr[idx].second;
             if (b >= y) {
-                update(a, {(1e17 - val[a]) + val[b] + t, idx}, lseg);
+                update(a, {-val[a] + val[b] + t, idx}, lseg);
                 update(a, {val[a] + val[b] + t, idx}, rseg);
                 idx--;
             } else break;
