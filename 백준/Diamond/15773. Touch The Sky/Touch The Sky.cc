@@ -5,7 +5,7 @@ using ll = long long;
 using pii = pair<ll, ll>;
 
 int N;
-pii arr[200005];
+pii arr[250005];
 
 void solve() {
     cin >> N;
