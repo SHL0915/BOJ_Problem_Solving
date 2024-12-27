@@ -21,7 +21,7 @@ void solve() {
     v.erase(unique(v.begin(), v.end()), v.end());
     
     for (int j: v) {
-        if (pos[j].size() >= sqrt(N)) {
+        if (pos[j].size() >= 500) {
             for (int i = 1; i <= N; i++) {
                 int cnt = 1;
                 int now = 0;
