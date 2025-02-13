@@ -7,31 +7,26 @@ using pii = pair<int, int>;
 string S;
 
 void solve() {
-    string A;
-    int ans = 0;
+    int flag = 0;
     while (1) {
-        cin >> A;
-        if (A == "#") {
-            if (ans == 0) cout << "Correct\n";
-            else cout << "Incorrect\n";
+        string s;
+        cin >> s;
+        if (s == "#") {
             break;
         }
-
-        if (A.length() != S.length()) {
-            ans = 1;
-            S = A;
-            continue;
-        } else {
-            int cnt = 0;
-            for (int i = 0; i < S.length(); i++) {
-                if (S[i] != A[i]) cnt++;
-            }
-
-            if (cnt != 1) ans = 1;
-            S = A;
-        }
+        
+        if (S.length() != s.length()) flag = 1;
+        int cnt = 0;
+        for (int i = 0; i < S.length(); i++) if (S[i] != s[i]) cnt++;
+        
+        if (cnt != 1) flag = 1;
+        
+        S = s;
     }
-
+    
+    if (flag) cout << "Incorrect\n";
+    else cout << "Correct\n";
+    
     return;
 }
 
