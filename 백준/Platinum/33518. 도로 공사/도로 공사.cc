@@ -21,7 +21,7 @@ void solve() {
         if (arr[u] < arr[v]) swap(u, v);
         ll val = (R - max(L, arr[u] - arr[v]) + 1) % mod;
         A[u] *= val, A[u] %= mod;
-        if ((L <= (arr[u] - arr[v])) && ((arr[u] - arr[v]) <= R)) val = (val + mod - 1) % mod;
+        if ((L <= (arr[u] - arr[v])) && ((arr[u] - arr[v]) <= R)) val--;
         B[u] *= val, B[u] %= mod;
     }
 
