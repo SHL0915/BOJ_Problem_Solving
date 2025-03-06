@@ -5,23 +5,21 @@ using ll = long long;
 using pii = pair<int, int>;
 
 int N;
-vector<ll> A, B;
 
 void solve() {
     cin >> N;
+
+    ll f = 0, s = 0;
 
     for (int i = 0; i < N; i++) {
         ll a, b;
         cin >> a >> b;
         if (a < b) swap(a, b);
-        A.push_back(a);
-        B.push_back(b);
+        f = max(f, a);
+        s = max(s, b);
     }
 
-    sort(A.rbegin(), A.rend());
-    sort(B.rbegin(), B.rend());
-
-    cout << A[0] * B[0];
+    cout << f * s;
 
     return;
 }
